@@ -1,12 +1,23 @@
-import React, {Component} from 'react';
-import {Text, View} from 'react-native';
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-export default class HelloWorldApp extends Component {
-  render() {
-    return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Text>Hello, world!</Text>
-      </View>
-    );
-  }
+import Onboarding from "./screens/Onboarding";
+import OAuth from "./screens/OAuth";
+import Event from "./screens/Event";
+
+const Stack = createStackNavigator();
+
+function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Onboarding">
+        <Stack.Screen name="Onboarding" component={Onboarding} />
+        <Stack.Screen name="Event" component={Event} />
+        <Stack.Screen name="OAuth" component={OAuth} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
+
+export default App;

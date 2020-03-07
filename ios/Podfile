@@ -3,7 +3,10 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 target 'Mobile' do
   # Pods for Mobile
-  pod 'FBSDKLoginKit'
+
+  pod 'Firebase/Core', '~> 6.13.0'
+  pod 'Firebase/Auth', '~> 6.13.0'
+
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
   pod 'RCTRequired', :path => "../node_modules/react-native/Libraries/RCTRequired"
@@ -34,6 +37,9 @@ target 'Mobile' do
   pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
+
+
+  pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
 
   target 'MobileTests' do
     inherit! :search_paths
