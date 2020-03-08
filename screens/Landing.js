@@ -3,7 +3,7 @@ import {StyleSheet, View, Text, Image} from 'react-native';
 import Button from '../components/Button';
 import CustomText from '../components/CustomText';
 
-class Onboarding extends React.Component {
+class Landing extends React.Component {
   state = {};
   render() {
     return (
@@ -19,7 +19,7 @@ class Onboarding extends React.Component {
           <Button
             dark
             title="Access an existing event"
-            onPress={() => this.props.navigation.navigate('Event')}
+            onPress={() => this.props.navigation.navigate('User')}
           />
           <Button
             light
@@ -53,4 +53,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Onboarding;
+export default Landing;

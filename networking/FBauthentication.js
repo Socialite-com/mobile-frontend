@@ -11,26 +11,26 @@ export async function facebookLogin() {
       alert('User cancelled request');
     } else {
       console.log(`Login success with permissions: ${result.grantedPermissions.toString()}`);
+
+      // get the access token
+      const data = await AccessToken.getCurrentAccessToken();
+
+      if (!data) {
+        // handle this however suites the flow of your app
+        alert('Something went wrong obtaining the users access token');
+      }
+
+      // create a new firebase credential with the token
+      const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
+
+      // login with credential
+      const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
+      return 200
     }
 
-    // get the access token
-    const data = await AccessToken.getCurrentAccessToken();
-
-    if (!data) {
-      // handle this however suites the flow of your app
-      alert('Something went wrong obtaining the users access token');
-    }
-
-    // create a new firebase credential with the token
-    const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
-
-    // login with credential
-    const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
-
-    console.warn(JSON.stringify(firebaseUserCredential.user.toJSON()))
+    // console.warn(JSON.stringify(firebaseUserCredential.user.toJSON()))
   } catch (e) {
     console.error(e);
+    return 500
   }
 }
-
-export default facebookLogin();

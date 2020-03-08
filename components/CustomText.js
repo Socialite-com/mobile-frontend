@@ -10,6 +10,7 @@ const CustomText = ({
   title,
   subtitle,
   center,
+  splash,
   ...restProps
 }) => {
 
@@ -19,23 +20,23 @@ const CustomText = ({
   if (title) { textStyle = textStyle.concat(styles.title); }
   if (subtitle) { textStyle = textStyle.concat(styles.subtitle); }
   if (center) { textStyle = textStyle.concat(styles.center); }
+  if (splash) { textStyle = textStyle.concat(styles.splash); }
 
   return (
-    <View {...restProps}>
-      <Text style={textStyle}>{label}</Text>
-    </View>
+    <Text {...restProps} style={textStyle}>{label}</Text>
   )
 };
 
 const styles = StyleSheet.create({
   defaultStyle: {
     textAlign: 'left',
+    fontSize: 18,
     fontFamily: 'Comfortaa-Regular',
-    marginBottom: '5%'
   },
   title: {
     fontFamily: 'Comfortaa-Bold',
-    fontSize: 24
+    fontSize: 24,
+    marginBottom: '5%'
   },
   subtitle: {
     fontFamily: 'Comfortaa-Light',
@@ -44,6 +45,10 @@ const styles = StyleSheet.create({
   },
   center: {
     textAlign: 'center'
+  },
+  splash: {
+    color: 'white',
+    fontSize: 45
   }
 });
 
