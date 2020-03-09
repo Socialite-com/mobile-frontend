@@ -1,8 +1,8 @@
 platform :ios, '9.0'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-target 'Mobile' do
-  # Pods for Mobile
+target 'Socialite' do
+  # Pods for Socialite
 
   pod 'Firebase/Core', '~> 6.13.0'
   pod 'Firebase/Auth', '~> 6.13.0'
@@ -41,7 +41,7 @@ target 'Mobile' do
 
   pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
 
-  target 'MobileTests' do
+  target 'SocialiteTests' do
     inherit! :search_paths
     # Pods for testing
   end
@@ -49,10 +49,10 @@ target 'Mobile' do
   use_native_modules!
 end
 
-target 'Mobile-tvOS' do
-  # Pods for Mobile-tvOS
+target 'Socialite-tvOS' do
+  # Pods for Socialite-tvOS
 
-  target 'Mobile-tvOSTests' do
+  target 'Socialite-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end
