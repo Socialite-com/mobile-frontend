@@ -2,6 +2,14 @@
   "name": "res",
   "version": "1.0.0",
   "dependencies": {
-    
-  }
+    "res": "^0.4.0"
+  },
+  "description": "socialite resources",
+  "main": "R.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Stephen Lu",
+  "license": "ISC"
 }

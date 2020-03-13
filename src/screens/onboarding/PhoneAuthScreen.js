@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import {
+  KeyboardAvoidingView,
   StyleSheet,
   Dimensions,
+  Platform,
   View,
 } from 'react-native'
 
@@ -12,6 +14,7 @@ import CustomText from "library/components/CustomText";
 import firebase from 'react-native-firebase';
 import {onSignIn} from "library/networking/auth";
 
+const screenHeight = Math.round(Dimensions.get('window').height);
 const screenWidth = Math.round(Dimensions.get('window').width);
 
 class PhoneAuthScreen extends Component {
@@ -19,7 +22,8 @@ class PhoneAuthScreen extends Component {
     phone: '+1',
     confirmResult: null,
     verificationCode: '',
-    userId: ''
+    userId: '',
+    offset: screenHeight * 0.20
   };
 
   validatePhoneNumber = () => {
@@ -51,7 +55,7 @@ class PhoneAuthScreen extends Component {
           user.getIdToken()
             .then(key => {
               onSignIn(key);
-              this.props.navigation.navigate('CreateEvent')
+              this.props.navigation.navigate(this.props.route.params.routing);
             })
         })
         .catch(error => { alert(error.message) })
@@ -93,7 +97,7 @@ class PhoneAuthScreen extends Component {
         <TextForm
           placeholder='Verification code'
           value={this.state.verificationCode}
-          keyboardType='numeric'
+          keyboardType={Platform.OS === 'ios' ? "number-pad": "numeric"}
           onChangeText={verificationCode => {
             this.setState({ verificationCode })
           }}
@@ -114,12 +118,12 @@ class PhoneAuthScreen extends Component {
         <View style={styles.mediaContainer}>
           <CustomText label="Some image..." />
         </View>
-        <View style={styles.inputContainer}>
+        <KeyboardAvoidingView style={styles.inputContainer} keyboardVerticalOffset={this.state.offset} behavior="padding">
           <View style={styles.title}>
             <CustomText title label="Become a Socialite" />
           </View>
           {this.state.confirmResult ? this.renderConfirmationCodeView() : this.renderPhoneInputView()}
-        </View>
+        </KeyboardAvoidingView>
       </View>
     )
   }
@@ -133,13 +137,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   inputContainer: {
-    flex: 3,
+    flex: 4,
     width: screenWidth,
     alignItems: 'center',
     backgroundColor: 'white'
   },
   authContainer: {
-    flex: 3,
+    flex: 2,
     alignItems: 'center',
     marginTop: '3%'
   },

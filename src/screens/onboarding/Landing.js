@@ -19,7 +19,7 @@ class Landing extends React.Component {
           <Button
             dark
             title="Access an existing event"
-            onPress={() => this.props.navigation.navigate('User')}
+            onPress={() => this.props.navigation.navigate('AccessEvent')}
           />
           <Button
             light

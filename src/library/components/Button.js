@@ -1,11 +1,13 @@
-import React from 'react'
+import React from 'react';
 import {
   TouchableOpacity,
   StyleSheet,
   View,
   Text,
   Dimensions
-} from 'react-native'
+} from 'react-native';
+
+import R from "res/R";
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 
@@ -13,9 +15,9 @@ const height = 50;
 const padding = 10;
 const margin = 10;
 const width = screenWidth * 0.8;
-const backgroundColor = 'black';
+const backgroundColor = R.colors.primary;
 const borderRadius = 6;
-const color = 'black';
+const color = R.colors.primary;
 
 const Button = ({
   title,
@@ -67,13 +69,13 @@ const style = StyleSheet.create({
     justifyContent: 'center'
   },
   defaultTextStyle: {
-    fontFamily: 'Roboto-Black',
+    fontFamily: R.fonts.robotoBlack,
     textTransform: 'uppercase',
     fontSize: 13,
     color
   },
   lightText: {
-    color: 'white'
+    color: R.colors.secondary
   },
   light: {
     backgroundColor: 'transparent',

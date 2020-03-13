@@ -38,23 +38,8 @@ target 'Socialite' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-
   pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
-
-  target 'SocialiteTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
 
   use_native_modules!
 end
 
-target 'Socialite-tvOS' do
-  # Pods for Socialite-tvOS
-
-  target 'Socialite-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
-end

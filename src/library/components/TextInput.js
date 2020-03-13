@@ -6,6 +6,8 @@ import {
   Dimensions
 } from "react-native";
 
+import R from "res/R";
+
 const screenWidth = Math.round(Dimensions.get('window').width);
 
 const height = 50;
@@ -15,7 +17,7 @@ const width = screenWidth * 0.8;
 const backgroundColor = 'transparent';
 const borderWidth = 1;
 const borderRadius = 6;
-const fontFamily = 'Comfortaa-Regular';
+const fontFamily = R.fonts.comfortaaRegular;
 const fontSize = 18;
 
 const TextForm = ({

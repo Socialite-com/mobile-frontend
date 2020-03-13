@@ -3,13 +3,13 @@ import {StyleSheet, View, Text} from 'react-native';
 import {onSignOut} from "library/networking/auth";
 import Button from "library/components/Button";
 
-class Home extends React.Component {
+class Event extends React.Component {
   state = {};
   componentDidMount(): void {}
   render() {
     return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Text>Home Page</Text>
+      <View style={{flex: 1, justifyContent: 'center'}}>
+        <Text>Event Page</Text>
         <Button
           dark
           title="Log Out"
@@ -22,4 +22,4 @@ class Home extends React.Component {
 
 const styles = StyleSheet.create({});
 
-export default Home;
+export default Event;

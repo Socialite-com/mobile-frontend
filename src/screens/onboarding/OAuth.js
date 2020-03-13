@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, View, Text, Image, Dimensions} from 'react-native';
+
 import {facebookLogin} from "library/networking/FBauthentication";
 import {onSignIn} from "library/networking/auth";
 import Button from 'library/components/Button';
@@ -36,7 +37,7 @@ class OAuth extends React.Component {
           <Button
             dark
             title="Sign in with phone number"
-            onPress={() => this.props.navigation.navigate('PhoneAuth')}
+            onPress={() => this.props.navigation.navigate('PhoneAuth', {routing: 'CreateEvent'})}
           />
         </View>
       </View>

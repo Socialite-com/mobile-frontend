@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import {createRootNavigator} from "./router";
-import SplashScreen from "./screens/SplashScreen";
+import SplashScreen from "./screens/onboarding/SplashScreen";
 import {isSignedIn} from "library/networking/auth";
 
 export default class App extends React.Component {
@@ -25,6 +25,10 @@ export default class App extends React.Component {
     isSignedIn()
       .then(res => this.setState({ signedIn: res, checkedSignIn: true }))
       .catch(err => alert("An error occurred"));
+  }
+
+  componentWillUnmount(): void {
+    clearTimeout(this.splashDelay);
   }
 
   render() {

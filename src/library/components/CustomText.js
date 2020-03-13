@@ -1,14 +1,16 @@
 import React from 'react';
 import {
   StyleSheet,
-  View,
   Text
 } from 'react-native';
+import R from "res/R";
 
 const CustomText = ({
   label,
   title,
   subtitle,
+  subtitle_2,
+  link,
   center,
   splash,
   ...restProps
@@ -19,6 +21,8 @@ const CustomText = ({
 
   if (title) { textStyle = textStyle.concat(styles.title); }
   if (subtitle) { textStyle = textStyle.concat(styles.subtitle); }
+  if (subtitle_2) { textStyle = textStyle.concat(styles.subtitle_2); }
+  if (link) { textStyle = textStyle.concat(styles.link) };
   if (center) { textStyle = textStyle.concat(styles.center); }
   if (splash) { textStyle = textStyle.concat(styles.splash); }
 
@@ -31,23 +35,33 @@ const styles = StyleSheet.create({
   defaultStyle: {
     textAlign: 'left',
     fontSize: 18,
-    fontFamily: 'Comfortaa-Regular',
+    fontFamily: R.fonts.comfortaaRegular,
   },
   title: {
-    fontFamily: 'Comfortaa-Bold',
+    fontFamily: R.fonts.comfortaaBold,
     fontSize: 24,
     marginBottom: '5%'
   },
   subtitle: {
-    fontFamily: 'Comfortaa-Light',
+    fontFamily: R.fonts.comfortaaLight,
     fontSize: 24,
     marginBottom: '3%'
+  },
+  subtitle_2: {
+    fontFamily: R.fonts.robotoBlack,
+    textTransform: 'uppercase',
+    fontSize: 13,
+  },
+  link: {
+    fontSize: 13,
+    textDecorationLine: 'underline',
+    marginTop: '3%'
   },
   center: {
     textAlign: 'center'
   },
   splash: {
-    color: 'white',
+    color: R.colors.secondary,
     fontSize: 45
   }
 });
