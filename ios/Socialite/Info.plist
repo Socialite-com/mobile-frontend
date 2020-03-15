@@ -113,5 +113,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Get images from camera roll to identify Socialite codes and register invites</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Get images from camera roll to identify Socialite codes and register invites</string>
 </dict>
 </plist>

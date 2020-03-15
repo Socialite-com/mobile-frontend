@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import {createRootNavigator} from "./router";
+import {createRootNavigator} from "./library/navigation/router";
 import SplashScreen from "./screens/onboarding/SplashScreen";
 import {isSignedIn} from "library/networking/auth";
 
@@ -27,7 +27,7 @@ export default class App extends React.Component {
       .catch(err => alert("An error occurred"));
   }
 
-  componentWillUnmount(): void {
+  componentWillUnmount() {
     clearTimeout(this.splashDelay);
   }
 

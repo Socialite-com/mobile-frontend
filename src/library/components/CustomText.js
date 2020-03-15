@@ -10,7 +10,6 @@ const CustomText = ({
   title,
   subtitle,
   subtitle_2,
-  link,
   center,
   splash,
   ...restProps
@@ -22,7 +21,6 @@ const CustomText = ({
   if (title) { textStyle = textStyle.concat(styles.title); }
   if (subtitle) { textStyle = textStyle.concat(styles.subtitle); }
   if (subtitle_2) { textStyle = textStyle.concat(styles.subtitle_2); }
-  if (link) { textStyle = textStyle.concat(styles.link) };
   if (center) { textStyle = textStyle.concat(styles.center); }
   if (splash) { textStyle = textStyle.concat(styles.splash); }
 
@@ -51,11 +49,6 @@ const styles = StyleSheet.create({
     fontFamily: R.fonts.robotoBlack,
     textTransform: 'uppercase',
     fontSize: 13,
-  },
-  link: {
-    fontSize: 13,
-    textDecorationLine: 'underline',
-    marginTop: '3%'
   },
   center: {
     textAlign: 'center'

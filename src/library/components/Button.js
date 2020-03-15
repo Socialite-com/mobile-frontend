@@ -23,6 +23,7 @@ const Button = ({
   title,
   dark,
   light,
+  half,
   customStyle,
   ...restProps
 }) => {
@@ -33,17 +34,10 @@ const Button = ({
   inlineStyle = inlineStyle.concat(style.defaultStyle);
   textStyle = textStyle.concat(style.defaultTextStyle);
 
-  if (dark) {
-    textStyle = textStyle.concat(style.lightText);
-  }
-
-  if (light) {
-    inlineStyle = inlineStyle.concat(style.light)
-  }
-
-  if (customStyle) {
-    inlineStyle = inlineStyle.concat(customStyle)
-  }
+  if (dark) { textStyle = textStyle.concat(style.lightText) }
+  if (light) { inlineStyle = inlineStyle.concat(style.light) }
+  if (half) {inlineStyle = inlineStyle.concat(style.half)}
+  if (customStyle) { inlineStyle = inlineStyle.concat(customStyle) }
 
   return (
     <TouchableOpacity {...restProps}>
@@ -80,6 +74,9 @@ const style = StyleSheet.create({
   light: {
     backgroundColor: 'transparent',
     borderWidth: 1,
+  },
+  half: {
+    width: screenWidth * 0.75 / 2
   }
 });
 

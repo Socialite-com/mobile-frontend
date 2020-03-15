@@ -41,5 +41,7 @@ target 'Socialite' do
   pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
 
   use_native_modules!
+  pod 'react-native-cameraroll', :path => '../node_modules/@react-native-community/cameraroll'
+
 end
 

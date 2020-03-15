@@ -1,39 +1,35 @@
 import React from 'react';
 import {
-  StyleSheet,
   View,
+  StyleSheet,
   Dimensions,
   KeyboardAvoidingView
 } from 'react-native';
 
-import TextForm from "library/components/TextInput";
 import CustomText from "library/components/CustomText";
+import Button from "library/components/Button";
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 
 class AccessEvent extends React.Component {
   state = {};
-  componentDidMount(): void {}
+
   render() {
     return (
       <KeyboardAvoidingView keyboardVerticalOffset={100} style={{flex: 1}} behavior="padding">
         <View style={{flex: 1, alignItems: 'center'}}>
           <View style={styles.mediaArea}>
-            <CustomText label="Some image..." />
+            <CustomText label="Visual instructions on how to detect invites using Socialite" />
           </View>
           <View style={styles.textArea}>
             <CustomText title label="Access an existing event" />
-            <CustomText label="Please enter a socialite key or scan a socialite code to access your event" />
+            <CustomText
+              label="Take a picture or a screenshot of your Socialite code and save it to your camera roll.
+               We'll detect it and beam you to your event!" />
           </View>
           <View style={styles.buttonArea}>
-            <TextForm placeholder="Paste your key..." />
-            <View style={{width: screenWidth * 0.8}}>
-              <CustomText
-                link
-                onPress={() => this.props.navigation.navigate('SignIn')}
-                label="Don't know your Socialite key?"
-              />
-            </View>
+            <Button half light onPress={() => this.props.navigation.navigate('LinkRegister')} title="Type key" />
+            <Button half dark onPress={() => this.props.navigation.navigate('GetCodes')} title="Detect code" />
           </View>
         </View>
       </KeyboardAvoidingView>
@@ -45,17 +41,18 @@ const styles = StyleSheet.create({
   mediaArea: {
     flex: 5,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    width: screenWidth * 0.5
   },
   textArea: {
-    flex: 1,
-    justifyContent: 'flex-end',
+    flex: 2,
+    justifyContent: 'center',
     width: screenWidth * 0.8
   },
   buttonArea: {
-    marginTop: '5%',
-    flex: 2,
-    alignItems: 'center',
+    flex: 1,
+    flexDirection: 'row',
+    marginBottom: '5%'
   }
 });
 
