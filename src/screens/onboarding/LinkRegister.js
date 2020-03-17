@@ -37,12 +37,12 @@ class LinkRegister extends React.Component {
               label="Enter your Socialite invite key to access your event" />
           </View>
           <View style={styles.buttonArea}>
-            <TextForm placeholder="Paste your key..." />
+            <TextForm autoFocus placeholder="Paste your key..." />
             <View style={{width: screenWidth * 0.8}}>
               <LinkButton
                 underline
                 title="Don't have an invite?"
-                onPress={() => this.props.navigation.navigate('SignIn')}
+                onPress={() => this.props.navigation.navigate('SignUp')}
               />
             </View>
           </View>

@@ -8,11 +8,11 @@ import {
 import Button from "library/components/Button";
 import CustomText from "library/components/CustomText";
 import {facebookLogin} from "library/networking/FBauthentication";
-import {onSignIn} from "../../library/networking/auth";
+import {onSignIn} from "library/networking/auth";
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 
-class SignIn extends React.Component {
+class SignUp extends React.Component {
 
   handleFBLogin() {
     facebookLogin()
@@ -23,12 +23,14 @@ class SignIn extends React.Component {
   }
 
   render() {
+
+    this.props.navigation.setOptions({ headerLeft: null });
     return (
       <View style={{flex: 1, alignItems: 'center'}}>
         <View style={styles.textContainer}>
-          <CustomText title label="Having trouble finding your event?" />
+          <CustomText title label="Connect your account" />
           <CustomText
-            label="Sign in to your social media account or enter your phone number
+            label="Enter your phone number or connect your social media account
             and we’ll gather all your Socialite invitations!" />
         </View>
         <View style={styles.mediaContainer}>
@@ -37,13 +39,14 @@ class SignIn extends React.Component {
         <View style={styles.actionContainer}>
           <Button
             dark
-            title="Sign in with Facebook"
-            onPress={() => this.handleFBLogin()}
-          />
-          <Button
-            dark
             title="Sign in with phone number"
-            onPress={() => this.props.navigation.navigate('PhoneAuth', {routing: 'User'})}
+            onPress={() => this.props.navigation.navigate('PhoneAuth', { finalRoute: 'User' })}
+          />
+          <CustomText subtitle_2 label="Or" />
+          <Button
+            light
+            title="Connect using a social account"
+            onPress={() => this.handleFBLogin()}
           />
         </View>
       </View>
@@ -62,8 +65,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   actionContainer: {
-    flex: 1
+    flex: 1,
+    marginBottom: '5%',
+    alignItems: 'center'
   }
 });
 
-export default SignIn;
+export default SignUp;

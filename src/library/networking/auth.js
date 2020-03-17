@@ -11,7 +11,9 @@ export const verifyUser = () => {
    });
 };
 
-export const onSignIn = (user_key) => AsyncStorage.setItem(USER_KEY, user_key);
+export const onSignIn = (user_key) => new Promise(() => {
+  AsyncStorage.setItem(USER_KEY, user_key);
+});
 
 export const onSignOut = () => new Promise(() => {
   firebase.auth().signOut().catch(error => alert(error));

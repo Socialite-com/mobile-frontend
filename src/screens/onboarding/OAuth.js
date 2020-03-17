@@ -31,13 +31,14 @@ class OAuth extends React.Component {
         <View style={styles.actionContainer}>
           <Button
             dark
-            title="Sign in with Facebook"
-            onPress={() => this.handleFBLogin()}
+            title="Sign up with phone number"
+            onPress={() => this.props.navigation.navigate('PhoneAuth', {finalRoute: 'CreateEvent'})}
           />
+          <CustomText subtitle_2 label="Or" />
           <Button
-            dark
-            title="Sign in with phone number"
-            onPress={() => this.props.navigation.navigate('PhoneAuth', {routing: 'CreateEvent'})}
+            light
+            title="Connect using a social account"
+            onPress={() => this.handleFBLogin()}
           />
         </View>
       </View>
@@ -56,7 +57,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   actionContainer: {
-    flex: 1
+    flex: 1,
+    marginBottom: '5%',
+    alignItems: 'center'
   }
 });
 

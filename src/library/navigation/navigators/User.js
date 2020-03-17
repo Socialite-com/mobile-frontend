@@ -6,7 +6,12 @@ const Tab = createBottomTabNavigator();
 
 export default function User() {
   return (
-    <Tab.Navigator initialRouteName="Home">
+    <Tab.Navigator
+      screenOption={{
+        gestureEnabled: false
+      }}
+      initialRouteName="Home"
+    >
       <Tab.Screen name="Home" component={screens.user.Home} />
       <Tab.Screen name="Event" component={screens.user.Event} />
     </Tab.Navigator>

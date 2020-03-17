@@ -4,7 +4,10 @@ import GetCodes from "./onboarding/GetCodes";
 import Landing from "./onboarding/Landing";
 import OAuth from "./onboarding/OAuth";
 import PhoneAuthScreen from "./onboarding/PhoneAuthScreen";
-import SignIn from "./onboarding/SignIn";
+import SignUp from "./onboarding/SignUp";
+import UserName from "./onboarding/UserName";
+import CreatePassword from "./onboarding/CreatePassword";
+import EnterPassword from "./onboarding/EnterPassword";
 import SplashScreen from "./onboarding/SplashScreen";
 
 import Event from "./user/Event";
@@ -20,7 +23,10 @@ const screens = {
     Landing: Landing,
     OAuth: OAuth,
     PhoneAuthScreen: PhoneAuthScreen,
-    SignIn: SignIn,
+    SignUp: SignUp,
+    UserName: UserName,
+    CreatePassword: CreatePassword,
+    EnterPassword: EnterPassword,
     SplashScreen: SplashScreen
   },
   user: {

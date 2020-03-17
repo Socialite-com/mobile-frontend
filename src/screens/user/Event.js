@@ -13,7 +13,7 @@ class Event extends React.Component {
         <Button
           dark
           title="Log Out"
-          onPress={() => onSignOut().then(this.props.navigation.navigate('Onboarding'))}
+          onPress={() => onSignOut().then(this.props.navigation.replace('Onboarding'))}
         />
       </View>
     );

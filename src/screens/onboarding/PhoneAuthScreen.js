@@ -12,7 +12,6 @@ import TextForm from "library/components/TextInput";
 import CustomText from "library/components/CustomText";
 
 import firebase from 'react-native-firebase';
-import {onSignIn} from "library/networking/auth";
 
 const screenHeight = Math.round(Dimensions.get('window').height);
 const screenWidth = Math.round(Dimensions.get('window').width);
@@ -22,6 +21,7 @@ class PhoneAuthScreen extends Component {
     phone: '+1',
     confirmResult: null,
     verificationCode: '',
+    userExists: false,
     userId: '',
     offset: screenHeight * 0.20
   };
@@ -43,6 +43,12 @@ class PhoneAuthScreen extends Component {
     }
   };
 
+  async checkUserExists(user) {
+    const ref = firebase.database().ref("/users/" + user.uid + "/profile").child("password");
+    const snapshot = await ref.once('value');
+    return snapshot.val() != null;
+  }
+
   handleVerifyCode = () => {
     // Request for OTP verification
     const { confirmResult, verificationCode } = this.state;
@@ -51,12 +57,10 @@ class PhoneAuthScreen extends Component {
         .confirm(verificationCode)
         .then(user => {
           this.setState({ userId: user.uid });
-          // alert(`Verified! ${user.uid}`)
-          user.getIdToken()
-            .then(key => {
-              onSignIn(key);
-              this.props.navigation.navigate(this.props.route.params.routing);
-            })
+          this.checkUserExists(user).then(r => {
+            if (r) { this.props.navigation.navigate('EnterPassword', {finalRoute: this.props.route.params.finalRoute}) }
+            else { this.props.navigation.navigate('UserName', {finalRoute: this.props.route.params.finalRoute}) }
+          })
         })
         .catch(error => { alert(error.message) })
     } else {
@@ -71,6 +75,7 @@ class PhoneAuthScreen extends Component {
           <CustomText style={{fontSize: 16}} label="Please enter your phone number below"/>
         </View>
         <TextForm
+          autoFocus
           placeholder="+1"
           keyboardType='phone-pad'
           value={this.state.phone}
@@ -95,6 +100,7 @@ class PhoneAuthScreen extends Component {
           <CustomText style={{fontSize: 16}} label="Please enter the 6 digit verification code"/>
         </View>
         <TextForm
+          autoFocus
           placeholder='Verification code'
           value={this.state.verificationCode}
           keyboardType={Platform.OS === 'ios' ? "number-pad": "numeric"}

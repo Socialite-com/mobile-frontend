@@ -7,20 +7,34 @@ import {
   View
 } from 'react-native';
 
+import {getUser, getProfileData} from "library/networking/database";
+
 import CustomText from "library/components/CustomText";
 
 class Home extends React.Component {
-  state = {};
-  componentDidMount(): void {}
+  state = {
+    userName: "",
+    invites: []
+  };
+
+  async componentDidMount() {
+    let user = await getUser();
+    let profile = await getProfileData(user.uid);
+    this.setState({
+      userId: user.uid,
+      userName: profile.userName
+    })
+  }
+
   render() {
     return (
       <SafeAreaView style={{flex: 1}}>
         <ScrollView style={{flex: 1}}>
           <View style={styles.profileContainer}>
             <TouchableHighlight style={styles.profileImgContainer}>
-              <CustomText splash center label="S" />
+              <CustomText splash center label={this.state.userName.charAt(0).toUpperCase()} />
             </TouchableHighlight>
-            <CustomText subtitle center label="Stephen" />
+            <CustomText subtitle center label={this.state.userName} />
             <CustomText subtitle_2 center label="Montreal, CA" />
           </View>
           <View style={styles.inviteView}>

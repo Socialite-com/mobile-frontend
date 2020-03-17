@@ -23,6 +23,7 @@ const Button = ({
   title,
   dark,
   light,
+  noBorder,
   half,
   customStyle,
   ...restProps
@@ -36,6 +37,7 @@ const Button = ({
 
   if (dark) { textStyle = textStyle.concat(style.lightText) }
   if (light) { inlineStyle = inlineStyle.concat(style.light) }
+  if (noBorder) { inlineStyle = inlineStyle.concat(style.noBorder) }
   if (half) {inlineStyle = inlineStyle.concat(style.half)}
   if (customStyle) { inlineStyle = inlineStyle.concat(customStyle) }
 
@@ -74,6 +76,9 @@ const style = StyleSheet.create({
   light: {
     backgroundColor: 'transparent',
     borderWidth: 1,
+  },
+  noBorder: {
+    borderWidth: 0
   },
   half: {
     width: screenWidth * 0.75 / 2

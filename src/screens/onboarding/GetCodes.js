@@ -1,16 +1,35 @@
 import React from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {
+  Dimensions,
+  StyleSheet,
+  FlatList,
+  View
+} from 'react-native';
+
 import CameraRoll from '@react-native-community/cameraroll';
+import CustomText from "library/components/CustomText";
+import Button from "library/components/Button";
+import {createEventTab} from "library/components/EventTab";
+
+const screenWidth = Math.round(Dimensions.get('window').width);
 
 class GetCodes extends React.Component {
   state = {
-    found: false
+    invites: [
+      { eventName: "Big 18", eventTime: "Sat, Mar 21, 6:45 PM", privacy: 'Private', organizer: "Stephen Lu" },
+      { eventName: "MSU End of Semester Party", eventTime: "Sun, Apr 12, 6 PM", privacy: 'Public', organizer: "Marianopolis Student Union" },
+      { eventName: "Block Party 3", eventTime: "Fri, Apr 11, 9 PM", privacy: 'Public', organizer: "MTL Nights Out" },
+      { eventName: "Janice Birthday Party", eventTime: "Fri, Apr 11, 9 PM", privacy: 'Private', organizer: "Janice Chen" }
+      ],
+    checkedCodes: true,
+    foundCodes: true
   };
 
   componentDidMount(): void {
+    // this._handleGetCodes()
   }
 
-  _handleGetCodes() {
+  _handleGetCodes() { // Figure out code system
     CameraRoll.getPhotos({
       first: 20,
       assetType: 'Photos'
@@ -23,33 +42,93 @@ class GetCodes extends React.Component {
     });
   }
 
-  renderFoundCodeView = () => {
-    return (
-      <View>
-
-      </View>
+  _renderSearchingView = () => {
+    return(
+      <>
+        <View style={styles.textContainer}>
+          <CustomText title label="Searching for your Socialite codes" />
+          <CustomText label="This may take a few seconds" />
+        </View>
+        <View style={styles.mediaContainer}>
+          <CustomText label="Some searching animation" />
+        </View>
+      </>
     )
   };
 
-  renderNoneFoundView = () => {
+  _renderFoundCodeView = () => {
     return (
-      <View>
+      <>
+        <View style={styles.textContainer}>
+          <CustomText title label="Hurrah! We found the following invitations" />
+          <CustomText label="Let's edit your profile so people can identify you on Socialite" />
+        </View>
+        <View style={styles.mediaContainer}>
+          <FlatList
+            data={this.state.invites}
+            renderItem={({item}) => createEventTab(item)}
+            keyExtractor={(item, index) => index.toString()}
+          />
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button dark onPress={() => this.props.navigation.navigate('SignUp')} title="Sign In" />
+        </View>
+      </>
+    )
+  };
 
-      </View>
+  _renderNoneFoundView = () => {
+    return (
+      <>
+        <View style={styles.textContainer}>
+          <CustomText title label="Sorry, we couldn't find any Socialite codes" />
+          <CustomText label="Please make sure your event code is saved in your camera roll and try again" />
+        </View>
+        <View style={styles.mediaContainer}>
+          <CustomText label="Some error animation" />
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button dark title="Search again" />
+          <Button light onPress={() => this.props.navigation.navigate('LinkRegister')} title="Enter key" />
+        </View>
+      </>
     )
   };
 
   render() {
+    const { foundCodes, checkedCodes } = this.state;
     return (
-      <View style={{flex: 1, justifyContent: 'center'}}>
-
+      <View style={styles.mainContainer}>
+        {
+          !checkedCodes ? this._renderSearchingView() :
+          !foundCodes ? this._renderNoneFoundView() :
+          this._renderFoundCodeView()
+        }
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-
+  mainContainer: {
+    flex: 1
+  },
+  textContainer: {
+    flex: 2,
+    justifyContent: 'center',
+    paddingLeft: '10%',
+    width: screenWidth * 0.8
+  },
+  mediaContainer: {
+    flex: 5,
+    alignItems: 'center'
+  },
+  buttonContainer: {
+    flex: 1,
+    marginBottom: '5%',
+    justifyContent: 'flex-end',
+    alignItems: 'center'
+  }
 });
 
 export default GetCodes;

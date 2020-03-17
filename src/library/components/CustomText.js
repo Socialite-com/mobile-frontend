@@ -12,6 +12,7 @@ const CustomText = ({
   subtitle_2,
   center,
   splash,
+  error,
   ...restProps
 }) => {
 
@@ -23,6 +24,7 @@ const CustomText = ({
   if (subtitle_2) { textStyle = textStyle.concat(styles.subtitle_2); }
   if (center) { textStyle = textStyle.concat(styles.center); }
   if (splash) { textStyle = textStyle.concat(styles.splash); }
+  if (error) { textStyle = textStyle.concat(styles.error); }
 
   return (
     <Text {...restProps} style={textStyle}>{label}</Text>
@@ -56,6 +58,12 @@ const styles = StyleSheet.create({
   splash: {
     color: R.colors.secondary,
     fontSize: 45
+  },
+  error: {
+    fontSize: 13,
+    color: 'grey',
+    textTransform: 'uppercase',
+    fontFamily: R.fonts.robotoBlack
   }
 });
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Text, Image} from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import Button from 'library/components/Button';
 import CustomText from 'library/components/CustomText';
 
@@ -7,8 +7,8 @@ class Landing extends React.Component {
   state = {};
   render() {
     return (
-      <View style={styles.container}>
-        <View style={styles.textContainer}>
+      <View style={styles.container} >
+        <View style={styles.textContainer} >
           <CustomText title center label="All your social events" />
           <CustomText subtitle center label="In one place, instantly accessible" />
         </View>
@@ -41,15 +41,15 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '70%',
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
   },
   slideShowContainer: {
-    flex: 2,
+    flex: 1,
     justifyContent: 'center',
   },
   buttonContainer: {
     flex: 1,
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
   }
 });
 
