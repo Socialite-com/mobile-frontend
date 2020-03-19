@@ -3,12 +3,9 @@ import firebase from "react-native-firebase";
 
 export const getUser = () => { return firebase.auth().currentUser };
 
-export const setupAccount = (uid, userName, password) => {
-  let profilePath = "/users/" + uid + "/profile";
-  firebase.database().ref(profilePath).set({
-    userName: userName,
-    password: password
-  })
+export const setupAccount = (uid, profile) => {
+  let profilePath = "/users/" + uid;
+  firebase.database().ref(profilePath).set({ profile })
 };
 
 export async function getProfileData(uid) {

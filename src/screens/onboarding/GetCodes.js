@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Dimensions,
   StyleSheet,
   FlatList,
   View
@@ -11,7 +10,7 @@ import CustomText from "library/components/CustomText";
 import Button from "library/components/Button";
 import {createEventTab} from "library/components/EventTab";
 
-const screenWidth = Math.round(Dimensions.get('window').width);
+import R from "res/R";
 
 class GetCodes extends React.Component {
   state = {
@@ -66,7 +65,7 @@ class GetCodes extends React.Component {
         <View style={styles.mediaContainer}>
           <FlatList
             data={this.state.invites}
-            renderItem={({item}) => createEventTab(item)}
+            renderItem={({item, index}) => createEventTab(item, index)}
             keyExtractor={(item, index) => index.toString()}
           />
         </View>
@@ -117,7 +116,7 @@ const styles = StyleSheet.create({
     flex: 2,
     justifyContent: 'center',
     paddingLeft: '10%',
-    width: screenWidth * 0.8
+    width: R.constants.screenWidth * 0.8
   },
   mediaContainer: {
     flex: 5,

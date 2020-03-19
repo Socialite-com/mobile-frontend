@@ -1,4 +1,6 @@
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
+import { checkUserExists } from "./auth";
+import { setupAccount } from "./database";
 import firebase from 'react-native-firebase';
 
 // Calling the following function will open the FB login dialogue:
@@ -25,6 +27,15 @@ export async function facebookLogin() {
 
       // login with credential
       const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
+
+      // check if user already exists and save profile data
+      const user = firebaseUserCredential.user;
+
+      if (await checkUserExists(user) === false) {
+        const data = { userName: user.displayName };
+        setupAccount(user.uid, data)
+      }
+
       return 200
     }
 

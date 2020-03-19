@@ -1,12 +1,12 @@
 import React from 'react';
-import {StyleSheet, View, Text, Image, Dimensions} from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 
 import {facebookLogin} from "library/networking/FBauthentication";
 import {onSignIn} from "library/networking/auth";
 import Button from 'library/components/Button';
 import CustomText from "library/components/CustomText";
 
-const screenWidth = Math.round(Dimensions.get('window').width);
+import R from "res/R";
 
 class OAuth extends React.Component {
 
@@ -49,7 +49,7 @@ class OAuth extends React.Component {
 const styles = StyleSheet.create({
   textContainer: {
     flex: 1,
-    width: screenWidth * 0.75,
+    width: R.constants.screenWidth * 0.75,
     justifyContent: 'flex-end'
   },
   mediaContainer: {

@@ -1,16 +1,16 @@
 import React from 'react';
 import {
-  Dimensions,
-  StyleSheet, Text,
+  StyleSheet,
+  Text,
   View
 } from 'react-native';
 
 import Button from "library/components/Button";
 import CustomText from "library/components/CustomText";
-import {facebookLogin} from "library/networking/FBauthentication";
-import {onSignIn} from "library/networking/auth";
+import { facebookLogin } from "library/networking/FBauthentication";
+import { onSignIn } from "library/networking/auth";
 
-const screenWidth = Math.round(Dimensions.get('window').width);
+import R from "res/R";
 
 class SignUp extends React.Component {
 
@@ -57,7 +57,7 @@ class SignUp extends React.Component {
 const styles = StyleSheet.create({
   textContainer: {
     flex: 1,
-    width: screenWidth * 0.75,
+    width: R.constants.screenWidth * 0.75,
     justifyContent: 'flex-end'
   },
   mediaContainer: {

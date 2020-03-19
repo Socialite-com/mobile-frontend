@@ -2,7 +2,6 @@ import React from 'react';
 import {
   View,
   StyleSheet,
-  Dimensions,
   KeyboardAvoidingView
 } from 'react-native';
 
@@ -10,7 +9,7 @@ import LinkButton from "library/components/LinkButton";
 import TextForm from "library/components/TextInput";
 import CustomText from "library/components/CustomText";
 
-const screenWidth = Math.round(Dimensions.get('window').width);
+import R from "res/R";
 
 class LinkRegister extends React.Component {
   state = {};
@@ -38,7 +37,7 @@ class LinkRegister extends React.Component {
           </View>
           <View style={styles.buttonArea}>
             <TextForm autoFocus placeholder="Paste your key..." />
-            <View style={{width: screenWidth * 0.8}}>
+            <View style={{width: R.constants.screenWidth * 0.8}}>
               <LinkButton
                 underline
                 title="Don't have an invite?"
@@ -61,7 +60,7 @@ const styles = StyleSheet.create({
   textArea: {
     flex: 1,
     justifyContent: 'flex-end',
-    width: screenWidth * 0.8
+    width: R.constants.screenWidth * 0.8
   },
   buttonArea: {
     marginTop: '5%',

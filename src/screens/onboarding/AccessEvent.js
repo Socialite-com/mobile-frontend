@@ -2,14 +2,12 @@ import React from 'react';
 import {
   View,
   StyleSheet,
-  Dimensions,
   KeyboardAvoidingView
 } from 'react-native';
 
 import CustomText from "library/components/CustomText";
 import Button from "library/components/Button";
-
-const screenWidth = Math.round(Dimensions.get('window').width);
+import R from "res/R";
 
 class AccessEvent extends React.Component {
   state = {};
@@ -42,12 +40,12 @@ const styles = StyleSheet.create({
     flex: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    width: screenWidth * 0.5
+    width: R.constants.screenWidth * 0.5
   },
   textArea: {
     flex: 2,
     justifyContent: 'center',
-    width: screenWidth * 0.8
+    width: R.constants.screenWidth * 0.8
   },
   buttonArea: {
     flex: 1,

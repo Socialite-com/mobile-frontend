@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import {
   KeyboardAvoidingView,
   StyleSheet,
-  Dimensions,
   Platform,
   View,
 } from 'react-native'
@@ -12,9 +11,10 @@ import TextForm from "library/components/TextInput";
 import CustomText from "library/components/CustomText";
 
 import firebase from 'react-native-firebase';
+import { checkUserExists } from "../../library/networking/auth";
 
-const screenHeight = Math.round(Dimensions.get('window').height);
-const screenWidth = Math.round(Dimensions.get('window').width);
+import R from "res/R";
+
 
 class PhoneAuthScreen extends Component {
   state = {
@@ -23,11 +23,11 @@ class PhoneAuthScreen extends Component {
     verificationCode: '',
     userExists: false,
     userId: '',
-    offset: screenHeight * 0.20
+    offset: R.constants.screenHeight * 0.20
   };
 
   validatePhoneNumber = () => {
-    var regexp = /^\+[0-9]?()[0-9](\s|\S)(\d[0-9]{8,16})$/;
+    const regexp = /^\+[0-9]?()[0-9](\s|\S)(\d[0-9]{8,16})$/;
     return regexp.test(this.state.phone)
   };
 
@@ -43,12 +43,6 @@ class PhoneAuthScreen extends Component {
     }
   };
 
-  async checkUserExists(user) {
-    const ref = firebase.database().ref("/users/" + user.uid + "/profile").child("password");
-    const snapshot = await ref.once('value');
-    return snapshot.val() != null;
-  }
-
   handleVerifyCode = () => {
     // Request for OTP verification
     const { confirmResult, verificationCode } = this.state;
@@ -57,7 +51,7 @@ class PhoneAuthScreen extends Component {
         .confirm(verificationCode)
         .then(user => {
           this.setState({ userId: user.uid });
-          this.checkUserExists(user).then(r => {
+          checkUserExists(user).then(r => {
             if (r) { this.props.navigation.navigate('EnterPassword', {finalRoute: this.props.route.params.finalRoute}) }
             else { this.props.navigation.navigate('UserName', {finalRoute: this.props.route.params.finalRoute}) }
           })
@@ -71,7 +65,7 @@ class PhoneAuthScreen extends Component {
   renderPhoneInputView = () => {
     return (
       <View style={styles.authContainer}>
-        <View style={{width: screenWidth * 0.8}}>
+        <View style={{width: R.constants.screenWidth * 0.8}}>
           <CustomText style={{fontSize: 16}} label="Please enter your phone number below"/>
         </View>
         <TextForm
@@ -96,7 +90,7 @@ class PhoneAuthScreen extends Component {
   renderConfirmationCodeView = () => {
     return (
       <View style={styles.authContainer}>
-        <View style={{width: screenWidth * 0.8}}>
+        <View style={{width: R.constants.screenWidth * 0.8}}>
           <CustomText style={{fontSize: 16}} label="Please enter the 6 digit verification code"/>
         </View>
         <TextForm
@@ -144,7 +138,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flex: 4,
-    width: screenWidth,
+    width: R.constants.screenWidth,
     alignItems: 'center',
     backgroundColor: 'white'
   },
@@ -156,7 +150,7 @@ const styles = StyleSheet.create({
   title: {
     flex: 1,
     justifyContent: 'flex-end',
-    width: screenWidth * 0.8
+    width: R.constants.screenWidth * 0.8
   }
 });
 

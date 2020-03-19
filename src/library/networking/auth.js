@@ -11,6 +11,12 @@ export const verifyUser = () => {
    });
 };
 
+export async function checkUserExists(user) {
+  const ref = firebase.database().ref("/users/" + user.uid + "/profile");
+  const snapshot = await ref.once('value');
+  return snapshot.val() != null;
+}
+
 export const onSignIn = (user_key) => new Promise(() => {
   AsyncStorage.setItem(USER_KEY, user_key);
 });

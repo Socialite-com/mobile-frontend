@@ -1,14 +1,14 @@
 import React from 'react';
-import {StyleSheet, View, Dimensions} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import {getUser, getProfileData} from "library/networking/database";
-import {onSignIn} from "library/networking/auth";
+import { getUser, getProfileData } from "library/networking/database";
+import { onSignIn } from "library/networking/auth";
 
 import CustomText from "library/components/CustomText";
 import TextForm from "library/components/TextInput";
 import Button from "library/components/Button";
 
-const screenWidth = Math.round(Dimensions.get('window').width);
+import R from "res/R";
 
 class EnterPassword extends React.Component {
   state = {
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: '10%',
     justifyContent: 'flex-end',
-    width: screenWidth * 0.8
+    width: R.constants.screenWidth * 0.8
   },
   inputContainer: {
     flex: 3,
