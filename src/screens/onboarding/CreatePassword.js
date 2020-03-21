@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { getUser, setupAccount } from "library/networking/database";
-import { onSignIn } from "library/networking/auth";
+import db from "library/networking/database";
+import auth from "library/networking/auth";
 
 import CustomText from "library/components/CustomText";
 import TextForm from "library/components/TextInput";
@@ -17,23 +17,25 @@ class CreatePassword extends React.Component {
     phoneNumber: ""
   };
 
-  async _handlePassword() {
+  _handlePassword() {
     // Add password restrictions
     const data = { userName: this.props.route.params.userName, password: this.state.password };
-    await setupAccount(this.state.userId, data);
-    onSignIn(this.state.userId);
-    this.props.navigation.reset({
-      index: 0,
-      routes: [{ name: this.props.route.params.finalRoute }],
-    });
+    db.setupAccount(this.state.userId, data)
+      .then(success => {
+        console.log(success);
+        auth.onSignIn(this.state.userId);
+        this.props.navigation.reset({ index: 0, routes: [{ name: this.props.route.params.finalRoute }] });
+      })
+      .catch(err => alert(err.message));
   }
 
-  async componentDidMount() {
-    let user = await getUser();
-    this.setState({
-      userId: user.uid,
-      phoneNumber: user.phoneNumber
-    })
+  componentDidMount() {
+    db.getUser().then(user => {
+      this.setState({
+        userId: user.uid,
+        phoneNumber: user.phoneNumber
+      })
+    }).catch(err => alert(err))
   }
 
   render() {

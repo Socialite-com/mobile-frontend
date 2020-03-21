@@ -7,10 +7,10 @@ import {
   View
 } from 'react-native';
 
-import { getUser, getProfileData } from "library/networking/database";
+import db from "library/networking/database";
 
 import Carousel, { Pagination } from "react-native-snap-carousel";
-import { createEventCard } from "../../library/components/EventCard";
+import { createEventCard } from "library/components/EventCard";
 import CustomText from "library/components/CustomText";
 
 import R from "res/R";
@@ -20,29 +20,48 @@ const titles = ["My Invites", "My Events"];
 class Home extends React.Component {
   state = {
     userName: "",
-    data: [
-      [
-        { eventName: "Janice Birthday Party", color: '#00af9e', eventTime: "Fri, Apr 11, 9 PM", privacy: 'Private', organizer: "Janice Chen" },
-        { eventName: "Block Party 3", color: '#61a4ff', imageIcon: R.images.oscars, eventTime: "Fri, Apr 11, 9 PM", privacy: 'Public', organizer: "MTL Nights Out" },
-        { eventName: "MSU Party", color: '#ffa031', imageIcon: R.images.party, eventTime: "Sun, Apr 12, 6 PM", privacy: 'Public', organizer: "Marianopolis Student Union", qrCode: R.images.qrCode },
-      ],
-      [
-        { eventName: "Big 18", color: 'black', eventTime: "Sat, Mar 21, 6:45 PM", privacy: 'Private', organizer: "Stephen Lu", qrCode: R.images.qrCode },
-      ]
-    ],
+    eventInvites: [],
+    eventCreations: [],
     activeSlide: 0,
-    maxHeight: 500
+    maxHeight: 50
   };
 
-  async componentDidMount() {
-    let user = await getUser();
-    let profile = await getProfileData(user.uid);
-    this.setState({
-      userId: user.uid,
-      userName: profile.userName,
-      maxHeight: this.getCarouselMaxHeight()
-    })
+  componentDidMount() {
+    db.getUser().then(user => {
+      db.getProfileData(user.uid).then(data => {
+        this.setState({
+          userId: user.uid,
+          userName: data.userName,
+        });
+        db.getEvents(user.uid, 'eventCreations').then(res => {
+          if (res.length === 0) { this.setState({ eventCreations: res }) }
+          else { this.parseEventData(res).then(eventCreations => this.setState({eventCreations, maxHeight: this.getCarouselMaxHeight()})) }
+        });
+        db.getEvents(user.uid, 'eventInvites').then(res => {
+          if (res.length === 0) { this.setState({ eventInvites: res }) }
+          else { this.parseEventData(res).then(eventInvites => this.setState({eventInvites, maxHeight: this.getCarouselMaxHeight()})) }
+        })
+      }).catch(err => alert(err))
+    }).catch(err => alert(err))
+
   }
+
+  parseEventData = (data) => new Promise(async (resolve, reject) => {
+    const profileKeys = ['userName', 'profilePicture'];
+    const eventKeys = ['title', 'qrCode', 'title', 'type', 'backgroundColor', 'backgroundImage'];
+    const redux = (array, keys) => array.map(o => keys.reduce((acc, curr) => {
+      acc[curr] = o[curr];
+      return acc;
+    }, {}));
+
+    const userIDs = data.map(val => val.creator);
+    const profileData = redux(await Promise.all(userIDs.map(id_ => db.getProfileData(id_))), profileKeys);
+    const eventDetails = redux(data.map(val => val.details), eventKeys);
+
+    let finalData = profileData.map((item, index) => Object.assign({}, item, eventDetails[index]));
+
+    resolve(finalData)
+  });
 
   renderCards(cardArray) {
     return cardArray.item.map((item, index) => {
@@ -51,7 +70,8 @@ class Home extends React.Component {
   }
 
   get pagination () {
-    const { data, activeSlide } = this.state;
+    const { eventInvites, eventCreations, activeSlide } = this.state;
+    const data = [eventInvites, eventCreations];
     return (
       <Pagination
         dotsLength={data.length}
@@ -72,13 +92,17 @@ class Home extends React.Component {
   }
 
   getCarouselMaxHeight() {
-    const invitesList = this.state.data[0].length;
-    const hostList = this.state.data[1].length;
+    const invitesList = this.state.eventInvites.length;
+    const hostList = this.state.eventCreations.length;
     if ( invitesList >= hostList ) { return invitesList * 82 + 170 }
-    else { return hostList * 82 + 170 }
+    else { return hostList * 82 + 176 }
   }
 
   render() {
+
+    const { eventInvites, eventCreations } = this.state;
+    const data = [eventInvites, eventCreations];
+
     return (
       <SafeAreaView style={{flex: 1}}>
         <ScrollView style={{flex: 1, paddingTop: '5%'}}>
@@ -96,7 +120,7 @@ class Home extends React.Component {
             </View>
             <View style={styles.cardView}>
               <Carousel
-                data={this.state.data}
+                data={data}
                 renderItem={this.renderCards}
                 sliderWidth={R.constants.screenWidth * 2}
                 itemWidth={R.constants.screenWidth * 0.9}

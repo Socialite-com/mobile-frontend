@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 
 import {facebookLogin} from "library/networking/FBauthentication";
-import {onSignIn} from "library/networking/auth";
+import auth from "../../library/networking/auth";
 import Button from 'library/components/Button';
 import CustomText from "library/components/CustomText";
 
@@ -13,7 +13,7 @@ class OAuth extends React.Component {
   handleFBLogin() {
     facebookLogin()
       .then(r => {
-        if (r === 200) { onSignIn('fb-key').then(this.props.navigation.navigate('CreateEvent')) }
+        if (r === 200) { auth.onSignIn('fb-key').then(this.props.navigation.navigate('CreateEvent')) }
         else {alert('Authentication failed.')}
       })
   }

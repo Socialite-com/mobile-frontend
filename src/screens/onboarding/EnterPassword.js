@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { getUser, getProfileData } from "library/networking/database";
-import { onSignIn } from "library/networking/auth";
+import db from "library/networking/database";
+import auth from "library/networking/auth";
 
 import CustomText from "library/components/CustomText";
 import TextForm from "library/components/TextInput";
@@ -19,7 +19,7 @@ class EnterPassword extends React.Component {
 
   _handlePassword() {
     if (this.state.password === this.state.truePassword) {
-      onSignIn(this.state.userId);
+      auth.onSignIn(this.state.userId);
       this.props.navigation.reset({
         index: 0,
         routes: [{ name: this.props.route.params.finalRoute }],
@@ -29,15 +29,16 @@ class EnterPassword extends React.Component {
     }
   }
 
-  async componentDidMount() {
-    let user = await getUser();
-    let profileData = await getProfileData(user.uid);
-
-    this.setState({
-      userId: user.uid,
-      userName: profileData.userName,
-      truePassword: profileData.password
-    })
+  componentDidMount() {
+    db.getUser().then(user => {
+      db.getProfileData(user.uid).then(data => {
+        this.setState({
+          userId: user.uid,
+          userName: data.userName,
+          truePassword: data.password
+        })
+      }).catch(err => alert(err))
+    }).catch(err => alert(err))
   }
 
   render() {

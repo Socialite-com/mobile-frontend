@@ -7,6 +7,7 @@ target 'Socialite' do
   pod 'Firebase/Core', '~> 6.13.0'
   pod 'Firebase/Auth', '~> 6.13.0'
   pod 'Firebase/Database', '~> 6.13.0'
+  pod 'Firebase/Firestore', '~> 6.13.0'
 
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"

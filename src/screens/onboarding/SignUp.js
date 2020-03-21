@@ -8,7 +8,7 @@ import {
 import Button from "library/components/Button";
 import CustomText from "library/components/CustomText";
 import { facebookLogin } from "library/networking/FBauthentication";
-import { onSignIn } from "library/networking/auth";
+import auth from "library/networking/auth";
 
 import R from "res/R";
 
@@ -17,8 +17,8 @@ class SignUp extends React.Component {
   handleFBLogin() {
     facebookLogin()
       .then(r => {
-        if (r === 200) { onSignIn('fb-key').then(this.props.navigation.navigate('User')) }
-        else {alert('Authentication failed.')}
+        if (r === 200) { auth.onSignIn('fb-key').then(this.props.navigation.navigate('User')) }
+        else { alert('Authentication failed.') }
       })
   }
 

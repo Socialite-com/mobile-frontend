@@ -11,7 +11,7 @@ import TextForm from "library/components/TextInput";
 import CustomText from "library/components/CustomText";
 
 import firebase from 'react-native-firebase';
-import { checkUserExists } from "../../library/networking/auth";
+import db from "library/networking/database";
 
 import R from "res/R";
 
@@ -51,7 +51,7 @@ class PhoneAuthScreen extends Component {
         .confirm(verificationCode)
         .then(user => {
           this.setState({ userId: user.uid });
-          checkUserExists(user).then(r => {
+          db.checkUserExists(user).then(r => {
             if (r) { this.props.navigation.navigate('EnterPassword', {finalRoute: this.props.route.params.finalRoute}) }
             else { this.props.navigation.navigate('UserName', {finalRoute: this.props.route.params.finalRoute}) }
           })

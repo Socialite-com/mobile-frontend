@@ -1,10 +1,9 @@
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
-import { checkUserExists } from "./auth";
-import { setupAccount } from "./database";
 import firebase from 'react-native-firebase';
+import db from "./database";
 
 // Calling the following function will open the FB login dialogue:
-export async function facebookLogin() {
+export const facebookLogin = () => new Promise(async (resolve, reject) => {
   try {
     const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
 
@@ -19,7 +18,7 @@ export async function facebookLogin() {
 
       if (!data) {
         // handle this however suites the flow of your app
-        alert('Something went wrong obtaining the users access token');
+        reject(new Error('Something went wrong obtaining the users access token'))
       }
 
       // create a new firebase credential with the token
@@ -31,17 +30,18 @@ export async function facebookLogin() {
       // check if user already exists and save profile data
       const user = firebaseUserCredential.user;
 
-      if (await checkUserExists(user) === false) {
+      db.checkUserExists(user).then(() => {
         const data = { userName: user.displayName };
-        setupAccount(user.uid, data)
-      }
-
-      return 200
+        db.setupAccount(user.uid, data)
+          .then(success => {
+            console.log(success);
+            resolve(200)
+          }).catch(err => alert(err))
+      }).catch(err => alert(err));
     }
 
     // console.warn(JSON.stringify(firebaseUserCredential.user.toJSON()))
   } catch (e) {
-    console.error(e);
-    return 500
+    resolve(500)
   }
-}
+});
