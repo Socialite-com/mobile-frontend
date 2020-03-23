@@ -1,20 +1,20 @@
 import React from 'react';
 import {StyleSheet, View, Dimensions} from 'react-native';
 
-import {getUser, getProfileData} from "library/networking/database";
-import {onSignIn} from "library/networking/auth";
+import {getUser, getProfileData} from 'library/networking/database';
+import {onSignIn} from 'library/networking/auth';
 
-import CustomText from "library/components/CustomText";
-import TextForm from "library/components/TextInput";
-import Button from "library/components/Button";
+import CustomText from 'library/components/CustomText';
+import TextForm from 'library/components/TextInput';
+import Button from 'library/components/Button';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 
 class EnterPassword extends React.Component {
   state = {
-    password: "",
-    truePassword: "",
-    userId: "",
+    password: '',
+    truePassword: '',
+    userId: '',
   };
 
   _handlePassword() {
@@ -22,10 +22,10 @@ class EnterPassword extends React.Component {
       onSignIn(this.state.userId);
       this.props.navigation.reset({
         index: 0,
-        routes: [{ name: this.props.route.params.finalRoute }],
+        routes: [{name: this.props.route.params.finalRoute}],
       });
     } else {
-      alert("Wrong Password")
+      alert('Wrong Password');
     }
   }
 
@@ -36,8 +36,8 @@ class EnterPassword extends React.Component {
     this.setState({
       userId: user.uid,
       userName: profileData.userName,
-      truePassword: profileData.password
-    })
+      truePassword: profileData.password,
+    });
   }
 
   render() {
@@ -50,10 +50,12 @@ class EnterPassword extends React.Component {
         <View style={styles.inputContainer}>
           <TextForm
             value={this.state.password}
-            onChangeText={password => { this.setState({ password }) }}
+            onChangeText={password => {
+              this.setState({password});
+            }}
             autoFocus
           />
-          <Button dark onPress={ () => this._handlePassword() } title="Sign In" />
+          <Button dark onPress={() => this._handlePassword()} title="Sign In" />
         </View>
       </View>
     );
@@ -65,13 +67,13 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: '10%',
     justifyContent: 'flex-end',
-    width: screenWidth * 0.8
+    width: screenWidth * 0.8,
   },
   inputContainer: {
     flex: 3,
     marginTop: '5%',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 });
 
 export default EnterPassword;

@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import {createRootNavigator} from "./library/navigation/router";
-import SplashScreen from "./screens/onboarding/SplashScreen";
-import {isSignedIn} from "library/networking/auth";
+import {NavigationContainer} from '@react-navigation/native';
+import {createRootNavigator} from './library/navigation/router';
+import SplashScreen from './screens/onboarding/SplashScreen';
+import {isSignedIn} from 'library/networking/auth';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -10,21 +10,23 @@ export default class App extends React.Component {
 
     this.state = {
       signedIn: false,
-      checkedSignIn: false
+      checkedSignIn: false,
     };
   }
 
-  splashDelay = async() => {
-    return new Promise((resolve) =>
-      setTimeout(() => { resolve('result') }, 1500 )
-    )
+  splashDelay = async () => {
+    return new Promise(resolve =>
+      setTimeout(() => {
+        resolve('result');
+      }, 1500),
+    );
   };
 
   async componentDidMount() {
     await this.splashDelay();
     isSignedIn()
-      .then(res => this.setState({ signedIn: res, checkedSignIn: true }))
-      .catch(err => alert("An error occurred"));
+      .then(res => this.setState({signedIn: res, checkedSignIn: true}))
+      .catch(err => alert('An error occurred'));
   }
 
   componentWillUnmount() {
@@ -32,12 +34,12 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { checkedSignIn, signedIn } = this.state;
+    const {checkedSignIn, signedIn} = this.state;
 
     return (
       <NavigationContainer>
-        { !checkedSignIn ? <SplashScreen/> : createRootNavigator(signedIn) }
+        {!checkedSignIn ? <SplashScreen /> : createRootNavigator(signedIn)}
       </NavigationContainer>
-    )
+    );
   }
 }
