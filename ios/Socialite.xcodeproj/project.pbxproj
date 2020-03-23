@@ -20,10 +20,15 @@
 		0CA5906F2416C13F008C5913 /* Comfortaa-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1925099350DC4FA49C235DEE /* Comfortaa-Regular.ttf */; };
 		0CA590702416C13F008C5913 /* Comfortaa-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C4993445833342388EB101A4 /* Comfortaa-SemiBold.ttf */; };
 		0CA590712416C13F008C5913 /* Roboto-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DC675A490CE1401084B41C11 /* Roboto-Black.ttf */; };
+		1FF699A40E6E4C379CCD7D4A /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F0A5E404EDD44DFBB28670A9 /* Roboto-Medium.ttf */; };
+		50121D4FCBBD4730875C4A50 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 89A54D224FDA425C893A3815 /* Roboto-Regular.ttf */; };
+		65C92E1AC5D84529937A9A1B /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 00F539D7F2CF42B1B5E1874F /* Roboto-Bold.ttf */; };
+		BEB164B5D96741A7B04FB2E3 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 39DE6E23E45D49198A4E70A6 /* Roboto-Light.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
+		00F539D7F2CF42B1B5E1874F /* Roboto-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Bold.ttf"; path = "../src/res/fonts/Roboto-Bold.ttf"; sourceTree = "<group>"; };
 		0923FEFE6E169DFAD235A2F9 /* Pods-SocialiteTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SocialiteTests.release.xcconfig"; path = "Target Support Files/Pods-SocialiteTests/Pods-SocialiteTests.release.xcconfig"; sourceTree = "<group>"; };
 		0A3409AE6A034EACA885B8B6 /* Roboto-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Black.ttf"; path = "../assets/fonts/Roboto-Black.ttf"; sourceTree = "<group>"; };
 		0B6372C5CBC542DD898C9D1D /* Comfortaa-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Comfortaa-Regular.ttf"; path = "../assets/fonts/Comfortaa-Regular.ttf"; sourceTree = "<group>"; };
@@ -47,6 +52,7 @@
 		2A12CF5446293EF47712A4FA /* Pods-Socialite.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Socialite.release.xcconfig"; path = "Target Support Files/Pods-Socialite/Pods-Socialite.release.xcconfig"; sourceTree = "<group>"; };
 		2F8D051E98F7495AB8AB4F96 /* Roboto-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-ThinItalic.ttf"; path = "../assets/fonts/Roboto/Roboto-ThinItalic.ttf"; sourceTree = "<group>"; };
 		345B6B68DABDA18090F928EB /* Pods-Socialite-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Socialite-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Socialite-tvOSTests/Pods-Socialite-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		39DE6E23E45D49198A4E70A6 /* Roboto-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Light.ttf"; path = "../src/res/fonts/Roboto-Light.ttf"; sourceTree = "<group>"; };
 		3FEAEF206842447D9121CAC6 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Regular.ttf"; path = "../assets/fonts/Roboto/Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		5BC730F47E5188A0CD783A34 /* Pods-Socialite.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Socialite.debug.xcconfig"; path = "Target Support Files/Pods-Socialite/Pods-Socialite.debug.xcconfig"; sourceTree = "<group>"; };
 		5F897E5A9D4A40429E952315 /* Roboto-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Thin.ttf"; path = "../assets/fonts/Roboto/Roboto-Thin.ttf"; sourceTree = "<group>"; };
@@ -56,6 +62,7 @@
 		776E553307AF45A49601F20B /* Roboto-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-LightItalic.ttf"; path = "../assets/fonts/Roboto/Roboto-LightItalic.ttf"; sourceTree = "<group>"; };
 		82B8C780D1A14338AD120AFF /* Roboto-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-MediumItalic.ttf"; path = "../assets/fonts/Roboto/Roboto-MediumItalic.ttf"; sourceTree = "<group>"; };
 		84ED3F2918704477AAC8E15D /* Roboto-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Black.ttf"; path = "../assets/fonts/Roboto/Roboto-Black.ttf"; sourceTree = "<group>"; };
+		89A54D224FDA425C893A3815 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Regular.ttf"; path = "../src/res/fonts/Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		8A1316EAAF2040D6B03FFB6E /* Comfortaa-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Comfortaa-Light.ttf"; path = "../assets/fonts/Comfortaa-Light.ttf"; sourceTree = "<group>"; };
 		8E8B1A18B5C044EF8ACED92B /* Comfortaa-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Comfortaa-Bold.ttf"; path = "../assets/fonts/Comfortaa-Bold.ttf"; sourceTree = "<group>"; };
 		9DB2CED89B314AA7AA492F9F /* Roboto-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Bold.ttf"; path = "../assets/fonts/Roboto/Roboto-Bold.ttf"; sourceTree = "<group>"; };
@@ -76,6 +83,7 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		EF4ED9C4B11544388DD34E58 /* Comfortaa-VariableFont_wght.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Comfortaa-VariableFont_wght.ttf"; path = "../assets/fonts/Comfortaa-VariableFont_wght.ttf"; sourceTree = "<group>"; };
+		F0A5E404EDD44DFBB28670A9 /* Roboto-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Medium.ttf"; path = "../src/res/fonts/Roboto-Medium.ttf"; sourceTree = "<group>"; };
 		F847D25A2CC485C58C53E1E1 /* Pods-Socialite-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Socialite-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Socialite-tvOS/Pods-Socialite-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		FCF3A253E1B629B541C9858E /* libPods-Socialite.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Socialite.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -200,6 +208,10 @@
 				1925099350DC4FA49C235DEE /* Comfortaa-Regular.ttf */,
 				C4993445833342388EB101A4 /* Comfortaa-SemiBold.ttf */,
 				DC675A490CE1401084B41C11 /* Roboto-Black.ttf */,
+				00F539D7F2CF42B1B5E1874F /* Roboto-Bold.ttf */,
+				39DE6E23E45D49198A4E70A6 /* Roboto-Light.ttf */,
+				F0A5E404EDD44DFBB28670A9 /* Roboto-Medium.ttf */,
+				89A54D224FDA425C893A3815 /* Roboto-Regular.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -276,6 +288,10 @@
 				0CA5906F2416C13F008C5913 /* Comfortaa-Regular.ttf in Resources */,
 				0CA590702416C13F008C5913 /* Comfortaa-SemiBold.ttf in Resources */,
 				0CA590712416C13F008C5913 /* Roboto-Black.ttf in Resources */,
+				65C92E1AC5D84529937A9A1B /* Roboto-Bold.ttf in Resources */,
+				BEB164B5D96741A7B04FB2E3 /* Roboto-Light.ttf in Resources */,
+				1FF699A40E6E4C379CCD7D4A /* Roboto-Medium.ttf in Resources */,
+				50121D4FCBBD4730875C4A50 /* Roboto-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -345,11 +361,13 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Socialite/Pods-Socialite-resources.sh",
 				"${PODS_ROOT}/FBSDKCoreKit/FacebookSDKStrings.bundle",
+				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/gRPC-C++/gRPCCertificates-Cpp.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FacebookSDKStrings.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/gRPCCertificates-Cpp.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;

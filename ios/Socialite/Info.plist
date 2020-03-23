@@ -76,7 +76,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string>Display location of events</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Get images from camera roll to identify Socialite codes and register invites</string>
 	<key>NSPhotoLibraryUsageDescription</key>
@@ -113,6 +113,8 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>UIUserInterfaceStyle</key>
+	<string>Light</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 </dict>

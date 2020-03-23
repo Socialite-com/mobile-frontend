@@ -1,20 +1,20 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import {StyleSheet, View} from 'react-native';
 
-import db from "library/networking/database";
-import auth from "library/networking/auth";
+import db from 'library/networking/database';
+import auth from 'library/networking/auth';
 
-import CustomText from "library/components/CustomText";
-import TextForm from "library/components/TextInput";
-import Button from "library/components/Button";
+import CustomText from 'library/components/CustomText';
+import TextForm from 'library/components/TextInput';
+import Button from 'library/components/Button';
 
-import R from "res/R";
+import R from 'res/R';
 
 class EnterPassword extends React.Component {
   state = {
-    password: "",
-    truePassword: "",
-    userId: "",
+    password: '',
+    truePassword: '',
+    userId: '',
   };
 
   _handlePassword() {
@@ -22,23 +22,27 @@ class EnterPassword extends React.Component {
       auth.onSignIn(this.state.userId);
       this.props.navigation.reset({
         index: 0,
-        routes: [{ name: this.props.route.params.finalRoute }],
+        routes: [{name: this.props.route.params.finalRoute}],
       });
     } else {
-      alert("Wrong Password")
+      alert('Wrong Password');
     }
   }
 
   componentDidMount() {
-    db.getUser().then(user => {
-      db.getProfileData(user.uid).then(data => {
-        this.setState({
-          userId: user.uid,
-          userName: data.userName,
-          truePassword: data.password
-        })
-      }).catch(err => alert(err))
-    }).catch(err => alert(err))
+    db.getUser()
+      .then(user => {
+        db.getProfileData(user.uid)
+          .then(data => {
+            this.setState({
+              userId: user.uid,
+              userName: data.userName,
+              truePassword: data.password,
+            });
+          })
+          .catch(err => alert(err));
+      })
+      .catch(err => alert(err));
   }
 
   render() {
@@ -51,10 +55,12 @@ class EnterPassword extends React.Component {
         <View style={styles.inputContainer}>
           <TextForm
             value={this.state.password}
-            onChangeText={password => { this.setState({ password }) }}
+            onChangeText={password => {
+              this.setState({password});
+            }}
             autoFocus
           />
-          <Button dark onPress={ () => this._handlePassword() } title="Sign In" />
+          <Button dark onPress={() => this._handlePassword()} title="Sign In" />
         </View>
       </View>
     );
@@ -66,13 +72,13 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: '10%',
     justifyContent: 'flex-end',
-    width: R.constants.screenWidth * 0.8
+    width: R.constants.screenWidth * 0.8,
   },
   inputContainer: {
     flex: 3,
     marginTop: '5%',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 });
 
 export default EnterPassword;
