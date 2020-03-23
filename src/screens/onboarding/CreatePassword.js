@@ -1,14 +1,14 @@
 import React from 'react';
-import {StyleSheet, View, Dimensions} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import {getUser, setupAccount} from "library/networking/database";
-import {onSignIn} from "library/networking/auth";
+import db from "library/networking/database";
+import auth from "library/networking/auth";
 
 import CustomText from "library/components/CustomText";
 import TextForm from "library/components/TextInput";
 import Button from "library/components/Button";
 
-const screenWidth = Math.round(Dimensions.get('window').width);
+import R from "res/R";
 
 class CreatePassword extends React.Component {
   state = {
@@ -17,19 +17,25 @@ class CreatePassword extends React.Component {
     phoneNumber: ""
   };
 
-  async _handlePassword() {
+  _handlePassword() {
     // Add password restrictions
-    await setupAccount(this.state.userId, this.props.route.params.userName, this.state.password);
-    onSignIn(this.state.userId);
-    this.props.navigation.replace(this.props.route.params.finalRoute);
+    const data = { userName: this.props.route.params.userName, password: this.state.password };
+    db.setupAccount(this.state.userId, data)
+      .then(success => {
+        console.log(success);
+        auth.onSignIn(this.state.userId);
+        this.props.navigation.reset({ index: 0, routes: [{ name: this.props.route.params.finalRoute }] });
+      })
+      .catch(err => alert(err.message));
   }
 
-  async componentDidMount() {
-    let user = await getUser();
-    this.setState({
-      userId: user.uid,
-      phoneNumber: user.phoneNumber
-    })
+  componentDidMount() {
+    db.getUser().then(user => {
+      this.setState({
+        userId: user.uid,
+        phoneNumber: user.phoneNumber
+      })
+    }).catch(err => alert(err))
   }
 
   render() {
@@ -57,7 +63,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: '10%',
     justifyContent: 'flex-end',
-    width: screenWidth * 0.8
+    width: R.constants.screenWidth * 0.8
   },
   inputContainer: {
     flex: 3,

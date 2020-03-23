@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, View, Text} from 'react-native';
-import {onSignOut} from "library/networking/auth";
+import auth from "library/networking/auth";
 import Button from "library/components/Button";
 
 class Event extends React.Component {
@@ -13,7 +13,7 @@ class Event extends React.Component {
         <Button
           dark
           title="Log Out"
-          onPress={() => onSignOut().then(this.props.navigation.replace('Onboarding'))}
+          onPress={() => auth.onSignOut().then(this.props.navigation.replace('Onboarding'))}
         />
       </View>
     );

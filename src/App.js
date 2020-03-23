@@ -2,7 +2,7 @@ import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createRootNavigator} from './library/navigation/router';
 import SplashScreen from './screens/onboarding/SplashScreen';
-import {isSignedIn} from 'library/networking/auth';
+import auth from './library/networking/auth';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -24,9 +24,10 @@ export default class App extends React.Component {
 
   async componentDidMount() {
     await this.splashDelay();
-    isSignedIn()
+    auth
+      .isSignedIn()
       .then(res => this.setState({signedIn: res, checkedSignIn: true}))
-      .catch(err => alert('An error occurred'));
+      .catch(err => alert(err));
   }
 
   componentWillUnmount() {

@@ -1,20 +1,12 @@
 import React from 'react';
-import {
-  TouchableOpacity,
-  StyleSheet,
-  View,
-  Text,
-  Dimensions,
-} from 'react-native';
+import {TouchableOpacity, StyleSheet, View, Text} from 'react-native';
 
 import R from 'res/R';
-
-const screenWidth = Math.round(Dimensions.get('window').width);
 
 const height = 50;
 const padding = 10;
 const margin = 10;
-const width = screenWidth * 0.9;
+const width = R.constants.screenWidth * 0.9;
 const backgroundColor = R.colors.primary;
 const borderRadius = 6;
 const color = R.colors.primary;
@@ -95,7 +87,7 @@ const style = StyleSheet.create({
     borderWidth: 0,
   },
   half: {
-    width: (screenWidth * 0.85) / 2,
+    width: (R.constants.screenWidth * 0.85) / 2,
   },
 });
 

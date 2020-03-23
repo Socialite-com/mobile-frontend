@@ -2,20 +2,19 @@ import React from 'react';
 import {
   TouchableHighlight,
   StyleSheet,
-  Dimensions,
+
   View,
   Text,
   Image
 } from 'react-native';
 
-import CustomText from "./CustomText";
 import R from "res/R";
 
-const screenWidth = Math.round(Dimensions.get('window').width);
 
-export function createEventTab(item) {
+
+export function createEventTab(item, index) {
   return (
-    <View style={styles.eventContainer}>
+    <View style={styles.eventContainer} key={index}>
       <TouchableHighlight style={styles.imageContainer}>
         <Image style={styles.image} source={R.images.logo_white} />
       </TouchableHighlight>
@@ -32,7 +31,7 @@ const styles = StyleSheet.create({
   eventContainer: {
     height: 100,
     marginBottom: '5%',
-    width: screenWidth * 0.8,
+    width: R.constants.screenWidth * 0.8,
     flexDirection: 'row',
     borderBottomWidth: 1,
     borderBottomColor: R.colors.tertiary

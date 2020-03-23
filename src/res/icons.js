@@ -14,6 +14,7 @@ const icons = {
   phone: require('./icons/phone.svg'),
   photo: require('./icons/photo.svg'),
   podcast: require('./icons/podcast.svg'),
+  qrCode: require('./icons/qr-code.svg'),
   questionMark: require('./icons/question mark.svg'),
   user: require('./icons/user.svg'),
   verified: require('./icons/verified.svg')

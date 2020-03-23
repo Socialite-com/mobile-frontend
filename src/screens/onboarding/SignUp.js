@@ -1,18 +1,18 @@
 import React from 'react';
-import {Dimensions, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 
 import Button from 'library/components/Button';
 import CustomText from 'library/components/CustomText';
 import {facebookLogin} from 'library/networking/FBauthentication';
-import {onSignIn} from 'library/networking/auth';
+import auth from 'library/networking/auth';
 
-const screenWidth = Math.round(Dimensions.get('window').width);
+import R from 'res/R';
 
 class SignUp extends React.Component {
   handleFBLogin() {
     facebookLogin().then(r => {
       if (r === 200) {
-        onSignIn('fb-key').then(this.props.navigation.navigate('User'));
+        auth.onSignIn('fb-key').then(this.props.navigation.navigate('User'));
       } else {
         alert('Authentication failed.');
       }
@@ -56,7 +56,7 @@ class SignUp extends React.Component {
 const styles = StyleSheet.create({
   textContainer: {
     flex: 1,
-    width: screenWidth * 0.75,
+    width: R.constants.screenWidth * 0.75,
     justifyContent: 'flex-end',
   },
   mediaContainer: {
