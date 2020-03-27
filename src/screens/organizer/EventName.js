@@ -15,7 +15,9 @@ class EventName extends React.Component {
 
   handleVerifyName = () => {
     if (this.state.name.length > 3) {
-      this.props.navigation.navigate('EventType');
+      this.props.navigation.navigate('EventType', {
+        name: this.state.name,
+      });
     } else {
       alert('Your event name is too short');
     }

@@ -17,7 +17,6 @@ import EventName from './organizer/EventName';
 import EventType from './organizer/EventType';
 import EventTime from './organizer/EventTime';
 import EventLocation from './organizer/EventLocation';
-import EventPrice from './organizer/EventPrice';
 
 const screens = {
   onboarding: {
@@ -42,7 +41,6 @@ const screens = {
     EventType: EventType,
     EventTime: EventTime,
     EventLocation: EventLocation,
-    EventPrice: EventPrice,
   },
 };
 

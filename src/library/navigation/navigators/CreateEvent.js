@@ -7,7 +7,7 @@ const Stack = createStackNavigator();
 export default function CreateEvent() {
   return (
     <Stack.Navigator
-      initialRouteName="EventPrice"
+      initialRouteName="EventName"
       screenOptions={{
         title: '',
         gestureEnabled: false,
@@ -24,11 +24,8 @@ export default function CreateEvent() {
         name="EventLocation"
         component={screens.organizer.EventLocation}
       />
-      <Stack.Screen
-        name="EventPrice"
-        component={screens.organizer.EventPrice}
-      />
-      {/* <Stack.Screen name="EventUsers" component={screens.organizer.EventUsers} /> */}
     </Stack.Navigator>
   );
 }
+
+//pass data to the end

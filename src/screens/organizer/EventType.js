@@ -1,22 +1,48 @@
 import React from 'react';
-import {StyleSheet, View, KeyboardAvoidingView, Dimensions} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  KeyboardAvoidingView,
+  Dimensions,
+  Platform,
+} from 'react-native';
 
 import Button from 'library/components/Button';
 import CustomText from 'library/components/CustomText';
+import TextForm from 'library/components/TextInput';
 
+const screenHeight = Math.round(Dimensions.get('window').height);
 const screenWidth = Math.round(Dimensions.get('window').width);
-
+const keyboardOffset = screenHeight * 0.2;
 class EventType extends React.Component {
   state = {
     private: true,
+    free: true,
+    price: '',
   };
 
   handleType(value) {
     this.setState({private: value});
   }
 
+  handlePrice(value) {
+    this.setState({free: value});
+  }
+
   handleVerifyType = () => {
-    this.props.navigation.navigate('EventTime');
+    if (
+      (!this.state.free && parseInt(this.state.price, 0) > 0) ||
+      this.state.free
+    ) {
+      this.props.navigation.navigate('EventTime', {
+        name: this.props.route.params.name,
+        private: this.state.private,
+        free: this.state.free,
+        price: this.state.price,
+      });
+    } else {
+      alert('Your event must have a valid price');
+    }
   };
 
   render() {
@@ -48,6 +74,46 @@ class EventType extends React.Component {
           </View>
         )}
 
+        {this.state.free ? (
+          <View style={styles.buttonContainer}>
+            <Button title="Free" dark half />
+            <Button
+              title="Paid"
+              light
+              half
+              onPress={() => this.handlePrice(false)}
+            />
+          </View>
+        ) : (
+          <View>
+            <View style={styles.buttonContainer}>
+              <Button
+                title="Free"
+                light
+                half
+                onPress={() => this.handlePrice(true)}
+              />
+              <Button title="Paid" dark half />
+            </View>
+
+            <KeyboardAvoidingView
+              styles={{flexDirection: 'row', alignItems: 'center'}}
+              keyboardVerticalOffset={keyboardOffset}
+              behavior="padding">
+              <TextForm
+                placeholder="Set your price (in CAD)"
+                keyboardType={Platform.OS === 'ios' ? 'number-pad' : 'numeric'}
+                returnKeyType={'next'}
+                value={this.state.price.toString()}
+                onChangeText={price => {
+                  this.setState({price});
+                }}
+                onSubmitEditing={this.handleVerifyPrice}
+              />
+            </KeyboardAvoidingView>
+          </View>
+        )}
+
         <Button title="Next" dark onPress={this.handleVerifyType} />
       </View>
     );
@@ -61,7 +127,7 @@ const styles = StyleSheet.create({
     marginTop: '10%',
   },
   titleContainer: {
-    paddingBottom: '5%',
+    paddingBottom: '10%',
   },
   textContainer: {
     width: screenWidth * 0.9,
@@ -70,7 +136,6 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: '5%',
     marginBottom: '2%',
   },
 });

@@ -16,6 +16,8 @@ import TextForm from 'library/components/TextInput';
 import CustomText from 'library/components/CustomText';
 import LocationItem from 'library/components/LocationItem';
 
+import db from 'library/networking/database';
+
 const screenHeight = Math.round(Dimensions.get('window').height);
 const screenWidth = Math.round(Dimensions.get('window').width);
 const keyboardOffset = screenHeight * 0.2;
@@ -61,10 +63,42 @@ class EventLocation extends React.Component {
     this.setState({isModalVisible: false});
   };
 
-  handleVerifyLocation = () => {
+  handleVerifyLocation = async () => {
     if (this.state.location.latitude && this.state.textLocation) {
-      this.handleModal();
-      this.props.navigation.navigate('EventPrice');
+      //format data
+      var type;
+      if (this.props.route.params.private) {
+        type = 'private';
+      } else {
+        type = 'public';
+      }
+
+      const data = {
+        name: this.props.route.params.name,
+        type: type,
+        free: this.props.route.params.free,
+        price: this.props.route.params.price,
+        time: this.props.route.params.time,
+        location: this.state.location,
+      };
+
+      //get user data
+      db.getUser()
+        .then(user => {
+          //create event
+          db.createEvent(user.uid, data)
+            .then(success => {
+              console.log(success);
+
+              this.handleModal();
+              this.props.navigation.reset({
+                index: 0,
+                routes: [{name: 'User'}],
+              });
+            })
+            .catch(err => alert(err.message));
+        })
+        .catch(err => alert(err));
     } else {
       alert('You must set a valid location for the event');
     }

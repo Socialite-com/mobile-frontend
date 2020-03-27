@@ -81,4 +81,53 @@ export default class db {
         })
         .catch(err => reject(err));
     });
+
+  static createEvent = (uid, data) =>
+    new Promise((resolve, reject) => {
+      //Add to events
+      firestore
+        .collection('events')
+        .add({
+          details: {
+            title: data.name,
+            startTime: data.time,
+            location: [data.location.latitude, data.location.longitude],
+            type: data.type,
+            free: data.free,
+            price: data.price,
+            backgroundColor: '#000000',
+          },
+          attendees: [],
+          creator: uid,
+        })
+        .then(docRef => {
+          //Add to user
+          firestore
+            .collection('users')
+            .doc(uid)
+            .set(
+              {
+                eventCreations: firebase.firestore.FieldValue.arrayUnion(
+                  docRef.id,
+                ),
+              },
+              {merge: true},
+            )
+            .then(() => {
+              resolve('Event was succesfully created');
+            })
+            .catch(error => {
+              reject(error);
+            });
+        })
+        .catch(error => {
+          reject(error);
+        });
+
+      // firestore.runTransaction(async transaction => {
+      //   transaction.set();
+
+      //   const doc = await transaction.get(ref);
+      // });
+    });
 }
