@@ -3,21 +3,24 @@ import {
   StyleSheet,
   View,
   Dimensions,
-  TouchableOpacity,
+  KeyboardAvoidingView,
   Keyboard,
-  Image,
+  ScrollView,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
-import Geocoder from 'react-native-geocoding';
+import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
+import {GoogleAutoComplete} from 'react-native-google-autocomplete';
 
 import Button from 'library/components/Button';
 import TextForm from 'library/components/TextInput';
 import CustomText from 'library/components/CustomText';
-import marker from 'res/images/marker.png';
+import LocationItem from 'library/components/LocationItem';
 
+const screenHeight = Math.round(Dimensions.get('window').height);
 const screenWidth = Math.round(Dimensions.get('window').width);
-Geocoder.init('AIzaSyDJSAvTqCXe-SDaSNxLKU4kiogZX06wR14');
+const keyboardOffset = screenHeight * 0.2;
+const latDelta = 0.001;
+const longDelta = 0.001;
 
 class EventLocation extends React.Component {
   state = {
@@ -25,10 +28,27 @@ class EventLocation extends React.Component {
     location: {
       latitude: 37.78825,
       longitude: -122.4324,
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421,
+      latitudeDelta: latDelta,
+      longitudeDelta: longDelta,
     },
     textLocation: '',
+  };
+
+  handleLocationSelect = async (fetchDetails, id) => {
+    const res = await fetchDetails(id);
+
+    const location = res.geometry.location;
+    this.setState({
+      textLocation: res.formatted_address,
+      location: {
+        latitude: location.lat,
+        longitude: location.lng,
+        latitudeDelta: latDelta,
+        longitudeDelta: longDelta,
+      },
+    });
+
+    this.handleModal();
   };
 
   handleModal = () => {
@@ -37,29 +57,13 @@ class EventLocation extends React.Component {
     this.setState({isModalVisible: !visible});
   };
 
-  handleLocation = location => {
-    if (location == null) {
-      location = this.state.location;
-    }
-    this.setState({location: location});
-
-    //create text
-    //needs payed things
-    // Geocoder.from(location)
-    //   .then(json => {
-    //     var addressComponent = json.results[0].address_components[0];
-    //     alert(addressComponent);
-    //   })
-    //   .catch(error => console.warn(error));
-  };
-
   removeLocation = () => {
-    this.setState({isModalVisible: false, textLocation: ''});
+    this.setState({isModalVisible: false});
   };
 
   handleVerifyLocation = () => {
-    //if (this.state.location && this.state.textLocation) {
-    if (this.state.location) {
+    if (this.state.location.latitude && this.state.textLocation) {
+      this.handleModal();
       this.props.navigation.navigate('EventPrice');
     } else {
       alert('You must set a valid location for the event');
@@ -73,18 +77,42 @@ class EventLocation extends React.Component {
           <CustomText label="Where will your event take place?" subtitle />
         </View>
 
-        <TouchableOpacity onPress={this.handleModal}>
-          <View>
-            <TextForm
-              placeholder="Choose Location"
-              value={this.state.textLocation}
-              editable={false}
-              onFocus={() => Keyboard.dismiss()}
-              showSoftInputOnFocus={false}
-              pointerEvents="none"
-            />
-          </View>
-        </TouchableOpacity>
+        <KeyboardAvoidingView
+          keyboardVerticalOffset={keyboardOffset}
+          behavior="padding">
+          <GoogleAutoComplete
+            components="country:ca"
+            apiKey="AIzaSyDJSAvTqCXe-SDaSNxLKU4kiogZX06wR14">
+            {({
+              inputValue,
+              handleTextChange,
+              locationResults,
+              fetchDetails,
+            }) => (
+              <>
+                <TextForm
+                  placeholder="Choose Location"
+                  value={inputValue}
+                  onChangeText={handleTextChange}
+                />
+
+                <ScrollView
+                  contentContainerStyle={styles.scrollView}
+                  keyboardShouldPersistTaps="always">
+                  {locationResults.map((el, i) => (
+                    <LocationItem
+                      {...el}
+                      onPress={() =>
+                        this.handleLocationSelect(fetchDetails, el.place_id)
+                      }
+                      key={String(i)}
+                    />
+                  ))}
+                </ScrollView>
+              </>
+            )}
+          </GoogleAutoComplete>
+        </KeyboardAvoidingView>
 
         <Modal
           isVisible={this.state.isModalVisible}
@@ -93,7 +121,7 @@ class EventLocation extends React.Component {
           <View style={styles.modalContentContainer}>
             <CustomText
               style={styles.titleContainer}
-              label="Choose Location"
+              label="Confirm Location"
               subtitle
               center
             />
@@ -101,29 +129,21 @@ class EventLocation extends React.Component {
             <MapView
               style={styles.map}
               provider={PROVIDER_GOOGLE}
-              initialRegion={this.state.location}
-              onRegionChangeComplete={this.handleLocation}>
-              <View style={styles.markerFixed}>
-                <Image style={styles.marker} source={marker} />
-              </View>
+              initialRegion={this.state.location}>
+              <Marker coordinate={this.state.location} />
             </MapView>
 
             <View style={styles.buttonContainer}>
               <Button title="Cancel" grey half onPress={this.removeLocation} />
               <Button
-                title="Set"
+                title="Confirm"
                 dark
                 half
-                onPress={() => {
-                  this.handleLocation();
-                  this.handleModal();
-                }}
+                onPress={() => this.handleVerifyLocation()}
               />
             </View>
           </View>
         </Modal>
-
-        <Button title="Next" dark onPress={this.handleVerifyLocation} />
       </View>
     );
   }
@@ -163,16 +183,8 @@ const styles = StyleSheet.create({
     height: 250,
     marginVertical: '2%',
   },
-  markerFixed: {
-    left: '50%',
-    marginLeft: -24,
-    marginTop: -48,
-    position: 'absolute',
-    top: '50%',
-  },
-  marker: {
-    height: 48,
-    width: 48,
+  scrollView: {
+    alignItems: 'center',
   },
 });
 

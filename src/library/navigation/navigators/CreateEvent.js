@@ -7,7 +7,7 @@ const Stack = createStackNavigator();
 export default function CreateEvent() {
   return (
     <Stack.Navigator
-      initialRouteName="EventName"
+      initialRouteName="EventPrice"
       screenOptions={{
         title: '',
         gestureEnabled: false,
