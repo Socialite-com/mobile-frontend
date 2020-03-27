@@ -11,23 +11,25 @@ export default class App extends React.Component {
     this.state = {
       signedIn: false,
       checkedSignIn: false,
+      delayedRemove: false,
     };
   }
 
   splashDelay = async () => {
     return new Promise(resolve =>
       setTimeout(() => {
+        this.setState({delayedRemove: true});
         resolve('result');
-      }, 1500),
+      }, 750),
     );
   };
 
   async componentDidMount() {
-    await this.splashDelay();
     auth
       .isSignedIn()
       .then(res => this.setState({signedIn: res, checkedSignIn: true}))
       .catch(err => alert(err));
+    await this.splashDelay();
   }
 
   componentWillUnmount() {
@@ -35,11 +37,13 @@ export default class App extends React.Component {
   }
 
   render() {
-    const {checkedSignIn, signedIn} = this.state;
-
     return (
       <NavigationContainer>
-        {!checkedSignIn ? <SplashScreen /> : createRootNavigator(signedIn)}
+        {!this.state.delayedRemove && (
+          <SplashScreen isReady={this.state.checkedSignIn} />
+        )}
+
+        {this.state.checkedSignIn && createRootNavigator(this.state.signedIn)}
       </NavigationContainer>
     );
   }
