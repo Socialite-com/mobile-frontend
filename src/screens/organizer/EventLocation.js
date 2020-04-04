@@ -115,6 +115,7 @@ class EventLocation extends React.Component {
           keyboardVerticalOffset={keyboardOffset}
           behavior="padding">
           <GoogleAutoComplete
+            queryTypes=""
             components="country:ca"
             apiKey="AIzaSyDJSAvTqCXe-SDaSNxLKU4kiogZX06wR14">
             {({

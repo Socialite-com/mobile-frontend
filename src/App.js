@@ -15,12 +15,13 @@ export default class App extends React.Component {
     };
   }
 
+  //to remove splash screen and allow touches
   splashDelay = async () => {
     return new Promise(resolve =>
       setTimeout(() => {
         this.setState({delayedRemove: true});
         resolve('result');
-      }, 750),
+      }, 1500),
     );
   };
 
