@@ -1,8 +1,8 @@
 import React from 'react';
-import {View, Dimensions} from 'react-native';
+import {View, Dimensions, Image} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
-import CustomText from 'library/components/CustomText';
+import logo from 'res/images/logo_white.png';
 
 const screenHeight = Math.round(Dimensions.get('window').height);
 const screenWidth = Math.round(Dimensions.get('window').width);
@@ -44,16 +44,16 @@ class SplashScreen extends React.Component {
     if (this.props.isReady) {
       this.topView.animate(slideUp, 750, 600);
       this.bottomView.animate(slideDown, 750, 600);
-      this.TextView.animate(fadeOut, 500);
+      this.TextView.animate(fadeOut, 500, 250);
     }
   }
 
   //on props update
   componentDidUpdate() {
     if (this.props.isReady) {
-      this.topView.animate(slideUp, 750, 600);
-      this.bottomView.animate(slideDown, 750, 600);
-      this.TextView.animate(fadeOut, 500);
+      this.topView.animate(slideUp, 750, 850);
+      this.bottomView.animate(slideDown, 750, 850);
+      this.TextView.animate(fadeOut, 500, 250);
     }
   }
 
@@ -69,7 +69,7 @@ class SplashScreen extends React.Component {
           style={styles.bottomViewStyles}
         />
         <Animatable.View ref={this.handleTextViewRef}>
-          <CustomText splash label="Socialite" />
+          <Image style={styles.logo} source={logo} resizeMode="contain" />
         </Animatable.View>
       </View>
     );
@@ -104,19 +104,11 @@ const styles = {
     width: screenWidth,
     height: screenHeight / 2,
   },
-  moveUp: {
-    top: -screenHeight / 2,
-  },
-  moveDown: {
-    top: screenHeight,
-  },
-  fadeOut: {
-    opacity: 0,
+  logo: {
+    height: 80,
   },
 };
 
 export default SplashScreen;
 
-//Splash screen for ios
-//add logo in the middle
 //animate logo

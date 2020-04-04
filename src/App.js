@@ -1,7 +1,8 @@
 import * as React from 'react';
+import SplashScreen from 'react-native-splash-screen';
 import {NavigationContainer} from '@react-navigation/native';
 import {createRootNavigator} from './library/navigation/router';
-import SplashScreen from './screens/onboarding/SplashScreen';
+import SplashScreenComponent from './screens/onboarding/SplashScreen';
 import auth from './library/networking/auth';
 
 export default class App extends React.Component {
@@ -21,11 +22,12 @@ export default class App extends React.Component {
       setTimeout(() => {
         this.setState({delayedRemove: true});
         resolve('result');
-      }, 1500),
+      }, 1750),
     );
   };
 
   async componentDidMount() {
+    SplashScreen.hide();
     auth
       .isSignedIn()
       .then(res => this.setState({signedIn: res, checkedSignIn: true}))
@@ -41,7 +43,7 @@ export default class App extends React.Component {
     return (
       <NavigationContainer>
         {!this.state.delayedRemove && (
-          <SplashScreen isReady={this.state.checkedSignIn} />
+          <SplashScreenComponent isReady={this.state.checkedSignIn} />
         )}
 
         {this.state.checkedSignIn && createRootNavigator(this.state.signedIn)}

@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: '2%',
     flex: 1,
-    height: 300, //added since couldn't see cards
+    height: 600, //added since couldn't see cards
   },
   profileImgContainer: {
     height: 80,
