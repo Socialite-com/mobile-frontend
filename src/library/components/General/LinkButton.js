@@ -1,38 +1,28 @@
 import React from 'react';
-import {
-  TouchableOpacity,
-  StyleSheet,
-  View,
-  Text
-} from 'react-native';
+import {TouchableOpacity, StyleSheet, View, Text} from 'react-native';
 
-import R from "res/R";
+import R from 'res/R';
 
 const fontFamily = R.fonts.comfortaaRegular;
 
-const LinkButton = ({
-  title,
-  header,
-  underline,
-  customStyle,
-  ...restProps
-}) => {
-
+const LinkButton = ({title, header, underline, customStyle, ...restProps}) => {
   let textStyle = [];
   textStyle = textStyle.concat(style.defaultStyle);
 
-  if (header) { textStyle = textStyle.concat(style.header) }
-  if (underline) { textStyle = textStyle.concat(style.underline) }
+  if (header) {
+    textStyle = textStyle.concat(style.header);
+  }
+  if (underline) {
+    textStyle = textStyle.concat(style.underline);
+  }
 
   return (
     <TouchableOpacity {...restProps}>
       <View>
-        <Text style={textStyle}>
-          {title}
-        </Text>
+        <Text style={textStyle}>{title}</Text>
       </View>
     </TouchableOpacity>
-  )
+  );
 };
 
 const style = StyleSheet.create({
@@ -41,16 +31,15 @@ const style = StyleSheet.create({
   },
   header: {
     fontFamily: R.fonts.comfortaaBold,
-    color: "#007AFF",
-    fontSize: 17
+    color: '#007AFF',
+    fontSize: 17,
   },
   underline: {
     color: R.colors.primary,
     fontSize: 13,
     textDecorationLine: 'underline',
-    marginTop: '3%'
-  }
+    marginTop: '3%',
+  },
 });
 
 export default LinkButton;
-

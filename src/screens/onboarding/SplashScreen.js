@@ -1,9 +1,8 @@
 import React from 'react';
-import { View } from 'react-native';
-import CustomText from "library/components/CustomText";
+import {View} from 'react-native';
+import CustomText from 'library/components/General/CustomText';
 
 class SplashScreen extends React.Component {
-
   async componentDidMount() {}
 
   render() {
@@ -20,8 +19,8 @@ const styles = {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'black'
-  }
+    backgroundColor: 'black',
+  },
 };
 
 export default SplashScreen;

@@ -2,22 +2,22 @@ import React from 'react';
 import {
   StyleSheet,
   View,
-  Dimensions,
   TouchableOpacity,
   Keyboard,
   Image,
 } from 'react-native';
+
 import Modal from 'react-native-modal';
-import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
+import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 
-import Button from 'library/components/Button';
-import TextForm from 'library/components/TextInput';
-import CustomText from 'library/components/CustomText';
-import marker from 'res/images/marker.png';
-
-const screenWidth = Math.round(Dimensions.get('window').width);
 Geocoder.init('AIzaSyDJSAvTqCXe-SDaSNxLKU4kiogZX06wR14');
+
+import Button from '../../library/components/General/Button';
+import TextForm from '../../library/components/General/TextInput';
+import CustomText from '../../library/components/General/CustomText';
+
+import R from 'res/R';
 
 class EventLocation extends React.Component {
   state = {
@@ -104,7 +104,7 @@ class EventLocation extends React.Component {
               initialRegion={this.state.location}
               onRegionChangeComplete={this.handleLocation}>
               <View style={styles.markerFixed}>
-                <Image style={styles.marker} source={marker} />
+                <Image style={styles.marker} source={R.images.marker} />
               </View>
             </MapView>
 
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     paddingBottom: '5%',
   },
   textContainer: {
-    width: screenWidth * 0.9,
+    width: R.constants.screenWidth * 0.8,
     overflow: 'scroll',
   },
   modalContentContainer: {

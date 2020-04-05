@@ -3,7 +3,7 @@ import {StyleSheet, View, Text} from 'react-native';
 import authentication from '../../library/networking/authentication';
 import Button from '../../library/components/General/Button';
 
-class Event extends React.Component {
+class Settings extends React.Component {
   state = {};
   componentDidMount(): void {}
   render() {
@@ -14,9 +14,12 @@ class Event extends React.Component {
           dark
           title="Log Out"
           onPress={() =>
-            authentication
-              .onSignOut()
-              .then(this.props.navigation.replace('Onboarding'))
+            authentication.onSignOut().then(
+              this.props.navigation.reset({
+                index: 0,
+                routes: [{name: 'Onboarding'}],
+              }),
+            )
           }
         />
       </View>
@@ -26,4 +29,4 @@ class Event extends React.Component {
 
 const styles = StyleSheet.create({});
 
-export default Event;
+export default Settings;
