@@ -1,12 +1,17 @@
 import React, {Component} from 'react';
 import {KeyboardAvoidingView, StyleSheet, Platform, View} from 'react-native';
 
-import Button from 'library/components/Button';
-import TextForm from 'library/components/TextInput';
-import CustomText from 'library/components/CustomText';
+import Button from 'library/components/General/Button';
+import TextForm from 'library/components/General/TextInput';
+import CustomText from 'library/components/General/CustomText';
+import LinkButton from 'library/components/General/LinkButton';
+import DismissKeyboardView from 'library/components/General/DismissKeyboardView';
 
-import firebase from 'react-native-firebase';
+import auth from '@react-native-firebase/auth';
 import db from 'library/networking/database';
+
+import {facebookLogin} from '../../library/networking/FBauthentication';
+import authentication from '../../library/networking/authentication';
 
 import R from 'res/R';
 
@@ -17,8 +22,32 @@ class PhoneAuthScreen extends Component {
     verificationCode: '',
     userExists: false,
     userId: '',
-    offset: R.constants.screenHeight * 0.2,
+    titling: {},
+    offset: R.constants.screenHeight * 0.05,
   };
+
+  componentDidMount(): void {
+    const {option} = this.props.route.params;
+    if (option === 'signIn') {
+      this.setState({titling: R.strings.onboarding.signIn});
+    } else if (option === 'signUp') {
+      this.setState({titling: R.strings.onboarding.register});
+    }
+  }
+
+  handleFBLogin() {
+    facebookLogin().then(r => {
+      if (r === 200) {
+        authentication
+          .onSignIn('fb-key')
+          .then(
+            this.props.navigation.reset({index: 0, routes: [{name: 'User'}]}),
+          );
+      } else {
+        alert('Authentication failed.');
+      }
+    });
+  }
 
   validatePhoneNumber = () => {
     const regexp = /^\+[0-9]?()[0-9](\s|\S)(\d[0-9]{8,16})$/;
@@ -28,8 +57,7 @@ class PhoneAuthScreen extends Component {
   handleSendCode = () => {
     // Request to send OTP
     if (this.validatePhoneNumber()) {
-      firebase
-        .auth()
+      auth()
         .signInWithPhoneNumber(this.state.phone)
         .then(confirmResult => {
           this.setState({confirmResult});
@@ -52,13 +80,9 @@ class PhoneAuthScreen extends Component {
           this.setState({userId: user.uid});
           db.checkUserExists(user).then(r => {
             if (r) {
-              this.props.navigation.navigate('EnterPassword', {
-                finalRoute: this.props.route.params.finalRoute,
-              });
+              this.props.navigation.navigate('EnterPassword');
             } else {
-              this.props.navigation.navigate('UserName', {
-                finalRoute: this.props.route.params.finalRoute,
-              });
+              this.props.navigation.navigate('UserName');
             }
           });
         })
@@ -76,11 +100,10 @@ class PhoneAuthScreen extends Component {
         <View style={{width: R.constants.screenWidth * 0.8}}>
           <CustomText
             style={{fontSize: 16}}
-            label="Please enter your phone number below"
+            label={this.state.titling.prompt}
           />
         </View>
         <TextForm
-          autoFocus
           placeholder="+1"
           keyboardType="phone-pad"
           value={this.state.phone}
@@ -90,6 +113,13 @@ class PhoneAuthScreen extends Component {
           maxLength={15}
         />
         <Button dark title="Send Code" onPress={this.handleSendCode} />
+        <View style={{width: R.constants.screenWidth * 0.8}}>
+          <LinkButton
+            underline
+            title="Or Connect with Facebook"
+            onPress={() => this.handleFBLogin()}
+          />
+        </View>
       </View>
     );
   };
@@ -104,7 +134,6 @@ class PhoneAuthScreen extends Component {
           />
         </View>
         <TextForm
-          autoFocus
           placeholder="Verification code"
           value={this.state.verificationCode}
           keyboardType={Platform.OS === 'ios' ? 'number-pad' : 'numeric'}
@@ -120,46 +149,44 @@ class PhoneAuthScreen extends Component {
 
   render() {
     return (
-      <View style={{flex: 1}}>
-        <View style={styles.mediaContainer}>
-          <CustomText label="Some image..." />
-        </View>
-        <KeyboardAvoidingView
-          style={styles.inputContainer}
-          keyboardVerticalOffset={this.state.offset}
-          behavior="padding">
-          <View style={styles.title}>
-            <CustomText title label="Become a Socialite" />
+      <KeyboardAvoidingView
+        style={styles.inputContainer}
+        keyboardVerticalOffset={this.state.offset}
+        behavior="position">
+        <DismissKeyboardView style={{flex: 1}}>
+          <View style={styles.mediaContainer}>
+            <CustomText label="Some image..." />
           </View>
-          {this.state.confirmResult
-            ? this.renderConfirmationCodeView()
-            : this.renderPhoneInputView()}
-        </KeyboardAvoidingView>
-      </View>
+          <View style={styles.title}>
+            <CustomText title label={this.state.titling.title} />
+            {this.state.confirmResult
+              ? this.renderConfirmationCodeView()
+              : this.renderPhoneInputView()}
+          </View>
+        </DismissKeyboardView>
+      </KeyboardAvoidingView>
     );
   }
 }
 
 const styles = StyleSheet.create({
   mediaContainer: {
-    flex: 5,
+    flex: 3,
     justifyContent: 'center',
     alignItems: 'center',
   },
   inputContainer: {
-    flex: 4,
+    flex: 1,
     width: R.constants.screenWidth,
     alignItems: 'center',
     backgroundColor: 'white',
   },
   authContainer: {
-    flex: 2,
     alignItems: 'center',
     marginTop: '3%',
   },
   title: {
-    flex: 1,
-    justifyContent: 'flex-end',
+    flex: 2,
     width: R.constants.screenWidth * 0.8,
   },
 });

@@ -11,6 +11,7 @@ const CustomText = ({
   center,
   splash,
   error,
+  customStyle,
   ...restProps
 }) => {
   let textStyle = [];
@@ -36,6 +37,9 @@ const CustomText = ({
   }
   if (error) {
     textStyle = textStyle.concat(styles.error);
+  }
+  if (customStyle) {
+    textStyle = textStyle.concat(customStyle);
   }
 
   return (

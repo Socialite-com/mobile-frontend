@@ -1,10 +1,10 @@
 import React from 'react';
-import {StyleSheet, View, KeyboardAvoidingView, Dimensions} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 
-import Button from 'library/components/Button';
-import CustomText from 'library/components/CustomText';
+import Button from '../../library/components/General/Button';
+import CustomText from '../../library/components/General/CustomText';
 
-const screenWidth = Math.round(Dimensions.get('window').width);
+import R from 'res/R';
 
 class EventType extends React.Component {
   state = {
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     paddingBottom: '5%',
   },
   textContainer: {
-    width: screenWidth * 0.9,
+    width: R.constants.screenWidth * 0.8,
     overflow: 'scroll',
   },
   buttonContainer: {

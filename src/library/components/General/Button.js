@@ -6,18 +6,22 @@ import R from 'res/R';
 const height = 50;
 const padding = 10;
 const margin = 10;
-const width = R.constants.screenWidth * 0.9;
+const width = R.constants.screenWidth * 0.8;
 const backgroundColor = R.colors.primary;
 const borderRadius = 6;
 const color = R.colors.primary;
 
 const Button = ({
+  children,
   title,
   dark,
   light,
   grey,
+  round,
+  long,
   noBorder,
   half,
+  icon,
   customStyle,
   ...restProps
 }) => {
@@ -42,6 +46,16 @@ const Button = ({
   if (half) {
     inlineStyle = inlineStyle.concat(style.half);
   }
+  if (round) {
+    inlineStyle = inlineStyle.concat(style.round);
+  }
+  if (long) {
+    inlineStyle = inlineStyle.concat(style.long);
+    textStyle = textStyle.concat({fontSize: 11});
+  }
+  if (icon) {
+    textStyle = textStyle.concat({height: 0});
+  }
   if (customStyle) {
     inlineStyle = inlineStyle.concat(customStyle);
   }
@@ -49,6 +63,7 @@ const Button = ({
   return (
     <TouchableOpacity {...restProps}>
       <View style={inlineStyle}>
+        {children}
         <Text style={textStyle}>{title}</Text>
       </View>
     </TouchableOpacity>
@@ -76,6 +91,11 @@ const style = StyleSheet.create({
   lightText: {
     color: R.colors.secondary,
   },
+  round: {
+    width: 60,
+    height: 60,
+    borderRadius: 50,
+  },
   light: {
     backgroundColor: 'transparent',
     borderWidth: 1,
@@ -86,8 +106,13 @@ const style = StyleSheet.create({
   noBorder: {
     borderWidth: 0,
   },
+  long: {
+    width: R.constants.screenWidth * 0.85,
+    height: 30,
+    marginTop: 10,
+  },
   half: {
-    width: (R.constants.screenWidth * 0.85) / 2,
+    width: (R.constants.screenWidth * 0.75) / 2,
   },
 });
 

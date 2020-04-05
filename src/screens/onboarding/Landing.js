@@ -1,16 +1,20 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-import Button from 'library/components/Button';
-import CustomText from 'library/components/CustomText';
+import {StyleSheet, View, Text} from 'react-native';
+import Button from 'library/components/General/Button';
+import CustomText from 'library/components/General/CustomText';
 
 class Landing extends React.Component {
   state = {};
   render() {
     return (
-      <View style={styles.container} >
-        <View style={styles.textContainer} >
+      <View style={styles.container}>
+        <View style={styles.textContainer}>
           <CustomText title center label="All your social events" />
-          <CustomText subtitle center label="In one place, instantly accessible" />
+          <CustomText
+            subtitle
+            center
+            label="In one place, instantly accessible"
+          />
         </View>
         <View style={styles.slideShowContainer}>
           <Text>SlideShow...</Text>
@@ -19,13 +23,26 @@ class Landing extends React.Component {
           <Button
             dark
             title="Access an existing event"
-            onPress={() => this.props.navigation.navigate('AccessEvent')}
+            onPress={() => this.props.navigation.navigate('LinkRegister')}
           />
-          <Button
-            light
-            title="Create a new event"
-            onPress={() => this.props.navigation.navigate('OAuth')}
-          />
+          <View style={{flexDirection: 'row'}}>
+            <Button
+              light
+              half
+              title="Sign up"
+              onPress={() =>
+                this.props.navigation.navigate('PhoneAuth', {option: 'signUp'})
+              }
+            />
+            <Button
+              light
+              half
+              title="Sign In"
+              onPress={() =>
+                this.props.navigation.navigate('PhoneAuth', {option: 'signIn'})
+              }
+            />
+          </View>
         </View>
       </View>
     );
@@ -50,7 +67,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flex: 1,
     justifyContent: 'center',
-  }
+  },
 });
 
 export default Landing;
