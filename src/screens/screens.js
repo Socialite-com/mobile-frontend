@@ -22,6 +22,7 @@ import EventName from './organizer/EventName';
 import EventType from './organizer/EventType';
 import EventTime from './organizer/EventTime';
 import EventLocation from './organizer/EventLocation';
+import EventPage from './organizer/EventPage';
 
 const screens = {
   onboarding: {

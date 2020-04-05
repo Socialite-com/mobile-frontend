@@ -11,9 +11,10 @@ import Button from 'library/components/General/Button';
 import CustomText from 'library/components/General/CustomText';
 import TextForm from 'library/components/General/TextInput';
 
-const screenHeight = Math.round(Dimensions.get('window').height);
-const screenWidth = Math.round(Dimensions.get('window').width);
-const keyboardOffset = screenHeight * 0.2;
+import R from 'res/R';
+
+const keyboardOffset = R.constants.screenHeight * 0.2;
+
 class EventType extends React.Component {
   state = {
     private: true,

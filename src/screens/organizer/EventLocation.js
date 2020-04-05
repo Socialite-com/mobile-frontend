@@ -2,7 +2,6 @@ import React from 'react';
 import {
   StyleSheet,
   View,
-  Dimensions,
   KeyboardAvoidingView,
   Keyboard,
   ScrollView,
@@ -19,9 +18,7 @@ import LocationItem from 'library/components/General/LocationItem';
 
 import db from 'library/networking/database';
 
-const screenHeight = Math.round(Dimensions.get('window').height);
-const screenWidth = Math.round(Dimensions.get('window').width);
-const keyboardOffset = screenHeight * 0.2;
+const keyboardOffset = R.constants.screenHeight * 0.2;
 const latDelta = 0.001;
 const longDelta = 0.001;
 

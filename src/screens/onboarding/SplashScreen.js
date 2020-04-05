@@ -2,10 +2,9 @@ import React from 'react';
 import {View, Dimensions, Image} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
-import logo from 'res/images/logo_white.png';
+import R from 'res/R';
 
-const screenHeight = Math.round(Dimensions.get('window').height);
-const screenWidth = Math.round(Dimensions.get('window').width);
+import logo from 'res/images/logo_white.png';
 
 const fadeOut = {
   0: {
@@ -21,16 +20,16 @@ const slideUp = {
     top: 0,
   },
   1: {
-    top: -screenHeight / 2,
+    top: -R.constants.screenHeight / 2,
   },
 };
 
 const slideDown = {
   0: {
-    top: screenHeight / 2,
+    top: R.constants.screenHeight / 2,
   },
   1: {
-    top: screenHeight,
+    top: R.constants.screenHeight,
   },
 };
 
@@ -84,8 +83,8 @@ const styles = {
     position: 'absolute',
     left: 0,
     top: 0,
-    width: screenWidth,
-    height: screenHeight,
+    width: R.constants.screenWidth,
+    height: R.constants.screenHeight,
     zIndex: 2,
   },
   topViewStyles: {
@@ -93,16 +92,16 @@ const styles = {
     left: 0,
     top: 0,
     backgroundColor: 'black',
-    width: screenWidth,
-    height: screenHeight / 2,
+    width: R.constants.screenWidth,
+    height: R.constants.screenHeight / 2,
   },
   bottomViewStyles: {
     position: 'absolute',
     right: 0,
-    top: screenHeight / 2,
+    top: R.constants.screenHeight / 2,
     backgroundColor: 'black',
-    width: screenWidth,
-    height: screenHeight / 2,
+    width: R.constants.screenWidth,
+    height: R.constants.screenHeight / 2,
   },
   logo: {
     height: 80,
