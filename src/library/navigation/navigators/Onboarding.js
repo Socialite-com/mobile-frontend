@@ -26,8 +26,7 @@ export default function Onboarding() {
         name="LinkRegister"
         component={screens.onboarding.LinkRegister}
       />
-      <Stack.Screen name="GetCodes" component={screens.onboarding.GetCodes} />
-      <Stack.Screen name="SignUp" component={screens.onboarding.SignUp} />
+      <Stack.Screen name="GetCode" component={screens.onboarding.GetCode} />
       <Stack.Screen name="UserName" component={screens.onboarding.UserName} />
       <Stack.Screen
         name="CreatePassword"
@@ -37,7 +36,6 @@ export default function Onboarding() {
         name="EnterPassword"
         component={screens.onboarding.EnterPassword}
       />
-      <Stack.Screen name="OAuth" component={screens.onboarding.OAuth} />
       <Stack.Screen
         name="PhoneAuth"
         component={screens.onboarding.PhoneAuthScreen}

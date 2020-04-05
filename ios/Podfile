@@ -4,11 +4,6 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 target 'Socialite' do
   # Pods for Socialite
 
-  pod 'Firebase/Core', '~> 6.13.0'
-  pod 'Firebase/Auth', '~> 6.13.0'
-  pod 'Firebase/Database', '~> 6.13.0'
-  pod 'Firebase/Firestore', '~> 6.13.0'
-
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
   pod 'RCTRequired', :path => "../node_modules/react-native/Libraries/RCTRequired"
@@ -32,7 +27,7 @@ target 'Socialite' do
   pod 'React-jsi', :path => '../node_modules/react-native/ReactCommon/jsi'
   pod 'React-jsiexecutor', :path => '../node_modules/react-native/ReactCommon/jsiexecutor'
   pod 'React-jsinspector', :path => '../node_modules/react-native/ReactCommon/jsinspector'
-  pod 'ReactCommon/jscallinvoker', :path => "../node_modules/react-native/ReactCommon"
+  pod 'ReactCommon/callinvoker', :path => "../node_modules/react-native/ReactCommon"
   pod 'ReactCommon/turbomodule/core', :path => "../node_modules/react-native/ReactCommon"
   pod 'Yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
 
@@ -46,8 +41,14 @@ target 'Socialite' do
   pod 'GoogleMaps'
   pod 'Google-Maps-iOS-Utils'
 
+  # Barcode detection module
+  pod 'react-native-camera', path: '../node_modules/react-native-camera', subspecs: [
+    'BarcodeDetectorMLKit'
+  ]
+
   use_native_modules!
 
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
 end
 

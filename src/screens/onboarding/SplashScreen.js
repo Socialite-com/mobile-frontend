@@ -110,5 +110,3 @@ const styles = {
 };
 
 export default SplashScreen;
-
-//animate logo

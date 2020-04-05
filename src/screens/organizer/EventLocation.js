@@ -7,14 +7,15 @@ import {
   Keyboard,
   ScrollView,
 } from 'react-native';
+
 import Modal from 'react-native-modal';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import {GoogleAutoComplete} from 'react-native-google-autocomplete';
 
-import Button from 'library/components/Button';
-import TextForm from 'library/components/TextInput';
-import CustomText from 'library/components/CustomText';
-import LocationItem from 'library/components/LocationItem';
+import Button from '../../library/components/General/Button';
+import TextForm from '../../library/components/General/TextInput';
+import CustomText from '../../library/components/General/CustomText';
+import LocationItem from 'library/components/General/LocationItem';
 
 import db from 'library/networking/database';
 
@@ -23,6 +24,8 @@ const screenWidth = Math.round(Dimensions.get('window').width);
 const keyboardOffset = screenHeight * 0.2;
 const latDelta = 0.001;
 const longDelta = 0.001;
+
+import R from 'res/R';
 
 class EventLocation extends React.Component {
   state = {
@@ -194,7 +197,7 @@ const styles = StyleSheet.create({
     paddingBottom: '5%',
   },
   textContainer: {
-    width: screenWidth * 0.9,
+    width: R.constants.screenWidth * 0.8,
     overflow: 'scroll',
   },
   modalContentContainer: {

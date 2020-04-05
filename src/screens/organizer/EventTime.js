@@ -11,11 +11,11 @@ import {
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Modal from 'react-native-modal';
 
-import Button from 'library/components/Button';
-import TextForm from 'library/components/TextInput';
-import CustomText from 'library/components/CustomText';
+import Button from '../../library/components/General/Button';
+import TextForm from '../../library/components/General/TextInput';
+import CustomText from '../../library/components/General/CustomText';
 
-const screenWidth = Math.round(Dimensions.get('window').width);
+import R from 'res/R';
 
 //To prevent warning from passing time
 YellowBox.ignoreWarnings([
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     paddingBottom: '5%',
   },
   textContainer: {
-    width: screenWidth * 0.9,
+    width: R.constants.screenWidth * 0.8,
     overflow: 'scroll',
   },
   modalContentContainer: {

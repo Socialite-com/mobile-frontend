@@ -2,11 +2,11 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 
 import db from 'library/networking/database';
-import auth from 'library/networking/auth';
+import auth from 'library/networking/authentication';
 
-import CustomText from 'library/components/CustomText';
-import TextForm from 'library/components/TextInput';
-import Button from 'library/components/Button';
+import CustomText from 'library/components/General/CustomText';
+import TextForm from 'library/components/General/TextInput';
+import Button from 'library/components/General/Button';
 
 import R from 'res/R';
 
@@ -22,7 +22,7 @@ class EnterPassword extends React.Component {
       auth.onSignIn(this.state.userId);
       this.props.navigation.reset({
         index: 0,
-        routes: [{name: this.props.route.params.finalRoute}],
+        routes: [{name: 'User'}],
       });
     } else {
       alert('Wrong Password');
@@ -54,11 +54,11 @@ class EnterPassword extends React.Component {
         </View>
         <View style={styles.inputContainer}>
           <TextForm
+            secureTextEntry={true}
             value={this.state.password}
             onChangeText={password => {
               this.setState({password});
             }}
-            autoFocus
           />
           <Button dark onPress={() => this._handlePassword()} title="Sign In" />
         </View>

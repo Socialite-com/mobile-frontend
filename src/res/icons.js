@@ -17,7 +17,7 @@ const icons = {
   qrCode: require('./icons/qr-code.svg'),
   questionMark: require('./icons/question mark.svg'),
   user: require('./icons/user.svg'),
-  verified: require('./icons/verified.svg')
+  verified: require('./icons/verified.svg'),
 };
 
 export default icons;

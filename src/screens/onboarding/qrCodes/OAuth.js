@@ -1,18 +1,24 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View, Text} from 'react-native';
 
-import Button from 'library/components/Button';
-import CustomText from 'library/components/CustomText';
 import {facebookLogin} from 'library/networking/FBauthentication';
-import auth from 'library/networking/auth';
+import authentication from '../../../library/networking/authentication';
+import Button from 'library/components/General/Button';
+import CustomText from 'library/components/General/CustomText';
 
 import R from 'res/R';
 
-class SignUp extends React.Component {
+class OAuth extends React.Component {
+  state = {
+    titling: {},
+  };
+
   handleFBLogin() {
     facebookLogin().then(r => {
       if (r === 200) {
-        auth.onSignIn('fb-key').then(this.props.navigation.navigate('User'));
+        authentication
+          .onSignIn('fb-key')
+          .then(this.props.navigation.navigate('User'));
       } else {
         alert('Authentication failed.');
       }
@@ -20,14 +26,13 @@ class SignUp extends React.Component {
   }
 
   render() {
-    this.props.navigation.setOptions({headerLeft: null});
     return (
       <View style={{flex: 1, alignItems: 'center'}}>
         <View style={styles.textContainer}>
-          <CustomText title label="Connect your account" />
+          <CustomText title label="Create a new event" />
           <CustomText
-            label="Enter your phone number or connect your social media account
-            and we’ll gather all your Socialite invitations!"
+            style={{fontSize: 18}}
+            label="Sign into your social media account or enter your phone number to get started!"
           />
         </View>
         <View style={styles.mediaContainer}>
@@ -36,9 +41,11 @@ class SignUp extends React.Component {
         <View style={styles.actionContainer}>
           <Button
             dark
-            title="Sign in with phone number"
+            title="Sign up with phone number"
             onPress={() =>
-              this.props.navigation.navigate('PhoneAuth', {finalRoute: 'User'})
+              this.props.navigation.navigate('PhoneAuth', {
+                finalRoute: 'CreateEvent',
+              })
             }
           />
           <CustomText subtitle_2 label="Or" />
@@ -70,4 +77,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignUp;
+export default OAuth;

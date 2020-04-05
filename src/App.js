@@ -1,9 +1,11 @@
-import * as React from 'react';
+import React from 'react';
+import {StatusBar} from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import {NavigationContainer} from '@react-navigation/native';
 import {createRootNavigator} from './library/navigation/router';
+import authentication from './library/networking/authentication';
+import auth from '@react-native-firebase/auth';
 import SplashScreenComponent from './screens/onboarding/SplashScreen';
-import auth from './library/networking/auth';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -28,18 +30,30 @@ export default class App extends React.Component {
 
   async componentDidMount() {
     SplashScreen.hide();
-    auth
+    authentication
       .isSignedIn()
       .then(res => this.setState({signedIn: res, checkedSignIn: true}))
       .catch(err => alert(err));
+
+    this.subscriber = auth().onAuthStateChanged(user => {
+      if (user !== null) {
+        console.log('Signed In');
+        authentication
+          .isSignedIn()
+          .then(res => this.setState({signedIn: res, checkedSignIn: true}));
+      }
+    });
     await this.splashDelay();
   }
 
   componentWillUnmount() {
     clearTimeout(this.splashDelay);
+    this.subscriber();
   }
 
   render() {
+    StatusBar.setBarStyle('dark-content', true);
+
     return (
       <NavigationContainer>
         {!this.state.delayedRemove && (

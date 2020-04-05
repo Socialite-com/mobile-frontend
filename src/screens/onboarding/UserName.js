@@ -1,23 +1,27 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import {StyleSheet, View} from 'react-native';
 
-import CustomText from "library/components/CustomText";
-import TextForm from "library/components/TextInput";
-import Button from "library/components/Button";
+import CustomText from 'library/components/General/CustomText';
+import TextForm from 'library/components/General/TextInput';
+import Button from 'library/components/General/Button';
 
-import R from "res/R";
+import R from 'res/R';
 
 class UserName extends React.Component {
   state = {
-    username: "",
-    error: ""
+    username: '',
+    error: '',
   };
 
   _handleUserName() {
     // Add username restrictions
-    if (this.state.username === "") { this.setState({ error: "Username can't be blank!" }) }
-    else { this.props.navigation.navigate("CreatePassword",
-      { userName: this.state.username, finalRoute: this.props.route.params.finalRoute }) }
+    if (this.state.username === '') {
+      this.setState({error: "Username can't be blank!"});
+    } else {
+      this.props.navigation.navigate('CreatePassword', {
+        userName: this.state.username,
+      });
+    }
   }
 
   render() {
@@ -31,11 +35,10 @@ class UserName extends React.Component {
           <TextForm
             value={this.state.username}
             onChangeText={username => {
-              this.setState({ username })
+              this.setState({username});
             }}
-            autoFocus
           />
-          <Button dark onPress={ () =>  this._handleUserName() } title="Next" />
+          <Button dark onPress={() => this._handleUserName()} title="Next" />
           <CustomText error label={this.state.error} />
         </View>
       </View>
@@ -48,13 +51,13 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: '10%',
     justifyContent: 'flex-end',
-    width: R.constants.screenWidth * 0.8
+    width: R.constants.screenWidth * 0.8,
   },
   inputContainer: {
     flex: 3,
     marginTop: '5%',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 });
 
 export default UserName;

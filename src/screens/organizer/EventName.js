@@ -1,13 +1,14 @@
 import React from 'react';
-import {StyleSheet, View, KeyboardAvoidingView, Dimensions} from 'react-native';
+import {StyleSheet, View, KeyboardAvoidingView} from 'react-native';
 
-import Button from 'library/components/Button';
-import TextForm from 'library/components/TextInput';
-import CustomText from 'library/components/CustomText';
+import Button from '../../library/components/General/Button';
+import TextForm from '../../library/components/General/TextInput';
+import CustomText from '../../library/components/General/CustomText';
 
-const screenHeight = Math.round(Dimensions.get('window').height);
-const screenWidth = Math.round(Dimensions.get('window').width);
-const keyboardOffset = screenHeight * 0.2;
+import R from 'res/R';
+
+const keyboardOffset = R.constants.screenHeight * 0.2;
+
 class EventName extends React.Component {
   state = {
     name: '',
@@ -65,7 +66,7 @@ const styles = StyleSheet.create({
     paddingBottom: '5%',
   },
   textContainer: {
-    width: screenWidth * 0.9,
+    width: R.constants.screenWidth * 0.8,
     overflow: 'scroll',
   },
 });

@@ -1,40 +1,23 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import {
-  TouchableHighlight,
-  TouchableWithoutFeedback,
+  TouchableOpacity,
   StyleSheet,
   View,
   Text,
   Image,
   ImageBackground,
-  Dimensions,
 } from 'react-native';
-import * as Animatable from 'react-native-animatable';
 
-import {invertColor} from '../networking/qrGen';
+import {invertColor} from '../../networking/qrGen';
 
 import R from 'res/R';
 
-const screenHeight = Math.round(Dimensions.get('window').height);
-
-const fadeOut = {
-  0: {
-    marginTop: 0,
-  },
-  1: {
-    marginTop: screenHeight,
-  },
-};
-
-export function createEventCard(item, index) {
+const EventCard = ({item, small, ...children}) => {
   const organizer = item.userName;
   const textColor = invertColor(item.backgroundColor, true);
   var logoImg = R.images.logo_white;
-  let cardView = null; //cardview ref
-
-  function handlePress() {
-    cardView.animate(fadeOut, 500);
-  }
+  var cardHeight = 250;
+  var cardPadding = 0;
 
   if (textColor === '#000000') {
     logoImg = R.images.logo_dark;
@@ -42,19 +25,23 @@ export function createEventCard(item, index) {
     logoImg = R.images.logo_white;
   }
 
+  if (small) {
+    cardHeight = 225;
+    cardPadding = 3;
+  }
+
   const styles = StyleSheet.create({
     eventContainer: {
-      position: 'absolute',
-      top: 65 * index,
-      height: 250,
+      height: cardHeight,
+      padding: cardPadding,
       width: '100%',
-      marginTop: 0,
+      marginTop: 6,
       elevation: 4,
       borderRadius: 6,
-      shadowRadius: 20,
+      shadowRadius: 2,
       shadowOpacity: 0.4,
       marginBottom: -176,
-      shadowColor: textColor,
+      shadowColor: '#000000',
       backgroundColor: item.backgroundColor,
       shadowOffset: {width: 0, height: -0.25},
       transform: [{rotateX: '-5deg'}, {perspective: 50}],
@@ -93,7 +80,6 @@ export function createEventCard(item, index) {
       flex: 1,
       alignItems: 'flex-end',
       flexDirection: 'row',
-      paddingBottom: '7%',
       padding: '4%',
     },
     profileImgContainer: {
@@ -145,43 +131,40 @@ export function createEventCard(item, index) {
   });
 
   return (
-    <TouchableWithoutFeedback onPress={handlePress} key={index}>
-      <Animatable.View
-        style={styles.eventContainer}
-        // easing="ease-in-out-cubic" // for diffrent time of easing
-        ref={ref => (cardView = ref)}>
-        <ImageBackground
-          source={{uri: item.backgroundImage}}
-          imageStyle={styles.backgroundImage}
-          style={{width: '100%', height: '100%'}}>
-          <View style={styles.textContainer}>
-            <View style={{flex: 1, flexShrink: 1}}>
-              <Text style={styles.eventTitle}>{item.title}</Text>
-              <Text style={styles.organizer}>{item.type}</Text>
-            </View>
-            <View style={{flex: 1, alignItems: 'flex-end'}}>
-              <Text style={styles.rsvp}>RSVP</Text>
-            </View>
+    <View style={styles.eventContainer}>
+      <ImageBackground
+        source={{uri: item.backgroundImage}}
+        imageStyle={styles.backgroundImage}
+        style={{width: '100%', height: '100%'}}>
+        <View style={styles.textContainer}>
+          <View style={{flex: 1, flexShrink: 1}}>
+            <Text style={styles.eventTitle}>{item.title}</Text>
+            <Text style={styles.organizer}>{item.type}</Text>
           </View>
-          <View style={styles.cardBody}>
-            <Image style={styles.logoImage} source={logoImg} />
-            <Text style={styles.logoText}>Socialite</Text>
+          <View style={{flex: 1, alignItems: 'flex-end'}}>
+            <Text style={styles.rsvp}>RSVP</Text>
           </View>
-          <View style={styles.cardFooter}>
-            <View style={styles.row}>
-              <TouchableHighlight style={styles.profileImgContainer}>
-                <Text />
-              </TouchableHighlight>
-              <Text style={styles.organizer}>{organizer}</Text>
+        </View>
+        <View style={styles.cardBody}>
+          <Image style={styles.logoImage} source={logoImg} />
+          <Text style={styles.logoText}>Socialite</Text>
+        </View>
+        <View style={styles.cardFooter}>
+          <TouchableOpacity style={styles.row}>
+            <View style={styles.profileImgContainer}>
+              <Text />
             </View>
-            <View style={{flex: 1, alignItems: 'flex-end'}}>
-              {/*<TouchableHighlight style={styles.qrContainer}>*/}
-              <Image style={styles.qrCode} source={{uri: item.qrCode}} />
-              {/*</TouchableHighlight>*/}
-            </View>
+            <Text style={styles.organizer}>{organizer}</Text>
+          </TouchableOpacity>
+          <View style={{flex: 1, alignItems: 'flex-end'}}>
+            {/*<TouchableHighlight style={styles.qrContainer}>*/}
+            <Image style={styles.qrCode} source={{uri: item.qrCode}} />
+            {/*</TouchableHighlight>*/}
           </View>
-        </ImageBackground>
-      </Animatable.View>
-    </TouchableWithoutFeedback>
+        </View>
+      </ImageBackground>
+    </View>
   );
-}
+};
+
+export default EventCard;

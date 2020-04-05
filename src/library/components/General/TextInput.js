@@ -1,12 +1,12 @@
 import React from 'react';
-import {View, TextInput, StyleSheet} from 'react-native';
+import {TextInput, StyleSheet} from 'react-native';
 
 import R from 'res/R';
 
 const height = 50;
 const padding = 10;
 const margin = 10;
-const width = R.constants.screenWidth * 0.9;
+const width = R.constants.screenWidth * 0.8;
 const backgroundColor = 'transparent';
 const borderWidth = 1;
 const borderRadius = 6;

@@ -1,45 +1,30 @@
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-  KeyboardAvoidingView,
-  Dimensions,
-  Platform,
-} from 'react-native';
+import {StyleSheet, View, KeyboardAvoidingView, Platform} from 'react-native';
 
-import Button from 'library/components/General/Button';
-import CustomText from 'library/components/General/CustomText';
-import TextForm from 'library/components/General/TextInput';
+import Button from '../../library/components/General/Button';
+import TextForm from '../../library/components/General/TextInput';
+import CustomText from '../../library/components/General/CustomText';
 
-const screenHeight = Math.round(Dimensions.get('window').height);
-const screenWidth = Math.round(Dimensions.get('window').width);
-const keyboardOffset = screenHeight * 0.2;
-class EventType extends React.Component {
+import R from 'res/R';
+
+const keyboardOffset = R.constants.screenHeight * 0.2;
+
+class EventPrice extends React.Component {
   state = {
-    private: true,
     free: true,
     price: '',
   };
-
-  handleType(value) {
-    this.setState({private: value});
-  }
 
   handlePrice(value) {
     this.setState({free: value});
   }
 
-  handleVerifyType = () => {
+  handleVerifyPrice = () => {
     if (
       (!this.state.free && parseInt(this.state.price, 0) > 0) ||
       this.state.free
     ) {
-      this.props.navigation.navigate('EventTime', {
-        name: this.props.route.params.name,
-        private: this.state.private,
-        free: this.state.free,
-        price: this.state.price,
-      });
+      alert('Done!');
     } else {
       alert('Your event must have a valid price');
     }
@@ -49,36 +34,14 @@ class EventType extends React.Component {
     return (
       <View style={styles.container}>
         <View style={[styles.textContainer, styles.titleContainer]}>
-          <CustomText label="What type of event are you organizing?" subtitle />
+          <CustomText label="How much will tickets cost?" subtitle />
         </View>
-
-        {this.state.private ? (
-          <View style={styles.buttonContainer}>
-            <Button title="Private" dark half />
-            <Button
-              title="Public"
-              light
-              half
-              onPress={() => this.handleType(false)}
-            />
-          </View>
-        ) : (
-          <View style={styles.buttonContainer}>
-            <Button
-              title="Private"
-              light
-              half
-              onPress={() => this.handleType(true)}
-            />
-            <Button title="Public" dark half />
-          </View>
-        )}
 
         {this.state.free ? (
           <View style={styles.buttonContainer}>
             <Button title="Free" dark half />
             <Button
-              title="Paid"
+              title="Public"
               light
               half
               onPress={() => this.handlePrice(false)}
@@ -88,12 +51,12 @@ class EventType extends React.Component {
           <View>
             <View style={styles.buttonContainer}>
               <Button
-                title="Free"
+                title="Paid"
                 light
                 half
                 onPress={() => this.handlePrice(true)}
               />
-              <Button title="Paid" dark half />
+              <Button title="Public" dark half />
             </View>
 
             <KeyboardAvoidingView
@@ -101,7 +64,7 @@ class EventType extends React.Component {
               keyboardVerticalOffset={keyboardOffset}
               behavior="padding">
               <TextForm
-                placeholder="Set your price (in CAD)"
+                placeholder="Set your price"
                 keyboardType={Platform.OS === 'ios' ? 'number-pad' : 'numeric'}
                 returnKeyType={'next'}
                 value={this.state.price.toString()}
@@ -114,7 +77,7 @@ class EventType extends React.Component {
           </View>
         )}
 
-        <Button title="Next" dark onPress={this.handleVerifyType} />
+        <Button title="Next" dark onPress={this.handleVerifyPrice} />
       </View>
     );
   }
@@ -127,7 +90,7 @@ const styles = StyleSheet.create({
     marginTop: '10%',
   },
   titleContainer: {
-    paddingBottom: '10%',
+    paddingBottom: '5%',
   },
   textContainer: {
     width: R.constants.screenWidth * 0.8,
@@ -136,12 +99,9 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
+    marginTop: '5%',
     marginBottom: '2%',
   },
 });
 
-export default EventType;
-
-//On select image popup bottom drawer
-//make possible to close/swipe down
-//fix styling on the next one
+export default EventPrice;
