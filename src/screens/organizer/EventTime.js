@@ -1,6 +1,13 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, Keyboard, View} from 'react-native';
+import {YellowBox} from 'react-native';
 
+import {
+  StyleSheet,
+  View,
+  Dimensions,
+  TouchableOpacity,
+  Keyboard,
+} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Modal from 'react-native-modal';
 
@@ -10,6 +17,10 @@ import CustomText from '../../library/components/General/CustomText';
 
 import R from 'res/R';
 
+//To prevent warning from passing time
+YellowBox.ignoreWarnings([
+  'Non-serializable values were found in the navigation state',
+]);
 class EventTime extends React.Component {
   state = {
     isModalVisible: false,
@@ -50,7 +61,13 @@ class EventTime extends React.Component {
 
   handleVerifyTime = () => {
     if (this.state.time > new Date()) {
-      this.props.navigation.navigate('EventLocation');
+      this.props.navigation.navigate('EventLocation', {
+        name: this.props.route.params.name,
+        private: this.props.route.params.private,
+        free: this.props.route.params.free,
+        price: this.props.route.params.price,
+        time: this.state.time,
+      });
     } else {
       alert('You must set a valid time for the event');
     }

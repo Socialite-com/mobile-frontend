@@ -37,3 +37,5 @@ export default function CreateEvent() {
     </Stack.Navigator>
   );
 }
+
+//pass data to the end

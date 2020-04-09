@@ -221,8 +221,7 @@ class Home extends React.Component {
             onSwipeComplete={() => this._handleModal('addModalVisible')}
             onBackdropPress={() => this._handleModal('addModalVisible')}
             style={styles.modalContainer}>
-            <View style={styles.modalCreateView}>
-            </View>
+            <View style={styles.modalCreateView} />
           </Modal>
         </View>
       </SafeAreaView>

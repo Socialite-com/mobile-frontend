@@ -1,10 +1,11 @@
 import React from 'react';
 import {StatusBar} from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
 import {NavigationContainer} from '@react-navigation/native';
 import {createRootNavigator} from './library/navigation/router';
-import SplashScreen from './screens/onboarding/SplashScreen';
 import authentication from './library/networking/authentication';
 import auth from '@react-native-firebase/auth';
+import SplashScreenComponent from './screens/onboarding/SplashScreen';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -13,19 +14,22 @@ export default class App extends React.Component {
     this.state = {
       signedIn: false,
       checkedSignIn: false,
+      delayedRemove: false,
     };
   }
 
+  //to remove splash screen and allow touches
   splashDelay = async () => {
     return new Promise(resolve =>
       setTimeout(() => {
+        this.setState({delayedRemove: true});
         resolve('result');
-      }, 1500),
+      }, 1750),
     );
   };
 
   async componentDidMount() {
-    await this.splashDelay();
+    SplashScreen.hide();
     authentication
       .isSignedIn()
       .then(res => this.setState({signedIn: res, checkedSignIn: true}))
@@ -39,6 +43,7 @@ export default class App extends React.Component {
           .then(res => this.setState({signedIn: res, checkedSignIn: true}));
       }
     });
+    await this.splashDelay();
   }
 
   componentWillUnmount() {
@@ -47,12 +52,15 @@ export default class App extends React.Component {
   }
 
   render() {
-    const {checkedSignIn, signedIn} = this.state;
     StatusBar.setBarStyle('dark-content', true);
 
     return (
       <NavigationContainer>
-        {!checkedSignIn ? <SplashScreen /> : createRootNavigator(signedIn)}
+        {!this.state.delayedRemove && (
+          <SplashScreenComponent isReady={this.state.checkedSignIn} />
+        )}
+
+        {this.state.checkedSignIn && createRootNavigator(this.state.signedIn)}
       </NavigationContainer>
     );
   }
