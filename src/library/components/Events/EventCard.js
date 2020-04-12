@@ -12,7 +12,7 @@ import {invertColor} from '../../networking/qrGen';
 
 import R from 'res/R';
 
-const EventCard = ({item, small, index, ...children}) => {
+const EventCard = ({item, small, ...children}) => {
   const organizer = item.userName;
   const textColor = invertColor(item.backgroundColor, true);
   var logoImg = R.images.logo_white;
