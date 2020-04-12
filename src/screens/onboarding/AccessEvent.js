@@ -1,10 +1,11 @@
 import React from 'react';
-import {View, StyleSheet, KeyboardAvoidingView} from 'react-native';
+import {View, StyleSheet, KeyboardAvoidingView, Image} from 'react-native';
 
 import CustomText from '../../library/components/General/CustomText';
 import Button from '../../library/components/General/Button';
 import R from 'res/R';
 
+import Scan from 'res/images/scan.jpg';
 class AccessEvent extends React.Component {
   state = {};
 
@@ -16,7 +17,7 @@ class AccessEvent extends React.Component {
         behavior="padding">
         <View style={{flex: 1, alignItems: 'center'}}>
           <View style={styles.mediaArea}>
-            <CustomText label="Visual instructions on how to detect invites using Socialite (Link and QR Scanning)" />
+            <Image style={styles.image} source={Scan} />
           </View>
           <View style={styles.textArea}>
             <CustomText title label="Access an existing event" />
@@ -61,6 +62,10 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     marginBottom: '5%',
+  },
+  image: {
+    height: R.constants.screenWidth * 0.8,
+    width: R.constants.screenWidth * 0.8,
   },
 });
 

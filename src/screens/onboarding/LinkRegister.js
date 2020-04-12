@@ -1,5 +1,11 @@
 import React from 'react';
-import {View, Alert, StyleSheet, KeyboardAvoidingView} from 'react-native';
+import {
+  View,
+  Alert,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Image,
+} from 'react-native';
 
 import Modal from 'react-native-modal';
 import ImagePicker from 'react-native-image-picker';
@@ -17,6 +23,8 @@ import TextForm from 'library/components/General/TextInput';
 import CustomText from 'library/components/General/CustomText';
 
 import R from 'res/R';
+
+import Scan from 'res/images/scan.jpg';
 
 class LinkRegister extends React.Component {
   state = {
@@ -177,7 +185,7 @@ class LinkRegister extends React.Component {
         ) : (
           <DismissKeyboardView style={{flex: 1, alignItems: 'center'}}>
             <View style={styles.mediaArea}>
-              <CustomText label="Instructions to scan qr code or paste key" />
+              <Image style={styles.image} source={Scan} />
             </View>
             <View style={styles.textArea}>
               <CustomText title label="Access an existing event" />
@@ -261,6 +269,10 @@ const styles = StyleSheet.create({
   modalContainer: {
     justifyContent: 'flex-end',
     margin: 0,
+  },
+  image: {
+    height: R.constants.screenWidth * 0.8,
+    width: R.constants.screenWidth * 0.8,
   },
 });
 

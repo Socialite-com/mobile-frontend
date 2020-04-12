@@ -1,5 +1,11 @@
 import React, {Component} from 'react';
-import {KeyboardAvoidingView, StyleSheet, Platform, View} from 'react-native';
+import {
+  KeyboardAvoidingView,
+  StyleSheet,
+  Platform,
+  View,
+  Image,
+} from 'react-native';
 
 import Button from 'library/components/General/Button';
 import TextForm from 'library/components/General/TextInput';
@@ -14,6 +20,8 @@ import {facebookLogin} from '../../library/networking/FBauthentication';
 import authentication from '../../library/networking/authentication';
 
 import R from 'res/R';
+
+import Register from 'res/images/register.jpg';
 
 class PhoneAuthScreen extends Component {
   state = {
@@ -155,7 +163,7 @@ class PhoneAuthScreen extends Component {
         behavior="position">
         <DismissKeyboardView style={{flex: 1}}>
           <View style={styles.mediaContainer}>
-            <CustomText label="Some image..." />
+            <Image style={styles.image} source={Register} />
           </View>
           <View style={styles.title}>
             <CustomText title label={this.state.titling.title} />
@@ -187,6 +195,10 @@ const styles = StyleSheet.create({
   },
   title: {
     flex: 2,
+    width: R.constants.screenWidth * 0.8,
+  },
+  image: {
+    height: R.constants.screenWidth * 0.8,
     width: R.constants.screenWidth * 0.8,
   },
 });

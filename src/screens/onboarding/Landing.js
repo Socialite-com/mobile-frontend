@@ -1,24 +1,97 @@
 import React from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View, Text, YellowBox, Image} from 'react-native';
+import Carousel, {Pagination} from 'react-native-snap-carousel';
+
 import Button from 'library/components/General/Button';
 import CustomText from 'library/components/General/CustomText';
 
+import R from 'res/R';
+//images
+import Intro from 'res/images/intro.jpg';
+import Browse from 'res/images/browse.jpg';
+import Join from 'res/images/join.jpg';
+import Organize from 'res/images/organize.jpg';
+
+console.disableYellowBox = true; //for flatlist error testing with carousel
+
 class Landing extends React.Component {
-  state = {};
+  state = {
+    slides: [
+      {
+        title: 'All your social events',
+        subtitle: 'In one place, instantly accessible',
+        image: Intro,
+      },
+      {
+        title: 'Browse Events',
+        subtitle: 'Search and attend exiciting and new events',
+        image: Browse,
+      },
+      {
+        title: 'Join Events',
+        subtitle: 'Attend events within minutes',
+        image: Join,
+      },
+      {
+        title: 'Organize Events',
+        subtitle: 'Plan parties with ease',
+        image: Organize,
+      },
+    ],
+    activeSlide: 0,
+  };
+
+  _renderItem = ({item, index}) => {
+    return (
+      <View style={styles.container} key={index}>
+        <View style={styles.textContainer}>
+          <CustomText title center label={item.title} />
+          <CustomText subtitle center label={item.subtitle} />
+        </View>
+        <View style={styles.slideShowContainer}>
+          <Image style={styles.image} source={item.image} />
+        </View>
+      </View>
+    );
+  };
+
+  get pagination() {
+    const {slides, activeSlide} = this.state;
+    return (
+      <Pagination
+        dotsLength={slides.length}
+        activeDotIndex={activeSlide}
+        containerStyle={{width: 20, height: 0, paddingVertical: '2%'}}
+        dotStyle={{
+          width: 10,
+          borderRadius: 5,
+          backgroundColor: 'rgba(0,0,0,0.92)',
+        }}
+        inactiveDotStyle={
+          {
+            // Define styles for inactive dots here
+          }
+        }
+        inactiveDotOpacity={0.4}
+        inactiveDotScale={0.6}
+      />
+    );
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.textContainer}>
-          <CustomText title center label="All your social events" />
-          <CustomText
-            subtitle
-            center
-            label="In one place, instantly accessible"
-          />
-        </View>
-        <View style={styles.slideShowContainer}>
-          <Text>SlideShow...</Text>
-        </View>
+        {this.pagination}
+
+        <Carousel
+          data={this.state.slides}
+          renderItem={this._renderItem}
+          sliderWidth={R.constants.screenWidth}
+          itemWidth={R.constants.screenWidth * 0.9}
+          containerCustomStyle={{height: 300}}
+          onSnapToItem={index => this.setState({activeSlide: index})}
+        />
+
         <View style={styles.buttonContainer}>
           <Button
             dark
@@ -55,8 +128,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textContainer: {
-    flex: 1,
-    width: '70%',
+    marginTop: 50,
+    width: '90%',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -67,6 +140,10 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flex: 1,
     justifyContent: 'center',
+  },
+  image: {
+    height: R.constants.screenWidth * 0.8,
+    width: R.constants.screenWidth * 0.8,
   },
 });
 
