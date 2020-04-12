@@ -1,5 +1,5 @@
 import React from 'react';
-import {TextInput, StyleSheet} from 'react-native';
+import {View, TextInput, StyleSheet} from 'react-native';
 
 import R from 'res/R';
 
@@ -17,7 +17,11 @@ const TextForm = ({icon, ...restProps}) => {
   let defaultStyle = [];
   defaultStyle = defaultStyle.concat(styles.defaultStyle);
 
-  return <TextInput {...restProps} style={defaultStyle} />;
+  return (
+    <View>
+      <TextInput {...restProps} style={defaultStyle} />
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({

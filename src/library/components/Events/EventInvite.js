@@ -9,6 +9,8 @@ import {
 
 import R from 'res/R';
 
+import Icon from 'react-native-vector-icons/AntDesign';
+
 export const Map = ({map}) => {
   return (
     <View style={cardStyles.card}>
@@ -59,7 +61,7 @@ export const Field = ({header, body, ...restprops}) => {
   );
 };
 
-export const Invite = ({children}) => {
+export const Invite = ({children, navigator}) => {
   return (
     <View style={styles.bottomView}>
       <View style={styles.card}>
@@ -72,6 +74,14 @@ export const Invite = ({children}) => {
               <Text style={styles.organizer}>Marianopolis Student Union</Text>
               <Text style={styles.status}>Verified</Text>
             </View>
+            <TouchableOpacity
+              onPress={() => navigator.pop()}
+              style={{
+                flex: 1,
+                alignItems: 'flex-end',
+              }}>
+              <Icon name="close" size={25} />
+            </TouchableOpacity>
           </View>
         </View>
         <View style={styles.formView}>{children}</View>

@@ -12,7 +12,7 @@ import {
 
 import R from 'res/R';
 
-class EventPage extends React.Component {
+class EditEventPage extends React.Component {
   constructor() {
     super();
     this.panels = {
@@ -60,7 +60,7 @@ class EventPage extends React.Component {
             {this.panels[this.state.activePanel]}
           </Modal>
         </ImageBackground>
-        <Invite>
+        <Invite navigator={this.props.navigation}>
           <Field
             onPress={() => this._openPanel('location')}
             header="Where"
@@ -98,4 +98,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EventPage;
+export default EditEventPage;

@@ -15,6 +15,7 @@ import GetCode from './onboarding/GetCode';
 import Event from './user/Event';
 import Home from './user/Home';
 import Browse from './user/Browse';
+import Activity from './user/Activity';
 
 import Settings from './userOptions/Settings';
 
@@ -22,7 +23,15 @@ import EventName from './organizer/EventName';
 import EventType from './organizer/EventType';
 import EventTime from './organizer/EventTime';
 import EventLocation from './organizer/EventLocation';
-import EventPage from './organizer/EventPage';
+import EventPrice from './organizer/EventPrice';
+
+import EventPage from './events/view/EventPage';
+import GuestList from './events/view/GuestList';
+import Discover from './events/view/Discover';
+
+import ManageEvent from './events/manage/ManageEvent';
+import InviteGuests from './events/manage/InviteGuests';
+import EditEventPage from './events/manage/EditEventPage';
 
 const screens = {
   onboarding: {
@@ -43,17 +52,30 @@ const screens = {
     Event: Event,
     Home: Home,
     Browse: Browse,
+    Activity: Activity,
 
     options: {
       Settings: Settings,
     },
   },
   organizer: {
-    EventPage: EventPage,
     EventName: EventName,
     EventType: EventType,
     EventTime: EventTime,
+    EventPrice: EventPrice,
     EventLocation: EventLocation,
+  },
+  events: {
+    manage: {
+      InviteGuests: InviteGuests,
+      EditEventPage: EditEventPage,
+      ManageEvent: ManageEvent,
+    },
+    view: {
+      GuestList: GuestList,
+      EventPage: EventPage,
+      Discover: Discover,
+    },
   },
 };
 

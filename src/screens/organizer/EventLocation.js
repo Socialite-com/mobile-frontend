@@ -1,22 +1,18 @@
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-  KeyboardAvoidingView,
-  Keyboard,
-  ScrollView,
-} from 'react-native';
+import {StyleSheet, View, KeyboardAvoidingView, ScrollView} from 'react-native';
 
 import Modal from 'react-native-modal';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
-import {GoogleAutoComplete} from 'react-native-google-autocomplete';
 
 import Button from '../../library/components/General/Button';
 import TextForm from '../../library/components/General/TextInput';
 import CustomText from '../../library/components/General/CustomText';
-import LocationItem from 'library/components/General/LocationItem';
+import LocationItem from '../../library/components/General/LocationItem';
+import DismissKeyboardView from '../../library/components/General/DismissKeyboardView';
 
+import maps from '../../library/networking/googleMaps';
 import db from 'library/networking/database';
+import _ from 'lodash';
 
 const keyboardOffset = R.constants.screenHeight * 0.2;
 const latDelta = 0.001;
@@ -25,36 +21,50 @@ const longDelta = 0.001;
 import R from 'res/R';
 
 class EventLocation extends React.Component {
-  state = {
-    isModalVisible: false,
-    location: {
-      latitude: 37.78825,
-      longitude: -122.4324,
-      latitudeDelta: latDelta,
-      longitudeDelta: longDelta,
-    },
-    textLocation: '',
-  };
-
-  handleLocationSelect = async (fetchDetails, id) => {
-    const res = await fetchDetails(id);
-
-    const location = res.geometry.location;
-    this.setState({
-      textLocation: res.formatted_address,
+  constructor(props) {
+    super(props);
+    this.state = {
+      isModalVisible: false,
       location: {
-        latitude: location.lat,
-        longitude: location.lng,
+        latitude: 75.78825,
+        longitude: -122.4324,
         latitudeDelta: latDelta,
         longitudeDelta: longDelta,
       },
-    });
+      textLocation: '',
+      inputValue: '',
+      locationResults: [],
+    };
+    this.onDebounce = _.debounce(this.handleTextChange, 500);
+  }
 
-    this.handleModal();
+  handleLocationSelect = id => {
+    maps.geocode(id).then(res => {
+      const location = res.geometry.location;
+      this.setState({
+        textLocation: res.formatted_address,
+        location: {
+          latitude: location.lat,
+          longitude: location.lng,
+          latitudeDelta: latDelta,
+          longitudeDelta: longDelta,
+        },
+      });
+      this.handleModal();
+    });
+  };
+
+  handleTextChange = textValue => {
+    if (textValue === '') {
+      this.setState({locationResults: []});
+    } else {
+      maps.autocomplete(textValue).then(results => {
+        this.setState({locationResults: results});
+      });
+    }
   };
 
   handleModal = () => {
-    Keyboard.dismiss;
     const visible = this.state.isModalVisible;
     this.setState({isModalVisible: !visible});
   };
@@ -105,48 +115,44 @@ class EventLocation extends React.Component {
   };
 
   render() {
+    const {inputValue, locationResults} = this.state;
     return (
-      <View style={styles.container}>
+      <DismissKeyboardView style={styles.container}>
         <View style={[styles.textContainer, styles.titleContainer]}>
           <CustomText label="Where will your event take place?" subtitle />
         </View>
 
         <KeyboardAvoidingView
+          style={{flex: 1, justifyContent: 'center'}}
           keyboardVerticalOffset={keyboardOffset}
           behavior="padding">
-          <GoogleAutoComplete
-            queryTypes=""
-            components="country:ca"
-            apiKey="AIzaSyDJSAvTqCXe-SDaSNxLKU4kiogZX06wR14">
-            {({
-              inputValue,
-              handleTextChange,
-              locationResults,
-              fetchDetails,
-            }) => (
-              <>
-                <TextForm
-                  placeholder="Choose Location"
-                  value={inputValue}
-                  onChangeText={handleTextChange}
-                />
+          <View
+            style={{
+              width: R.constants.screenWidth,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <TextForm
+              placeholder="Choose Location"
+              value={inputValue}
+              onChangeText={value => {
+                this.setState({inputValue: value});
+                this.onDebounce(value);
+              }}
+            />
+          </View>
 
-                <ScrollView
-                  contentContainerStyle={styles.scrollView}
-                  keyboardShouldPersistTaps="always">
-                  {locationResults.map((el, i) => (
-                    <LocationItem
-                      {...el}
-                      onPress={() =>
-                        this.handleLocationSelect(fetchDetails, el.place_id)
-                      }
-                      key={String(i)}
-                    />
-                  ))}
-                </ScrollView>
-              </>
-            )}
-          </GoogleAutoComplete>
+          <ScrollView
+            contentContainerStyle={styles.scrollView}
+            keyboardShouldPersistTaps="always">
+            {locationResults.map((el, i) => (
+              <LocationItem
+                {...el}
+                onPress={() => this.handleLocationSelect(el.place_id)}
+                key={String(i)}
+              />
+            ))}
+          </ScrollView>
         </KeyboardAvoidingView>
 
         <Modal
@@ -169,7 +175,7 @@ class EventLocation extends React.Component {
             </MapView>
 
             <View style={styles.buttonContainer}>
-              <Button title="Cancel" grey half onPress={this.removeLocation} />
+              <Button title="Cancel" light half onPress={this.removeLocation} />
               <Button
                 title="Confirm"
                 dark
@@ -179,7 +185,7 @@ class EventLocation extends React.Component {
             </View>
           </View>
         </Modal>
-      </View>
+      </DismissKeyboardView>
     );
   }
 }
@@ -201,7 +207,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 10,
+    borderRadius: 8,
     paddingVertical: 30,
   },
   modalContainer: {
@@ -214,7 +220,7 @@ const styles = StyleSheet.create({
     marginBottom: '2%',
   },
   map: {
-    width: '90%',
+    width: R.constants.screenWidth * 0.8,
     height: 250,
     marginVertical: '2%',
   },
