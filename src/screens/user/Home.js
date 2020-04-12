@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  TouchableWithoutFeedback,
   TouchableHighlight,
   TouchableOpacity,
   RefreshControl,
@@ -8,6 +9,7 @@ import {
   ScrollView,
   View,
 } from 'react-native';
+import * as Animatable from 'react-native-animatable';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import db from 'library/networking/database';
@@ -23,6 +25,24 @@ import R from 'res/R';
 
 const titles = ['My Invites', 'My Events'];
 
+const slideDown = {
+  0: {
+    top: 0,
+  },
+  1: {
+    top: R.constants.screenHeight,
+  },
+};
+
+const slideUp = {
+  0: {
+    top: R.constants.screenHeight,
+  },
+  1: {
+    top: 0,
+  },
+};
+
 class Home extends React.Component {
   state = {
     userName: '',
@@ -33,6 +53,16 @@ class Home extends React.Component {
     refreshing: false,
 
     addModalVisible: false,
+  };
+
+  //refs
+  card = [];
+
+  handleEvent = index => {
+    this.card[index]
+      .animate(slideDown, 750)
+      .then(() => this.props.navigation.navigate('Settings')) //modal
+      .then(() => this.card[index].animate(slideUp, 500, 250));
   };
 
   _onRefresh = () => {
@@ -103,11 +133,21 @@ class Home extends React.Component {
       }
     });
 
-  renderCards(cardArray) {
+  renderCards = cardArray => {
+    let indexCategory = 0;
     return cardArray.item.map((item, index) => {
-      return <EventCard item={item} key={index} />;
+      indexCategory += 1;
+      return (
+        <TouchableWithoutFeedback
+          onPress={() => this.handleEvent(index + indexCategory)}>
+          <Animatable.View
+            ref={ref => (this.card[index + indexCategory] = ref)}>
+            <EventCard item={item} key={index} index={index} />
+          </Animatable.View>
+        </TouchableWithoutFeedback>
+      );
     });
-  }
+  };
 
   get pagination() {
     const {eventInvites, eventCreations, activeSlide} = this.state;

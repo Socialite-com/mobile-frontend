@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  TouchableWithoutFeedback,
   TouchableOpacity,
   StyleSheet,
   View,
@@ -7,12 +8,13 @@ import {
   Image,
   ImageBackground,
 } from 'react-native';
+import * as Animatable from 'react-native-animatable';
 
 import {invertColor} from '../../networking/qrGen';
 
 import R from 'res/R';
 
-const EventCard = ({item, small, ...children}) => {
+const EventCard = ({item, small, index, ...children}) => {
   const organizer = item.userName;
   const textColor = invertColor(item.backgroundColor, true);
   var logoImg = R.images.logo_white;
@@ -131,7 +133,7 @@ const EventCard = ({item, small, ...children}) => {
   });
 
   return (
-    <View style={styles.eventContainer}>
+    <Animatable.View style={styles.eventContainer}>
       <ImageBackground
         source={{uri: item.backgroundImage}}
         imageStyle={styles.backgroundImage}
@@ -163,7 +165,7 @@ const EventCard = ({item, small, ...children}) => {
           </View>
         </View>
       </ImageBackground>
-    </View>
+    </Animatable.View>
   );
 };
 

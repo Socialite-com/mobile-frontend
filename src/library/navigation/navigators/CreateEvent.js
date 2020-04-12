@@ -24,10 +24,10 @@ export default function CreateEvent() {
         name="EventLocation"
         component={screens.organizer.EventLocation}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="EventPrice"
         component={screens.organizer.EventPrice}
-      />
+      /> */}
       {/* <Stack.Screen name="EventUsers" component={screens.organizer.EventUsers} /> */}
       <Stack.Screen
         options={{headerShown: false}}
