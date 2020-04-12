@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  TouchableWithoutFeedback,
   TouchableOpacity,
   StyleSheet,
   View,
@@ -8,7 +7,6 @@ import {
   Image,
   ImageBackground,
 } from 'react-native';
-import * as Animatable from 'react-native-animatable';
 
 import {invertColor} from '../../networking/qrGen';
 
@@ -133,7 +131,7 @@ const EventCard = ({item, small, index, ...children}) => {
   });
 
   return (
-    <Animatable.View style={styles.eventContainer}>
+    <View style={styles.eventContainer}>
       <ImageBackground
         source={{uri: item.backgroundImage}}
         imageStyle={styles.backgroundImage}
@@ -165,7 +163,7 @@ const EventCard = ({item, small, index, ...children}) => {
           </View>
         </View>
       </ImageBackground>
-    </Animatable.View>
+    </View>
   );
 };
 
