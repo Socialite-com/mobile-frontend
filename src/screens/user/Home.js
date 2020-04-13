@@ -9,7 +9,7 @@ import {
   ScrollView,
   View,
 } from 'react-native';
-import * as Animatable from 'react-native-animatable';
+// import * as Animatable from 'react-native-animatable';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import db from 'library/networking/database';
@@ -24,6 +24,7 @@ import Modal from 'react-native-modal';
 import R from 'res/R';
 
 const titles = ['My Invites', 'My Events'];
+const events = [{name: 'ViewEvent'}, {name: 'ManageEvent'}];
 
 const slideDown = {
   0: {
@@ -57,13 +58,6 @@ class Home extends React.Component {
 
   //refs
   card = [];
-
-  handleEvent = index => {
-    this.card[index]
-      .animate(slideDown, 750)
-      .then(() => this.props.navigation.navigate('Settings')) //modal
-      .then(() => this.card[index].animate(slideUp, 500, 250));
-  };
 
   _onRefresh = () => {
     db.getUser().then(user => this._standardFetch(user));
@@ -112,6 +106,23 @@ class Home extends React.Component {
     );
   };
 
+  _handleInviteCardPress() {
+    console.log(this.state.activeSlide);
+    const route = events[this.state.activeSlide];
+    // add params to route to specify event id
+    this.props.navigation.reset({
+      index: 1,
+      routes: [{name: 'User'}, route],
+    });
+  }
+
+  handleEvent = index => {
+    this.card[index]
+      .animate(slideDown, 750)
+      .then(() => this.props.navigation.navigate('Settings')) //modal
+      .then(() => this.card[index].animate(slideUp, 500, 250));
+  };
+
   _handlePendingInvites = uid =>
     new Promise(async (resolve, reject) => {
       const eid = await AsyncStorage.getItem('newInvite');
@@ -134,18 +145,26 @@ class Home extends React.Component {
     });
 
   renderCards = cardArray => {
-    let indexCategory = 0;
+    // let indexCategory = 0;
     return cardArray.item.map((item, index) => {
-      indexCategory += 1;
       return (
         <TouchableWithoutFeedback
-          onPress={() => this.handleEvent(index + indexCategory)}>
-          <Animatable.View
-            ref={ref => (this.card[index + indexCategory] = ref)}>
-            <EventCard item={item} key={index} index={index} />
-          </Animatable.View>
+          onPress={() => this._handleInviteCardPress(item)}>
+          <View>
+            <EventCard item={item} key={index} />
+          </View>
         </TouchableWithoutFeedback>
       );
+      // indexCategory += 1;
+      // return (
+      //   <TouchableWithoutFeedback
+      //     onPress={() => this.handleEvent(index + indexCategory)}>
+      //     <Animatable.View
+      //       ref={ref => (this.card[index + indexCategory] = ref)}>
+      //       <EventCard item={item} key={index} index={index} />
+      //     </Animatable.View>
+      //   </TouchableWithoutFeedback>
+      // );
     });
   };
 
@@ -177,9 +196,9 @@ class Home extends React.Component {
     const invitesList = this.state.eventInvites.length;
     const hostList = this.state.eventCreations.length;
     if (invitesList >= hostList) {
-      return invitesList * 82 + 176;
+      return invitesList * 266 + 20;
     } else {
-      return hostList * 82 + 176;
+      return hostList * 266 + 20;
     }
   }
 
@@ -250,6 +269,10 @@ class Home extends React.Component {
         <View style={styles.moreButton}>
           <Button
             onPress={() => this._handleModal('addModalVisible')}
+            customStyle={{
+              shadowOpacity: 0.4,
+              elevation: 1,
+            }}
             icon
             round
             dark>
@@ -261,7 +284,24 @@ class Home extends React.Component {
             onSwipeComplete={() => this._handleModal('addModalVisible')}
             onBackdropPress={() => this._handleModal('addModalVisible')}
             style={styles.modalContainer}>
-            <View style={styles.modalCreateView} />
+            <View style={styles.modalCreateView}>
+              <Button
+                light
+                customStyle={{marginTop: 0}}
+                title="Find existing event"
+              />
+              <Button
+                onPress={() => {
+                  this._handleModal();
+                  this.props.navigation.reset({
+                    index: 1,
+                    routes: [{name: 'User'}, {name: 'CreateEvent'}],
+                  });
+                }}
+                title="Create new event"
+                dark
+              />
+            </View>
           </Modal>
         </View>
       </SafeAreaView>
@@ -288,8 +328,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   moreButton: {
-    alignItems: 'flex-end',
-    padding: '3%',
+    position: 'absolute',
+    padding: '2.5%',
+    bottom: 0,
+    right: 0,
   },
   profileImgContainer: {
     height: 80,
@@ -306,7 +348,9 @@ const styles = StyleSheet.create({
   modalCreateView: {
     width: R.constants.screenWidth,
     backgroundColor: 'white',
-    borderRadius: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 8,
     height: 200,
   },
 });

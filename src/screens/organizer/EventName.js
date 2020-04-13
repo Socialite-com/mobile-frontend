@@ -1,11 +1,18 @@
 import React from 'react';
-import {StyleSheet, View, KeyboardAvoidingView} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  KeyboardAvoidingView,
+  TouchableOpacity,
+} from 'react-native';
 
 import Button from '../../library/components/General/Button';
 import TextForm from '../../library/components/General/TextInput';
 import CustomText from '../../library/components/General/CustomText';
+import DismissKeyboardView from '../../library/components/General/DismissKeyboardView';
 
 import R from 'res/R';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 const keyboardOffset = R.constants.screenHeight * 0.2;
 
@@ -25,8 +32,16 @@ class EventName extends React.Component {
   };
 
   render() {
+    this.props.navigation.setOptions({
+      headerLeft: () => (
+        <TouchableOpacity onPress={() => this.props.navigation.pop()}>
+          <Icon name="close" size={25} />
+        </TouchableOpacity>
+      ),
+    });
+
     return (
-      <View style={styles.container}>
+      <DismissKeyboardView style={styles.container}>
         <View style={[styles.textContainer, styles.titleContainer]}>
           <CustomText label="What's the name of your event?" subtitle />
         </View>
@@ -35,23 +50,20 @@ class EventName extends React.Component {
           behavior="padding">
           <TextForm
             placeholder="Ex: Birthday party or Big 18"
-            returnKeyType={'next'}
             value={this.state.name}
             onChangeText={name => {
               this.setState({name});
             }}
-            onSubmitEditing={this.handleVerifyName}
           />
           <Button title="Next" dark onPress={this.handleVerifyName} />
         </KeyboardAvoidingView>
-
         <View style={styles.textContainer}>
           <CustomText
             label="By continuing, you’re agreeing to our Customer Terms of Service, Privacy Policy, and Cookie Policy."
             subtitle_3
           />
         </View>
-      </View>
+      </DismissKeyboardView>
     );
   }
 }

@@ -1,16 +1,11 @@
 import React from 'react';
-import {StyleSheet, View, Text, YellowBox, Image} from 'react-native';
+import {StyleSheet, View, Image} from 'react-native';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 
 import Button from 'library/components/General/Button';
 import CustomText from 'library/components/General/CustomText';
 
 import R from 'res/R';
-//images
-import Intro from 'res/images/intro.jpg';
-import Browse from 'res/images/browse.jpg';
-import Join from 'res/images/join.jpg';
-import Organize from 'res/images/organize.jpg';
 
 console.disableYellowBox = true; //for flatlist error testing with carousel
 
@@ -20,22 +15,22 @@ class Landing extends React.Component {
       {
         title: 'All your social events',
         subtitle: 'In one place, instantly accessible',
-        image: Intro,
+        image: R.images.intro,
       },
       {
         title: 'Browse Events',
-        subtitle: 'Search and attend exiciting and new events',
-        image: Browse,
+        subtitle: 'Search and attend exciting and new events',
+        image: R.images.browse,
       },
       {
         title: 'Join Events',
         subtitle: 'Attend events within minutes',
-        image: Join,
+        image: R.images.join,
       },
       {
         title: 'Organize Events',
         subtitle: 'Plan parties with ease',
-        image: Organize,
+        image: R.images.organize,
       },
     ],
     activeSlide: 0,

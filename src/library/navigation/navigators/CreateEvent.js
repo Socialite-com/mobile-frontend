@@ -13,7 +13,6 @@ export default function CreateEvent() {
         gestureEnabled: false,
         headerBackTitleVisible: false,
         cardStyle: {backgroundColor: '#FFFFFF'},
-        headerStyle: {elevation: 0, shadowOpacity: 0, borderBottomWidth: 0},
         headerLeftContainerStyle: {paddingLeft: 20},
         headerRightContainerStyle: {paddingRight: 20},
       }}>
@@ -29,11 +28,6 @@ export default function CreateEvent() {
         component={screens.organizer.EventPrice}
       /> */}
       {/* <Stack.Screen name="EventUsers" component={screens.organizer.EventUsers} /> */}
-      <Stack.Screen
-        options={{headerShown: false}}
-        name="EventPage"
-        component={screens.organizer.EventPage}
-      />
     </Stack.Navigator>
   );
 }

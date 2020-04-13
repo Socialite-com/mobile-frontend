@@ -24,8 +24,6 @@ import CustomText from 'library/components/General/CustomText';
 
 import R from 'res/R';
 
-import Scan from 'res/images/scan.jpg';
-
 class LinkRegister extends React.Component {
   state = {
     keyVal: '',
@@ -185,7 +183,7 @@ class LinkRegister extends React.Component {
         ) : (
           <DismissKeyboardView style={{flex: 1, alignItems: 'center'}}>
             <View style={styles.mediaArea}>
-              <Image style={styles.image} source={Scan} />
+              <Image style={styles.image} source={R.images.scan} />
             </View>
             <View style={styles.textArea}>
               <CustomText title label="Access an existing event" />

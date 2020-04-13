@@ -40,7 +40,7 @@ const EventCard = ({item, small, ...children}) => {
       borderRadius: 6,
       shadowRadius: 2,
       shadowOpacity: 0.4,
-      marginBottom: -176,
+      marginBottom: 10,
       shadowColor: '#000000',
       backgroundColor: item.backgroundColor,
       shadowOffset: {width: 0, height: -0.25},

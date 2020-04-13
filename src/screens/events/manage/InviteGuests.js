@@ -1,7 +1,7 @@
 import React from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 
-class Browse extends React.Component {
+class InviteGuests extends React.Component {
   state = {};
   componentDidMount(): void {}
   render() {
@@ -14,4 +14,4 @@ class Browse extends React.Component {
 
 const styles = StyleSheet.create({});
 
-export default Browse;
+export default InviteGuests;

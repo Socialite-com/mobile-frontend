@@ -1,10 +1,8 @@
 import React from 'react';
-import {View, Dimensions, Image} from 'react-native';
+import {View, Image} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
 import R from 'res/R';
-
-import logo from 'res/images/logo_white.png';
 
 const fadeOut = {
   0: {
@@ -68,7 +66,11 @@ class SplashScreen extends React.Component {
           style={styles.bottomViewStyles}
         />
         <Animatable.View ref={this.handleTextViewRef}>
-          <Image style={styles.logo} source={logo} resizeMode="contain" />
+          <Image
+            style={styles.logo}
+            source={R.images.logo_white}
+            resizeMode="contain"
+          />
         </Animatable.View>
       </View>
     );
