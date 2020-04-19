@@ -13,9 +13,13 @@ const borderRadius = 6;
 const fontFamily = R.fonts.comfortaaRegular;
 const fontSize = 18;
 
-const TextForm = ({icon, ...restProps}) => {
+const TextForm = ({icon, customStyle, ...restProps}) => {
   let defaultStyle = [];
   defaultStyle = defaultStyle.concat(styles.defaultStyle);
+
+  if (customStyle) {
+    defaultStyle = defaultStyle.concat(customStyle);
+  }
 
   return (
     <View>
