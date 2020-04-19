@@ -1,14 +1,11 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, Text} from 'react-native';
 
 class Activity extends React.Component {
   state = {};
   componentDidMount(): void {}
   render() {
-    return (
-      <View style={{flex: 1, justifyContent: 'center'}}>
-      </View>
-    );
+    return <View style={{flex: 1, justifyContent: 'center'}} />;
   }
 }
 

@@ -3,12 +3,8 @@ import {StyleSheet, View} from 'react-native';
 
 class Discover extends React.Component {
   state = {};
-  componentDidMount(): void {}
   render() {
-    return (
-      <View style={{flex: 1, justifyContent: 'center'}}>
-      </View>
-    );
+    return <View style={{flex: 1, justifyContent: 'center'}} />;
   }
 }
 
