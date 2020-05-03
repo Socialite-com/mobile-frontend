@@ -8,6 +8,9 @@ const CustomText = ({
   subtitle,
   subtitle_2,
   subtitle_3,
+  subtitle_4,
+  subtitle_5,
+  subtitle_6,
   center,
   splash,
   error,
@@ -28,6 +31,15 @@ const CustomText = ({
   }
   if (subtitle_3) {
     textStyle = textStyle.concat(styles.subtitle_3);
+  }
+  if (subtitle_4) {
+    textStyle = textStyle.concat(styles.subtitle_4);
+  }
+  if (subtitle_5) {
+    textStyle = textStyle.concat(styles.subtitle_5);
+  }
+  if (subtitle_6) {
+    textStyle = textStyle.concat(styles.subtitle_6);
   }
   if (center) {
     textStyle = textStyle.concat(styles.center);
@@ -73,6 +85,20 @@ const styles = StyleSheet.create({
   subtitle_3: {
     fontFamily: R.fonts.robotoRegular,
     fontSize: 13,
+  },
+  subtitle_4: {
+    fontFamily: R.fonts.robotoMedium,
+    textTransform: 'uppercase',
+    fontSize: 13,
+  },
+  subtitle_5: {
+    fontFamily: R.fonts.robotoMedium,
+    textTransform: 'uppercase',
+    fontSize: 18,
+  },
+  subtitle_6: {
+    fontFamily: R.fonts.robotoRegular,
+    fontSize: 16,
   },
   center: {
     textAlign: 'center',

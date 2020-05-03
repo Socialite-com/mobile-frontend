@@ -1,8 +1,11 @@
-platform :ios, '9.0'
+platform :ios, '10.0'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
 target 'Socialite' do
   # Pods for Socialite
+
+  # Stripe
+  pod 'Stripe', '~> 19.0.1'
 
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
@@ -48,10 +51,9 @@ target 'Socialite' do
 
   use_native_modules!
 
-
-
-
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
+  pod 'tipsi-stripe', :path => '../node_modules/tipsi-stripe'
 
 end
 
