@@ -8,6 +8,7 @@ import TextInput from 'library/components/General/TextInput';
 
 import Todo from 'library/components/Events/Todo';
 import R from 'res/R';
+
 class ManageEvent extends React.Component {
   state = {
     newTodo: '',

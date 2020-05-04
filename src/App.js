@@ -6,6 +6,12 @@ import {createRootNavigator} from './library/navigation/router';
 import authentication from './library/networking/authentication';
 import auth from '@react-native-firebase/auth';
 import SplashScreenComponent from './screens/onboarding/SplashScreen';
+import stripe from 'tipsi-stripe';
+
+stripe.setOptions({
+  publishableKey: 'pk_test_c2DloqNiEyFo4knCXInHJ7UH00eAJ2hTtH',
+  merchantId: 'merchant.com.socialite',
+});
 
 export default class App extends React.Component {
   constructor(props) {

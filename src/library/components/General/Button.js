@@ -97,7 +97,7 @@ const style = StyleSheet.create({
     borderRadius: 50,
   },
   light: {
-    backgroundColor: 'transparent',
+    backgroundColor: '#fff',
     borderWidth: 1,
   },
   grey: {

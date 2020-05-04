@@ -3,8 +3,12 @@
     "ml_vision_face_model": false,
     "ml_vision_ocr_model": false,
     "ml_vision_barcode_model": true,
-
     "ml_vision_label_model": false,
     "ml_vision_image_label_model": false
+  },
+  "functions": {
+    "predeploy": [
+      "npm --prefix \"$RESOURCE_DIR\" run lint"
+    ]
   }
 }
