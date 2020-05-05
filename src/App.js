@@ -6,6 +6,12 @@ import {createRootNavigator} from './library/navigation/router';
 
 import SplashScreen from 'react-native-splash-screen';
 import SplashScreenComponent from './screens/onboarding/SplashScreen';
+import stripe from 'tipsi-stripe';
+
+stripe.setOptions({
+  publishableKey: 'pk_test_c2DloqNiEyFo4knCXInHJ7UH00eAJ2hTtH',
+  merchantId: 'merchant.com.socialite',
+});
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';

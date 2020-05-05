@@ -7,9 +7,11 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+import Icon from 'react-native-vector-icons/AntDesign';
+
 import R from 'res/R';
 
-import Icon from 'react-native-vector-icons/AntDesign';
+import Button from '../General/Button';
 
 export const Map = ({map}) => {
   return (
@@ -61,7 +63,7 @@ export const Field = ({header, body, ...restprops}) => {
   );
 };
 
-export const Invite = ({children, navigator}) => {
+export const Invite = ({children, navigator, onConfirm}) => {
   return (
     <View style={styles.bottomView}>
       <View style={styles.card}>
@@ -87,6 +89,13 @@ export const Invite = ({children, navigator}) => {
           </View>
         </View>
         <View style={styles.formView}>{children}</View>
+      </View>
+      <View style={styles.envelope}>
+        <View>
+          <Text style={styles.title}>MSU Party</Text>
+          <Text style={styles.eventType}>Private • Paid</Text>
+        </View>
+        <Button title="Confirm" light half onPress={onConfirm} />
       </View>
     </View>
   );
