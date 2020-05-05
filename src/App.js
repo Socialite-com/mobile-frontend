@@ -8,10 +8,7 @@ import SplashScreen from 'react-native-splash-screen';
 import SplashScreenComponent from './screens/onboarding/SplashScreen';
 import stripe from 'tipsi-stripe';
 
-stripe.setOptions({
-  publishableKey: 'pk_test_c2DloqNiEyFo4knCXInHJ7UH00eAJ2hTtH',
-  merchantId: 'merchant.com.socialite',
-});
+import R from 'res/R';
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -40,6 +37,11 @@ class App extends React.Component {
 
   async componentDidMount() {
     SplashScreen.hide();
+
+    stripe.setOptions({
+      publishableKey: R.keys.publishableKey,
+      merchantId: R.keys.merchantId,
+    });
 
     this.authListener = auth().onAuthStateChanged(user => {
       let result = false;

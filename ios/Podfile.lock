@@ -569,7 +569,7 @@ PODS:
     - React
   - react-native-camera/RN (3.23.1):
     - React
-  - react-native-cameraroll (1.5.2):
+  - react-native-cameraroll (1.6.0):
     - React
   - react-native-fbsdk (1.1.2):
     - React
@@ -656,7 +656,7 @@ PODS:
     - React-cxxreact (= 0.62.1)
     - React-jsi (= 0.62.1)
     - ReactCommon/callinvoker (= 0.62.1)
-  - RNCAsyncStorage (1.9.0):
+  - RNCAsyncStorage (1.10.0):
     - React
   - RNCMaskedView (0.1.10):
     - React
@@ -967,7 +967,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: e9698dee4fd43ceb44832baf15d5745f455b0157
   React-jsinspector: f74a62727e5604119abd4a1eda52c0a12144bcd5
   react-native-camera: 6fe72fd0a85732e2449928f9c59a2e0bf661ad3b
-  react-native-cameraroll: 81c6c271b5b853da398ccecc7ad6a5f765fd3001
+  react-native-cameraroll: bc36a94ba2c4c46cca03e9c93d6c3be598a91b45
   react-native-fbsdk: c35d42169e64aaf66f01713c1e18d0674f7f6519
   react-native-google-maps: 0a989abda71059db2caa98b9dacca7a8f38a47d0
   react-native-image-picker: 668e72d0277dc8c12ae90e835507c1eddd2e4f85
@@ -984,7 +984,7 @@ SPEC CHECKSUMS:
   React-RCTText: 239e040f401505001327a109f9188a4e6dad1bd2
   React-RCTVibration: 072c3b427dd29e730c2ee5bfc509cf5054741a50
   ReactCommon: 3585806280c51d5c2c0d3aa5a99014c3badb629d
-  RNCAsyncStorage: b16697280b08bab4b5f2f67f752d93d13a52e9ed
+  RNCAsyncStorage: b34d2399d3e25db01d5b881949b503bd3c224d57
   RNCMaskedView: f5c7d14d6847b7b44853f7acb6284c1da30a3459
   RNDateTimePicker: 0f657a34a0f6465ab7d0255c24954693bc7a8cf6
   RNFBAnalytics: 7d56f7af0a1147e649df33e64372aea8923fdd01
@@ -1003,6 +1003,6 @@ SPEC CHECKSUMS:
   tipsi-stripe: 624337e28b13c127fef45c09de0e1e37cba25151
   Yoga: 50fb6eb13d2152e7363293ff603385db380815b1
 
-PODFILE CHECKSUM: 6aa272bbcf77a1a3aac2629739267ce927f6327d
+PODFILE CHECKSUM: 75664c20ca997c7fd85ee5bd6e27e90fdf4de721
 
 COCOAPODS: 1.9.1
