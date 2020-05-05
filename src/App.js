@@ -1,19 +1,23 @@
 import React from 'react';
 import {StatusBar} from 'react-native';
-import SplashScreen from 'react-native-splash-screen';
+
 import {NavigationContainer} from '@react-navigation/native';
 import {createRootNavigator} from './library/navigation/router';
-import authentication from './library/networking/authentication';
-import auth from '@react-native-firebase/auth';
+
+import SplashScreen from 'react-native-splash-screen';
 import SplashScreenComponent from './screens/onboarding/SplashScreen';
 
-export default class App extends React.Component {
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import auth from '@react-native-firebase/auth';
+import {login, saveUid} from './state/actions/users';
+import {checkUserExists} from './state/actions/onboarding';
+
+class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      signedIn: false,
-      checkedSignIn: false,
       delayedRemove: false,
     };
   }
@@ -30,38 +34,57 @@ export default class App extends React.Component {
 
   async componentDidMount() {
     SplashScreen.hide();
-    authentication
-      .isSignedIn()
-      .then(res => this.setState({signedIn: res, checkedSignIn: true}))
-      .catch(err => alert(err));
 
-    this.subscriber = auth().onAuthStateChanged(user => {
-      if (user !== null) {
-        console.log('Signed In');
-        authentication
-          .isSignedIn()
-          .then(res => this.setState({signedIn: res, checkedSignIn: true}));
+    this.authListener = auth().onAuthStateChanged(user => {
+      let result = false;
+      if (user) {
+        result = true; // user is logged in
+        // save user id and check if user exists
+        this.props.actions.saveUid(user.uid);
+        this.props.actions.checkUserExists(user.uid).then(() => {
+          this.props.actions.login(result);
+        });
+      } else {
+        this.props.actions.login(result);
       }
     });
+
     await this.splashDelay();
   }
 
   componentWillUnmount() {
     clearTimeout(this.splashDelay);
-    this.subscriber();
+    this.authListener();
   }
 
   render() {
     StatusBar.setBarStyle('dark-content', true);
-
+    const {checkedLoggedIn, loggedIn} = this.props.auth;
     return (
       <NavigationContainer>
         {!this.state.delayedRemove && (
-          <SplashScreenComponent isReady={this.state.checkedSignIn} />
+          <SplashScreenComponent isReady={checkedLoggedIn} />
         )}
 
-        {this.state.checkedSignIn && createRootNavigator(this.state.signedIn)}
+        {checkedLoggedIn && createRootNavigator(loggedIn)}
       </NavigationContainer>
     );
   }
 }
+
+const ActionCreators = {
+  checkUserExists,
+  saveUid,
+  login,
+};
+
+const mapStateToProps = state => ({
+  auth: state.authentication,
+  user: state.user,
+});
+
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(ActionCreators, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

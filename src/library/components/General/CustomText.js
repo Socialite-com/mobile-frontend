@@ -51,8 +51,9 @@ const CustomText = ({
 
 const styles = StyleSheet.create({
   defaultStyle: {
-    textAlign: 'left',
     fontSize: 18,
+    textAlign: 'left',
+    color: R.color.secondary,
     fontFamily: R.fonts.comfortaaRegular,
   },
   title: {
@@ -78,12 +79,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   splash: {
-    color: R.colors.secondary,
+    color: R.color.primary,
     fontSize: 45,
   },
   error: {
     fontSize: 13,
-    color: 'grey',
+    color: R.color.tertiary,
     textTransform: 'uppercase',
     fontFamily: R.fonts.robotoBlack,
   },

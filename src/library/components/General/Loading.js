@@ -41,9 +41,9 @@ const styles = StyleSheet.create({
     height: R.constants.screenHeight,
   },
   background: {
-    backgroundColor: '#fff',
-    width: R.constants.screenWidth,
+    backgroundColor: R.color.primary,
     height: R.constants.screenHeight,
+    width: R.constants.screenWidth,
     opacity: 0.85,
   },
   loader: {

@@ -4,18 +4,24 @@ import {TouchableOpacity, StyleSheet, View, Text} from 'react-native';
 import R from 'res/R';
 
 const height = 50;
-const padding = 10;
 const margin = 10;
-const width = R.constants.screenWidth * 0.8;
-const backgroundColor = R.colors.primary;
+const padding = 10;
+const shadowRadius = 2;
 const borderRadius = 6;
-const color = R.colors.primary;
+const shadowOpacity = 0.5;
+const alignItems = 'center';
+const color = R.color.primary;
+const justifyContent = 'center';
+const shadowOffset = {height: 0.2};
+const shadowColor = R.color.secondary;
+const borderColor = R.color.secondary;
+const backgroundColor = R.color.secondary;
+const width = R.constants.screenWidth * 0.8;
 
 const Button = ({
   children,
   title,
-  dark,
-  light,
+  swap,
   grey,
   round,
   long,
@@ -31,11 +37,9 @@ const Button = ({
   inlineStyle = inlineStyle.concat(style.defaultStyle);
   textStyle = textStyle.concat(style.defaultTextStyle);
 
-  if (dark) {
-    textStyle = textStyle.concat(style.lightText);
-  }
-  if (light) {
-    inlineStyle = inlineStyle.concat(style.light);
+  if (swap) {
+    textStyle = textStyle.concat({color: R.color.secondary});
+    inlineStyle = inlineStyle.concat(style.swap);
   }
   if (grey) {
     inlineStyle = inlineStyle.concat(style.grey);
@@ -72,15 +76,19 @@ const Button = ({
 
 const style = StyleSheet.create({
   defaultStyle: {
-    height,
-    padding,
-    margin,
     width,
-    backgroundColor,
+    height,
+    margin,
+    padding,
+    alignItems,
+    borderColor,
+    shadowColor,
+    shadowRadius,
+    shadowOffset,
     borderRadius,
-    borderColor: backgroundColor,
-    alignItems: 'center',
-    justifyContent: 'center',
+    shadowOpacity,
+    justifyContent,
+    backgroundColor,
   },
   defaultTextStyle: {
     fontFamily: R.fonts.robotoBlack,
@@ -88,16 +96,13 @@ const style = StyleSheet.create({
     fontSize: 13,
     color,
   },
-  lightText: {
-    color: R.colors.secondary,
-  },
   round: {
     width: 60,
     height: 60,
     borderRadius: 50,
   },
-  light: {
-    backgroundColor: 'transparent',
+  swap: {
+    backgroundColor: R.color.primaryDark,
     borderWidth: 1,
   },
   grey: {

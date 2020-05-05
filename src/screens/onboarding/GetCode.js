@@ -6,7 +6,7 @@ import Button from 'library/components/General/Button';
 import EventCard from 'library/components/Events/EventCard';
 
 import AsyncStorage from '@react-native-community/async-storage';
-import db from '../../library/networking/database';
+import db from '../../state/database';
 
 import R from 'res/R';
 
@@ -27,6 +27,7 @@ class GetCode extends React.Component {
     db.getEventData(eventKey)
       .then(invite => db.parseEventData([invite]))
       .then(inviteData => {
+        console.log(inviteData);
         this.setState({
           eventKey: eventKey,
           invite: inviteData[0],
@@ -74,11 +75,7 @@ class GetCode extends React.Component {
           <EventCard item={this.state.invite} small />
         </View>
         <View style={styles.buttonContainer}>
-          <Button
-            dark
-            onPress={() => this._handleOnCodeFound()}
-            title="Continue"
-          />
+          <Button onPress={() => this._handleOnCodeFound()} title="Continue" />
         </View>
       </>
     );
@@ -100,7 +97,6 @@ class GetCode extends React.Component {
         </View>
         <View style={styles.buttonContainer}>
           <Button
-            dark
             onPress={() => this.props.navigation.navigate('LinkRegister')}
             title="Search again"
           />

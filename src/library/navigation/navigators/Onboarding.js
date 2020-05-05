@@ -1,6 +1,7 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import screens from 'screens/screens';
+import R from 'res/R';
 
 const Stack = createStackNavigator();
 
@@ -10,12 +11,16 @@ export default function Onboarding() {
       initialRouteName="Landing"
       screenOptions={{
         title: '',
-        gestureEnabled: false,
         headerBackTitleVisible: false,
-        cardStyle: {backgroundColor: '#FFFFFF'},
-        headerStyle: {elevation: 0, shadowOpacity: 0, borderBottomWidth: 0},
         headerLeftContainerStyle: {paddingLeft: 20},
         headerRightContainerStyle: {paddingRight: 20},
+        cardStyle: {backgroundColor: R.color.primary},
+        headerStyle: {
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
+          backgroundColor: R.color.primary,
+        },
       }}>
       <Stack.Screen name="Landing" component={screens.onboarding.Landing} />
       <Stack.Screen
@@ -28,14 +33,6 @@ export default function Onboarding() {
       />
       <Stack.Screen name="GetCode" component={screens.onboarding.GetCode} />
       <Stack.Screen name="UserName" component={screens.onboarding.UserName} />
-      <Stack.Screen
-        name="CreatePassword"
-        component={screens.onboarding.CreatePassword}
-      />
-      <Stack.Screen
-        name="EnterPassword"
-        component={screens.onboarding.EnterPassword}
-      />
       <Stack.Screen
         name="PhoneAuth"
         component={screens.onboarding.PhoneAuthScreen}

@@ -1,20 +1,21 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import screens from 'screens/screens';
+import R from 'res/R';
 
 const Stack = createStackNavigator();
 
 export default function CreateEvent() {
   return (
     <Stack.Navigator
-      initialRouteName="EventName"
+      initialRouteName="EventType"
       screenOptions={{
         title: '',
         gestureEnabled: false,
         headerBackTitleVisible: false,
-        cardStyle: {backgroundColor: '#FFFFFF'},
         headerLeftContainerStyle: {paddingLeft: 20},
         headerRightContainerStyle: {paddingRight: 20},
+        cardStyle: {backgroundColor: R.color.primary},
       }}>
       <Stack.Screen name="EventName" component={screens.organizer.EventName} />
       <Stack.Screen name="EventType" component={screens.organizer.EventType} />

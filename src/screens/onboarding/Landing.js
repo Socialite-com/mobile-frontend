@@ -2,40 +2,18 @@ import React from 'react';
 import {StyleSheet, View, Image} from 'react-native';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 
+import slides from '../../res/defaults/landingSlides';
 import Button from 'library/components/General/Button';
 import CustomText from 'library/components/General/CustomText';
 
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {setValue} from '../../state/actions/onboarding';
+import {SET_MODE, TOGGLE_LANDING_CAROUSEL} from '../../state/constants';
+
 import R from 'res/R';
 
-console.disableYellowBox = true; //for flatlist error testing with carousel
-
 class Landing extends React.Component {
-  state = {
-    slides: [
-      {
-        title: 'All your social events',
-        subtitle: 'In one place, instantly accessible',
-        image: R.images.intro,
-      },
-      {
-        title: 'Browse Events',
-        subtitle: 'Search and attend exciting and new events',
-        image: R.images.browse,
-      },
-      {
-        title: 'Join Events',
-        subtitle: 'Attend events within minutes',
-        image: R.images.join,
-      },
-      {
-        title: 'Organize Events',
-        subtitle: 'Plan parties with ease',
-        image: R.images.organize,
-      },
-    ],
-    activeSlide: 0,
-  };
-
   _renderItem = ({item, index}) => {
     return (
       <View style={styles.container} key={index}>
@@ -44,6 +22,7 @@ class Landing extends React.Component {
           <CustomText subtitle center label={item.subtitle} />
         </View>
         <View style={styles.slideShowContainer}>
+          {/*TODO Preload image using this method in https://github.com/DylanVann/react-native-fast-image/issues/160*/}
           <Image style={styles.image} source={item.image} />
         </View>
       </View>
@@ -51,7 +30,7 @@ class Landing extends React.Component {
   };
 
   get pagination() {
-    const {slides, activeSlide} = this.state;
+    const {activeSlide} = this.props.onBoarding;
     return (
       <Pagination
         dotsLength={slides.length}
@@ -60,18 +39,18 @@ class Landing extends React.Component {
         dotStyle={{
           width: 10,
           borderRadius: 5,
-          backgroundColor: 'rgba(0,0,0,0.92)',
+          backgroundColor: R.color.secondary,
         }}
-        inactiveDotStyle={
-          {
-            // Define styles for inactive dots here
-          }
-        }
         inactiveDotOpacity={0.4}
         inactiveDotScale={0.6}
       />
     );
   }
+
+  setAuthMode = option => {
+    this.props.setValue(SET_MODE, option);
+    this.props.navigation.navigate('PhoneAuth');
+  };
 
   render() {
     return (
@@ -79,36 +58,33 @@ class Landing extends React.Component {
         {this.pagination}
 
         <Carousel
-          data={this.state.slides}
+          data={slides}
           renderItem={this._renderItem}
           sliderWidth={R.constants.screenWidth}
           itemWidth={R.constants.screenWidth * 0.9}
           containerCustomStyle={{height: 300}}
-          onSnapToItem={index => this.setState({activeSlide: index})}
+          onSnapToItem={index =>
+            this.props.setValue(TOGGLE_LANDING_CAROUSEL, index)
+          }
         />
 
         <View style={styles.buttonContainer}>
           <Button
-            dark
             title="Access an existing event"
             onPress={() => this.props.navigation.navigate('LinkRegister')}
           />
           <View style={{flexDirection: 'row'}}>
             <Button
-              light
+              swap
               half
               title="Sign up"
-              onPress={() =>
-                this.props.navigation.navigate('PhoneAuth', {option: 'signUp'})
-              }
+              onPress={() => this.setAuthMode('register')}
             />
             <Button
-              light
+              swap
               half
               title="Sign In"
-              onPress={() =>
-                this.props.navigation.navigate('PhoneAuth', {option: 'signIn'})
-              }
+              onPress={() => this.setAuthMode('signIn')}
             />
           </View>
         </View>
@@ -142,4 +118,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Landing;
+const mapStateToProps = state => ({
+  onBoarding: state.onBoarding,
+});
+
+const mapDispatchToProps = dispatch => ({
+  setValue: bindActionCreators(setValue, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Landing);

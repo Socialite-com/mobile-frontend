@@ -1,6 +1,7 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/AntDesign';
+import R from 'res/R';
 
 const Tab = createBottomTabNavigator();
 
@@ -14,8 +15,14 @@ export default function User() {
       initialRouteName="Home"
       tabBarOptions={{
         showLabel: false,
-        activeTintColor: '#000000',
-        inactiveTintColor: '#a3a3a3',
+        activeTintColor: R.color.secondary,
+        inactiveTintColor: R.color.tertiary,
+        style: {
+          elevation: 0,
+          shadowOpacity: 0,
+          borderTopWidth: 0,
+          backgroundColor: R.color.primaryDark,
+        },
       }}
       screenOptions={({route}) => ({
         tabBarIcon: ({color, size}) => {
@@ -33,7 +40,7 @@ export default function User() {
           return <Icon name={iconName} size={size} color={color} />;
         },
         gestureEnabled: false,
-        cardStyle: {backgroundColor: '#ffffff'},
+        cardStyle: {backgroundColor: R.color.primary},
       })}>
       <Tab.Screen name="Browse" component={BrowseOptions} />
       <Tab.Screen name="Home" component={UserOptions} />

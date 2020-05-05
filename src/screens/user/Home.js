@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   TouchableWithoutFeedback,
-  TouchableHighlight,
   TouchableOpacity,
   RefreshControl,
   SafeAreaView,
@@ -9,22 +8,33 @@ import {
   ScrollView,
   View,
 } from 'react-native';
-// import * as Animatable from 'react-native-animatable';
 
 import AsyncStorage from '@react-native-community/async-storage';
-import db from 'library/networking/database';
+import db from 'state/database';
 
+import ProfileCircle from 'library/components/User/profileCircle';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
-import Button from 'library/components/General/Button';
-import EventCard from 'library/components/Events/EventCard';
 import CustomText from 'library/components/General/CustomText';
+import EventCard from 'library/components/Events/EventCard';
+import Button from 'library/components/General/Button';
 import Icon from 'react-native-vector-icons/Feather';
 import Modal from 'react-native-modal';
 
+// import * as Animatable from 'react-native-animatable';
+
 import R from 'res/R';
 
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {fetchUserProfileIfNeeded} from '../../state/actions/users';
+import {
+  toggleCarousel,
+  changeCarouselHeight,
+  fetchUserEventsIfNeeded,
+} from '../../state/actions/events';
+
 const titles = ['My Invites', 'My Events'];
-const events = [{name: 'ViewEvent'}, {name: 'ManageEvent'}];
+const eventPaths = ['ViewEvent', 'ManageEvent'];
 
 const slideDown = {
   0: {
@@ -34,7 +44,6 @@ const slideDown = {
     top: R.constants.screenHeight,
   },
 };
-
 const slideUp = {
   0: {
     top: R.constants.screenHeight,
@@ -45,76 +54,48 @@ const slideUp = {
 };
 
 class Home extends React.Component {
-  state = {
-    userName: '',
-    eventInvites: [],
-    eventCreations: [],
-    activeSlide: 0,
-    maxHeight: 50,
-    refreshing: false,
+  constructor(props) {
+    super(props);
 
-    addModalVisible: false,
-  };
+    this.state = {
+      addModalVisible: false,
+    };
 
-  //refs
-  card = [];
-
-  _onRefresh = () => {
-    db.getUser().then(user => this._standardFetch(user));
-  };
+    //refs
+    this.card = [];
+  }
 
   componentDidMount() {
-    db.getUser()
-      .then(user => {
-        this._handlePendingInvites(user.uid)
-          .then(msg => {
-            console.log(msg);
-            this._standardFetch(user);
-          })
-          .catch(err => alert(err));
-      })
+    const {uid} = this.props.user;
+    this._handlePendingInvites(uid)
+      .then(msg => console.log(msg))
       .catch(err => alert(err));
+    this._onRefresh();
   }
 
-  _standardFetch = user => {
-    db.getProfileData(user.uid)
-      // pull user profile data
-      .then(data => {
-        this.setState({
-          userId: user.uid,
-          userName: data.userName,
-        });
-      });
-    // get event data for user
-    Promise.all(
-      ['eventCreations', 'eventInvites'].map(subtype => {
-        db.getEvents(user.uid, subtype).then(res => {
-          if (res.length === 0) {
-            this.setState({[subtype]: res});
-          } else {
-            db.parseEventData(res)
-              .then(eventData => this.setState({[subtype]: eventData}))
-              .then(() =>
-                this.setState({
-                  maxHeight: this.getCarouselMaxHeight(),
-                  refreshing: false,
-                }),
-              );
-          }
-        });
-      }),
-    );
-  };
+  _onRefresh = () => {
+    const {uid} = this.props.user;
+    Promise.all([
+      this.props.actions
+        .fetchUserProfileIfNeeded(uid)
+        .then(() => console.log('fetched user profile')),
 
-  _handleInviteCardPress() {
-    console.log(this.state.activeSlide);
-    const route = events[this.state.activeSlide];
-    // add params to route to specify event id
-    this.props.navigation.reset({
-      index: 1,
-      routes: [{name: 'User'}, route],
+      this.props.actions
+        .fetchUserEventsIfNeeded(uid, 'eventCreations')
+        .then(() => console.log('fetched event creations')),
+
+      this.props.actions
+        .fetchUserEventsIfNeeded(uid, 'eventInvites')
+        .then(() => console.log('fetched invites')),
+    ]).then(() => {
+      console.log('Finished Loading');
+      const {eventInvites, eventCreations} = this.props.userEvents;
+      this.props.actions.changeCarouselHeight(
+        eventInvites.data.length,
+        eventCreations.data.length,
+      );
     });
-  }
+  };
 
   handleEvent = index => {
     this.card[index]
@@ -122,6 +103,12 @@ class Home extends React.Component {
       .then(() => this.props.navigation.navigate('Settings')) //modal
       .then(() => this.card[index].animate(slideUp, 500, 250));
   };
+
+  _handleInviteCardPress() {
+    const route = eventPaths[this.props.userEvents.activeSlide];
+    // add params to route to specify event id
+    this.props.navigation.navigate(route);
+  }
 
   _handlePendingInvites = uid =>
     new Promise(async (resolve, reject) => {
@@ -149,9 +136,10 @@ class Home extends React.Component {
     return cardArray.item.map((item, index) => {
       return (
         <TouchableWithoutFeedback
+          key={index}
           onPress={() => this._handleInviteCardPress(item)}>
           <View>
-            <EventCard item={item} key={index} />
+            <EventCard data={item} />
           </View>
         </TouchableWithoutFeedback>
       );
@@ -168,38 +156,21 @@ class Home extends React.Component {
     });
   };
 
-  get pagination() {
-    const {eventInvites, eventCreations, activeSlide} = this.state;
-    const data = [eventInvites, eventCreations];
+  pagination(activeSlide, dataLength) {
     return (
       <Pagination
-        dotsLength={data.length}
+        dotsLength={dataLength}
         activeDotIndex={activeSlide}
         containerStyle={{width: 20, height: 0, paddingVertical: '2%'}}
         dotStyle={{
           width: 10,
           borderRadius: 5,
-          backgroundColor: 'rgba(0,0,0,0.92)',
+          backgroundColor: R.color.secondary,
         }}
-        inactiveDotStyle={
-          {
-            // Define styles for inactive dots here
-          }
-        }
         inactiveDotOpacity={0.4}
         inactiveDotScale={0.6}
       />
     );
-  }
-
-  getCarouselMaxHeight() {
-    const invitesList = this.state.eventInvites.length;
-    const hostList = this.state.eventCreations.length;
-    if (invitesList >= hostList) {
-      return invitesList * 266 + 20;
-    } else {
-      return hostList * 266 + 20;
-    }
   }
 
   _handleModal = modal => {
@@ -208,63 +179,78 @@ class Home extends React.Component {
   };
 
   render() {
-    const {eventInvites, eventCreations} = this.state;
-    const data = [eventInvites, eventCreations];
+    const {profile, isFetching} = this.props.user;
+    const {
+      activeSlide,
+      carouselHeight,
+      eventInvites,
+      eventCreations,
+    } = this.props.userEvents;
+
+    const data = [eventInvites.data, eventCreations.data];
+    const refreshing = [
+      eventInvites.isFetching,
+      eventCreations.isFetching,
+      isFetching,
+    ].some(x => x === true);
 
     this.props.navigation.setOptions({
-      title: this.state.userName,
+      title: profile.userName,
       headerRight: () => (
         <TouchableOpacity
           onPress={() => this.props.navigation.navigate('Settings')}>
-          <Icon name="menu" size={25} />
+          <Icon name="menu" size={25} color={R.color.secondary} />
         </TouchableOpacity>
       ),
     });
 
-    console.disableYellowBox = true;
     return (
       <SafeAreaView style={{flex: 1}}>
         <ScrollView
           refreshControl={
             <RefreshControl
-              refreshing={this.state.refreshing}
+              tintColor={R.color.secondary}
               onRefresh={this._onRefresh}
+              refreshing={refreshing}
             />
           }
           style={{flex: 1, paddingTop: '5%'}}>
-          <View style={styles.profileContainer}>
-            <TouchableHighlight style={styles.profileImgContainer}>
-              <CustomText
-                splash
-                center
-                label={this.state.userName.charAt(0).toUpperCase()}
-              />
-            </TouchableHighlight>
-            <CustomText subtitle center label={this.state.userName} />
-            <CustomText subtitle_2 center label="Montreal, CA" />
-            <Button long dark title="Edit Profile" />
-          </View>
-          <View style={styles.inviteView}>
-            <View
-              style={{
-                paddingTop: '2%',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-              }}>
-              <CustomText subtitle_2 label={titles[this.state.activeSlide]} />
-              {this.pagination}
-            </View>
-            <View style={styles.cardView}>
-              <Carousel
-                data={data}
-                renderItem={this.renderCards}
-                sliderWidth={R.constants.screenWidth * 2}
-                itemWidth={R.constants.screenWidth * 0.9}
-                containerCustomStyle={{height: this.state.maxHeight}}
-                onSnapToItem={index => this.setState({activeSlide: index})}
-              />
-            </View>
-          </View>
+          {refreshing ? (
+            <></>
+          ) : (
+            <>
+              <View style={styles.profileContainer}>
+                <ProfileCircle main profile={profile} />
+                <CustomText subtitle center label={profile.userName} />
+                <CustomText subtitle_2 center label="Montreal, CA" />
+                <Button long title="Edit Profile" />
+              </View>
+              <View style={styles.inviteView}>
+                <View
+                  style={{
+                    paddingTop: '2%',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}>
+                  <CustomText subtitle_2 label={titles[activeSlide]} />
+                  {this.pagination(activeSlide, data.length)}
+                </View>
+                <View style={styles.cardView}>
+                  <Carousel
+                    data={data}
+                    renderItem={this.renderCards}
+                    behaviour={{firstItem: activeSlide}}
+                    sliderWidth={R.constants.screenWidth * 2}
+                    itemWidth={R.constants.screenWidth * 0.9}
+                    containerCustomStyle={{height: carouselHeight}}
+                    onSnapToItem={index =>
+                      this.props.actions.toggleCarousel(index)
+                    }
+                  />
+                </View>
+              </View>
+            </>
+          )}
         </ScrollView>
         <View style={styles.moreButton}>
           <Button
@@ -274,9 +260,8 @@ class Home extends React.Component {
               elevation: 1,
             }}
             icon
-            round
-            dark>
-            <Icon name="plus" size={40} color="#FFF" />
+            round>
+            <Icon name="plus" size={40} color={R.color.primary} />
           </Button>
           <Modal
             isVisible={this.state.addModalVisible}
@@ -286,20 +271,19 @@ class Home extends React.Component {
             style={styles.modalContainer}>
             <View style={styles.modalCreateView}>
               <Button
-                light
+                swap
                 customStyle={{marginTop: 0}}
                 title="Find existing event"
               />
               <Button
                 onPress={() => {
-                  this._handleModal();
-                  this.props.navigation.reset({
-                    index: 1,
-                    routes: [{name: 'User'}, {name: 'CreateEvent'}],
+                  this._handleModal('addModalVisible');
+                  this.props.navigation.navigate('CreateEvent', {
+                    screen: 'EventType',
+                    params: {user: profile.userName},
                   });
                 }}
                 title="Create new event"
-                dark
               />
             </View>
           </Modal>
@@ -337,7 +321,7 @@ const styles = StyleSheet.create({
     height: 80,
     width: 80,
     borderRadius: 40,
-    backgroundColor: 'black',
+    backgroundColor: R.color.secondary,
     justifyContent: 'center',
     marginBottom: 15,
   },
@@ -346,8 +330,8 @@ const styles = StyleSheet.create({
     margin: 0,
   },
   modalCreateView: {
+    backgroundColor: R.color.primary,
     width: R.constants.screenWidth,
-    backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 8,
@@ -355,4 +339,20 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;
+const ActionCreators = {
+  toggleCarousel,
+  changeCarouselHeight,
+  fetchUserEventsIfNeeded,
+  fetchUserProfileIfNeeded,
+};
+
+const mapStateToProps = state => ({
+  user: state.user,
+  userEvents: state.userEvents,
+});
+
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(ActionCreators, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

@@ -39,10 +39,10 @@ class EventPrice extends React.Component {
 
         {this.state.free ? (
           <View style={styles.buttonContainer}>
-            <Button title="Free" dark half />
+            <Button title="Free" half />
             <Button
               title="Public"
-              light
+              swap
               half
               onPress={() => this.handlePrice(false)}
             />
@@ -52,11 +52,11 @@ class EventPrice extends React.Component {
             <View style={styles.buttonContainer}>
               <Button
                 title="Paid"
-                light
+                swap
                 half
                 onPress={() => this.handlePrice(true)}
               />
-              <Button title="Public" dark half />
+              <Button title="Public" half />
             </View>
 
             <KeyboardAvoidingView
@@ -77,7 +77,7 @@ class EventPrice extends React.Component {
           </View>
         )}
 
-        <Button title="Next" dark onPress={this.handleVerifyPrice} />
+        <Button title="Next" onPress={this.handleVerifyPrice} />
       </View>
     );
   }

@@ -27,18 +27,19 @@ const LinkButton = ({title, header, underline, customStyle, ...restProps}) => {
 
 const style = StyleSheet.create({
   defaultStyle: {
+    color: R.color.secondary,
     fontFamily,
   },
   header: {
     fontFamily: R.fonts.comfortaaBold,
-    color: '#007AFF',
+    color: R.color.blue,
     fontSize: 17,
   },
   underline: {
-    color: R.colors.primary,
-    fontSize: 13,
     textDecorationLine: 'underline',
+    color: R.color.secondary,
     marginTop: '3%',
+    fontSize: 13,
   },
 });
 

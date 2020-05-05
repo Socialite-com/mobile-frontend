@@ -11,7 +11,7 @@ import LocationItem from '../../library/components/General/LocationItem';
 import DismissKeyboardView from '../../library/components/General/DismissKeyboardView';
 
 import maps from '../../library/networking/googleMaps';
-import db from 'library/networking/database';
+import db from 'state/database';
 import _ from 'lodash';
 
 const keyboardOffset = R.constants.screenHeight * 0.2;
@@ -24,6 +24,7 @@ class EventLocation extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      eventData: this.props.route.params.data,
       isModalVisible: false,
       location: {
         latitude: 75.78825,
@@ -75,28 +76,14 @@ class EventLocation extends React.Component {
 
   handleVerifyLocation = async () => {
     if (this.state.location.latitude && this.state.textLocation) {
-      //format data
-      var type;
-      if (this.props.route.params.private) {
-        type = 'private';
-      } else {
-        type = 'public';
-      }
-
-      const data = {
-        name: this.props.route.params.name,
-        type: type,
-        free: this.props.route.params.free,
-        price: this.props.route.params.price,
-        time: this.props.route.params.time,
-        location: this.state.location,
-      };
+      const {eventData, location} = this.state;
+      eventData.location = [location.latitude, location.longitude];
 
       //get user data
       db.getUser()
         .then(user => {
           //create event
-          db.createEvent(user.uid, data)
+          db.createEvent(user.uid, eventData)
             .then(success => {
               console.log(success);
 
@@ -175,11 +162,10 @@ class EventLocation extends React.Component {
             </MapView>
 
             <View style={styles.buttonContainer}>
-              <Button title="Cancel" light half onPress={this.removeLocation} />
+              <Button title="Cancel" swap half onPress={this.removeLocation} />
               <Button
-                title="Confirm"
-                dark
                 half
+                title="Confirm"
                 onPress={() => this.handleVerifyLocation()}
               />
             </View>

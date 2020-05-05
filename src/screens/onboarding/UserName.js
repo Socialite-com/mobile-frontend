@@ -5,25 +5,15 @@ import CustomText from 'library/components/General/CustomText';
 import TextForm from 'library/components/General/TextInput';
 import Button from 'library/components/General/Button';
 
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {login} from '../../state/actions/users';
+import {setValue, createUserAccount} from '../../state/actions/onboarding';
+import {CREATE_USERNAME} from '../../state/constants';
+
 import R from 'res/R';
 
 class UserName extends React.Component {
-  state = {
-    username: '',
-    error: '',
-  };
-
-  _handleUserName() {
-    // Add username restrictions
-    if (this.state.username === '') {
-      this.setState({error: "Username can't be blank!"});
-    } else {
-      this.props.navigation.navigate('CreatePassword', {
-        userName: this.state.username,
-      });
-    }
-  }
-
   render() {
     return (
       <View style={{flex: 1}}>
@@ -33,13 +23,22 @@ class UserName extends React.Component {
         </View>
         <View style={styles.inputContainer}>
           <TextForm
-            value={this.state.username}
-            onChangeText={username => {
-              this.setState({username});
-            }}
+            value={this.props.onBoarding.userDetails.profile.userName}
+            onChangeText={username =>
+              this.props.setValue(CREATE_USERNAME, username)
+            }
           />
-          <Button dark onPress={() => this._handleUserName()} title="Next" />
-          <CustomText error label={this.state.error} />
+          <Button
+            onPress={() =>
+              this.props.createAccount().then(() => {
+                if (this.props.onBoarding.userDetails.error === null) {
+                  this.props.navigation.navigate('User');
+                }
+              })
+            }
+            title="Next"
+          />
+          <CustomText error label={this.props.onBoarding.userDetails.error} />
         </View>
       </View>
     );
@@ -60,4 +59,14 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UserName;
+const mapStateToProps = state => ({
+  onBoarding: state.onBoarding,
+});
+
+const mapDispatchToProps = dispatch => ({
+  login: bindActionCreators(login, dispatch),
+  setValue: bindActionCreators(setValue, dispatch),
+  createAccount: bindActionCreators(createUserAccount, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserName);

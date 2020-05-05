@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0373BB2FB23942F6AE42D2AF /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86DFFEC13DED4E19BEE9B6E6 /* Fontisto.ttf */; };
-		06FF1CBC2446050300B558FA /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06FF1CBB2446050300B558FA /* File.swift */; };
 		0C515D3C2416C923003FB613 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C515D3B2416C923003FB613 /* Default-568h@2x.png */; };
+		0C636E062453D68E00CCED56 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C636E052453D68E00CCED56 /* File.swift */; };
 		0CA590642416C13F008C5913 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		0CA590652416C13F008C5913 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		0CA590672416C13F008C5913 /* libPods-Socialite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FCF3A253E1B629B541C9858E /* libPods-Socialite.a */; };
@@ -47,12 +47,12 @@
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		00E8DA896D8F43799B533227 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		00F539D7F2CF42B1B5E1874F /* Roboto-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Bold.ttf"; path = "../src/res/fonts/Roboto-Bold.ttf"; sourceTree = "<group>"; };
-		06FF1CBA2446050300B558FA /* Socialite-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Socialite-Bridging-Header.h"; sourceTree = "<group>"; };
-		06FF1CBB2446050300B558FA /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = File.swift; path = Socialite/File.swift; sourceTree = "<group>"; };
 		0923FEFE6E169DFAD235A2F9 /* Pods-SocialiteTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SocialiteTests.release.xcconfig"; path = "Target Support Files/Pods-SocialiteTests/Pods-SocialiteTests.release.xcconfig"; sourceTree = "<group>"; };
 		0A3409AE6A034EACA885B8B6 /* Roboto-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Black.ttf"; path = "../assets/fonts/Roboto-Black.ttf"; sourceTree = "<group>"; };
 		0B6372C5CBC542DD898C9D1D /* Comfortaa-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Comfortaa-Regular.ttf"; path = "../assets/fonts/Comfortaa-Regular.ttf"; sourceTree = "<group>"; };
 		0C515D3B2416C923003FB613 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		0C636E052453D68E00CCED56 /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = File.swift; path = Socialite/File.swift; sourceTree = "<group>"; };
+		0C636E072453D69C00CCED56 /* Socialite-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Socialite-Bridging-Header.h"; sourceTree = "<group>"; };
 		0CA0DB602413734E0098B0FA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Socialite/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0CA590772416C13F008C5913 /* Socialite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Socialite.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		124776A2C01C4FE4AEF56B1C /* Roboto-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Light.ttf"; path = "../assets/fonts/Roboto/Roboto-Light.ttf"; sourceTree = "<group>"; };
@@ -160,6 +160,7 @@
 		13B07FAE1A68108700A75B9A /* Socialite */ = {
 			isa = PBXGroup;
 			children = (
+				0C636E052453D68E00CCED56 /* File.swift */,
 				0CA0DB602413734E0098B0FA /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -195,7 +196,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				06FF1CBB2446050300B558FA /* File.swift */,
+				0C636E072453D69C00CCED56 /* Socialite-Bridging-Header.h */,
 				0C515D3B2416C923003FB613 /* Default-568h@2x.png */,
 				13B07FAE1A68108700A75B9A /* Socialite */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -204,7 +205,6 @@
 				08DD47658089DDE2A8478C3E /* Pods */,
 				B711C85E74B8440E97010B96 /* Resources */,
 				0C277F112432EA4E000E0580 /* Recovered References */,
-				06FF1CBA2446050300B558FA /* Socialite-Bridging-Header.h */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -312,8 +312,9 @@
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					0CA590602416C13F008C5913 = {
+						DevelopmentTeam = 5MX3H2JGUD;
 						LastSwiftMigration = 1130;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -487,7 +488,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0CA590642416C13F008C5913 /* AppDelegate.m in Sources */,
-				06FF1CBC2446050300B558FA /* File.swift in Sources */,
+				0C636E062453D68E00CCED56 /* File.swift in Sources */,
 				0CA590652416C13F008C5913 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -514,10 +515,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 5MX3H2JGUD;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-qr-scanner/ios/QrCode",
@@ -551,9 +552,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 5MX3H2JGUD;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-qr-scanner/ios/QrCode",
