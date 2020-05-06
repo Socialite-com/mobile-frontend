@@ -210,6 +210,9 @@ PODS:
   - Firebase/MLVisionBarcodeModel (6.13.0):
     - Firebase/CoreOnly
     - FirebaseMLVisionBarcodeModel (~> 0.19.0)
+  - Firebase/Storage (6.13.0):
+    - Firebase/CoreOnly
+    - FirebaseStorage (~> 3.4.2)
   - FirebaseAnalytics (6.1.6):
     - FirebaseCore (~> 6.4)
     - FirebaseInstanceID (~> 4.2)
@@ -279,6 +282,10 @@ PODS:
     - Protobuf (~> 3.5)
   - FirebaseMLVisionBarcodeModel (0.19.0):
     - FirebaseMLVision (~> 0.19)
+  - FirebaseStorage (3.4.3):
+    - FirebaseAuthInterop (~> 1.0)
+    - FirebaseCore (~> 6.0)
+    - GTMSessionFetcher/Core (~> 1.1)
   - Folly (2018.10.22.00):
     - boost-for-react-native
     - DoubleConversion
@@ -378,7 +385,7 @@ PODS:
   - GTMSessionFetcher/Full (1.3.1):
     - GTMSessionFetcher/Core (= 1.3.1)
   - leveldb-library (1.22)
-  - lottie-ios (3.1.3)
+  - lottie-ios (3.1.8)
   - lottie-react-native (3.3.2):
     - lottie-ios (~> 3.1.3)
     - React
@@ -552,17 +559,17 @@ PODS:
     - React-cxxreact (= 0.62.1)
     - React-jsi (= 0.62.1)
   - React-jsinspector (0.62.1)
-  - react-native-camera/BarcodeDetectorMLKit (3.22.1):
+  - react-native-camera/BarcodeDetectorMLKit (3.23.1):
     - Firebase/MLVision
     - Firebase/MLVisionBarcodeModel
     - React
     - react-native-camera/RCT
     - react-native-camera/RN
-  - react-native-camera/RCT (3.22.1):
+  - react-native-camera/RCT (3.23.1):
     - React
-  - react-native-camera/RN (3.22.1):
+  - react-native-camera/RN (3.23.1):
     - React
-  - react-native-cameraroll (1.5.2):
+  - react-native-cameraroll (1.6.0):
     - React
   - react-native-fbsdk (1.1.2):
     - React
@@ -649,46 +656,53 @@ PODS:
     - React-cxxreact (= 0.62.1)
     - React-jsi (= 0.62.1)
     - ReactCommon/callinvoker (= 0.62.1)
-  - RNCAsyncStorage (1.9.0):
+  - RNCAsyncStorage (1.10.0):
     - React
-  - RNCMaskedView (0.1.7):
+  - RNCMaskedView (0.1.10):
     - React
-  - RNDateTimePicker (2.3.1):
+  - RNDateTimePicker (2.3.2):
     - React
-  - RNFBAnalytics (6.4.0):
+  - RNFBAnalytics (6.7.1):
     - Firebase/Analytics (~> 6.13.0)
     - Firebase/Core (~> 6.13.0)
     - React
     - RNFBApp
-  - RNFBApp (6.4.0):
+  - RNFBApp (6.7.1):
     - Firebase/Core (~> 6.13.0)
     - React
-  - RNFBAuth (6.4.0):
+  - RNFBAuth (6.7.1):
     - Firebase/Auth (~> 6.13.0)
     - Firebase/Core (~> 6.13.0)
     - React
     - RNFBApp
-  - RNFBDatabase (6.4.0):
+  - RNFBDatabase (6.7.1):
     - Firebase/Core (~> 6.13.0)
     - Firebase/Database (~> 6.13.0)
     - React
     - RNFBApp
-  - RNFBFirestore (6.4.0):
+  - RNFBFirestore (6.7.1):
     - Firebase/Core (~> 6.13.0)
     - Firebase/Firestore (~> 6.13.0)
     - React
     - RNFBApp
-  - RNFBMLVision (6.4.0):
+  - RNFBMLVision (6.7.1):
     - Firebase/Core (~> 6.13.0)
     - Firebase/MLVision (~> 6.13.0)
     - Firebase/MLVisionBarcodeModel (~> 6.13.0)
     - React
     - RNFBApp
+  - RNFBStorage (6.7.1):
+    - Firebase/Core (~> 6.13.0)
+    - Firebase/Storage (~> 6.13.0)
+    - React
+    - RNFBApp
+  - RNFS (2.16.6):
+    - React
   - RNGestureHandler (1.6.1):
     - React
   - RNReanimated (1.8.0):
     - React
-  - RNScreens (2.4.0):
+  - RNScreens (2.7.0):
     - React
   - RNVectorIcons (6.6.0):
     - React
@@ -747,6 +761,8 @@ DEPENDENCIES:
   - "RNFBDatabase (from `../node_modules/@react-native-firebase/database`)"
   - "RNFBFirestore (from `../node_modules/@react-native-firebase/firestore`)"
   - "RNFBMLVision (from `../node_modules/@react-native-firebase/ml-vision`)"
+  - "RNFBStorage (from `../node_modules/@react-native-firebase/storage`)"
+  - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -776,6 +792,7 @@ SPEC REPOS:
     - FirebaseMLCommon
     - FirebaseMLVision
     - FirebaseMLVisionBarcodeModel
+    - FirebaseStorage
     - Google-Maps-iOS-Utils
     - GoogleAPIClientForREST
     - GoogleAppMeasurement
@@ -880,6 +897,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/firestore"
   RNFBMLVision:
     :path: "../node_modules/@react-native-firebase/ml-vision"
+  RNFBStorage:
+    :path: "../node_modules/@react-native-firebase/storage"
+  RNFS:
+    :path: "../node_modules/react-native-fs"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNReanimated:
@@ -916,6 +937,7 @@ SPEC CHECKSUMS:
   FirebaseMLCommon: 074a67e05122b1c9f6401a4e33b2cea3b4efd224
   FirebaseMLVision: 7a456009787690e3b53436092ae9b635563de8f3
   FirebaseMLVisionBarcodeModel: 96ef18a75ecdf867244ef2e75c8c1f01517667dc
+  FirebaseStorage: 93fe2f8190a01bfb2b2c4932df7d679744c4ef1d
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   Google-Maps-iOS-Utils: c32891ff472eaaa1fca032beedafa1a013af7875
@@ -930,7 +952,7 @@ SPEC CHECKSUMS:
   gRPC-Core: c9aef9a261a1247e881b18059b84d597293c9947
   GTMSessionFetcher: cea130bbfe5a7edc8d06d3f0d17288c32ffe9925
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
-  lottie-ios: 496ac5cea1bbf1a7bd1f1f472f3232eb1b8d744b
+  lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
   lottie-react-native: 2a1a82bb326ae51331a5520de0cf706733c6db69
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
@@ -944,8 +966,8 @@ SPEC CHECKSUMS:
   React-jsi: 600d8e42510c3254fd2abd702f4b9d3f598d8f52
   React-jsiexecutor: e9698dee4fd43ceb44832baf15d5745f455b0157
   React-jsinspector: f74a62727e5604119abd4a1eda52c0a12144bcd5
-  react-native-camera: 94d52da97e82a78b9745a1b92074d2b5f820c962
-  react-native-cameraroll: 81c6c271b5b853da398ccecc7ad6a5f765fd3001
+  react-native-camera: 6fe72fd0a85732e2449928f9c59a2e0bf661ad3b
+  react-native-cameraroll: bc36a94ba2c4c46cca03e9c93d6c3be598a91b45
   react-native-fbsdk: c35d42169e64aaf66f01713c1e18d0674f7f6519
   react-native-google-maps: 0a989abda71059db2caa98b9dacca7a8f38a47d0
   react-native-image-picker: 668e72d0277dc8c12ae90e835507c1eddd2e4f85
@@ -962,23 +984,25 @@ SPEC CHECKSUMS:
   React-RCTText: 239e040f401505001327a109f9188a4e6dad1bd2
   React-RCTVibration: 072c3b427dd29e730c2ee5bfc509cf5054741a50
   ReactCommon: 3585806280c51d5c2c0d3aa5a99014c3badb629d
-  RNCAsyncStorage: b16697280b08bab4b5f2f67f752d93d13a52e9ed
-  RNCMaskedView: 90dd32f5b786bd562e876e1421ea77c700cbf71e
-  RNDateTimePicker: f654c60568209005a3d9a5a6c4bff0c7094ec527
-  RNFBAnalytics: 2a5adf3a6331dfd232ac9661108e491b832be6e9
-  RNFBApp: 69781cf10ce41f6f6db789e6264dd80119ef2fb7
-  RNFBAuth: 50fcc7826344dc96caad8bc4f5b40a64904297b8
-  RNFBDatabase: 393536c2bd82bd11de82795c2d5893f04d5bf587
-  RNFBFirestore: 69e59e5266927857fa3629715111ee65f4de1cd0
-  RNFBMLVision: c7928d7e8adb65bf1eb8155dc609386595eeae91
+  RNCAsyncStorage: b34d2399d3e25db01d5b881949b503bd3c224d57
+  RNCMaskedView: f5c7d14d6847b7b44853f7acb6284c1da30a3459
+  RNDateTimePicker: 0f657a34a0f6465ab7d0255c24954693bc7a8cf6
+  RNFBAnalytics: 7d56f7af0a1147e649df33e64372aea8923fdd01
+  RNFBApp: 7b539bb25520fa73d6a240f5c6ea569e27683645
+  RNFBAuth: c292603069a09065a1b4d3336148beff83e4c897
+  RNFBDatabase: 2737d8e87c20246cd91e95743c514e08c791ebe1
+  RNFBFirestore: 23757ad7c33d81587a5d7d7d77f3ea22a1103372
+  RNFBMLVision: 5c72bc1be956823856c4572002721e2afcd43a9e
+  RNFBStorage: 0087dec3c49fcd4c805e9455239d684d8f61a6b0
+  RNFS: 2bd9eb49dc82fa9676382f0585b992c424cd59df
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
   RNReanimated: 955cf4068714003d2f1a6e2bae3fb1118f359aff
-  RNScreens: b5c0e1b2b04512919e78bd3898e144a157ce2363
+  RNScreens: cf198f915f8a2bf163de94ca9f5bfc8d326c3706
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   Stripe: 03313f9520a0786e2c00d9a7a2672c11e08821af
   tipsi-stripe: 624337e28b13c127fef45c09de0e1e37cba25151
   Yoga: 50fb6eb13d2152e7363293ff603385db380815b1
 
-PODFILE CHECKSUM: 421d5e3de106f9c0ea1ae3ada18e9c6692cba060
+PODFILE CHECKSUM: 75664c20ca997c7fd85ee5bd6e27e90fdf4de721
 
 COCOAPODS: 1.9.1

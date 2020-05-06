@@ -28,13 +28,12 @@ class AccessEvent extends React.Component {
           <View style={styles.buttonArea}>
             <Button
               half
-              light
+              swap
               onPress={() => this.props.navigation.navigate('LinkRegister')}
               title="Type key"
             />
             <Button
               half
-              dark
               onPress={() => this.props.navigation.navigate('GetCodes')}
               title="Detect code"
             />

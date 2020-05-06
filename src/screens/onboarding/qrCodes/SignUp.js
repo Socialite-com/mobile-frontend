@@ -36,7 +36,6 @@ class SignUp extends React.Component {
         </View>
         <View style={styles.actionContainer}>
           <Button
-            dark
             title="Sign in with phone number"
             onPress={() =>
               this.props.navigation.navigate('PhoneAuth', {finalRoute: 'User'})
@@ -44,7 +43,7 @@ class SignUp extends React.Component {
           />
           <CustomText subtitle_2 label="Or" />
           <Button
-            light
+            swap
             title="Connect using a social account"
             onPress={() => this.handleFBLogin()}
           />

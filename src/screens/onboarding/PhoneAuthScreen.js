@@ -13,119 +13,48 @@ import CustomText from 'library/components/General/CustomText';
 import LinkButton from 'library/components/General/LinkButton';
 import DismissKeyboardView from 'library/components/General/DismissKeyboardView';
 
-import auth from '@react-native-firebase/auth';
-import db from 'library/networking/database';
-
-import {facebookLogin} from '../../library/networking/FBauthentication';
-import authentication from '../../library/networking/authentication';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {SET_PHONE_NUMBER, SET_VERIFICATION_CODE} from '../../state/constants';
+import {
+  setValue,
+  resetAuth,
+  handleSendCode,
+  handleVerifyCode,
+  connectFbAccount,
+} from '../../state/actions/onboarding';
 
 import R from 'res/R';
 
-import Register from 'res/images/register.jpg';
-
 class PhoneAuthScreen extends Component {
-  state = {
-    phone: '+1',
-    confirmResult: null,
-    verificationCode: '',
-    userExists: false,
-    userId: '',
-    titling: {},
-    offset: R.constants.screenHeight * 0.05,
-  };
-
-  componentDidMount(): void {
-    const {option} = this.props.route.params;
-    if (option === 'signIn') {
-      this.setState({titling: R.strings.onboarding.signIn});
-    } else if (option === 'signUp') {
-      this.setState({titling: R.strings.onboarding.register});
-    }
+  componentDidMount() {
+    this.props.actions.resetAuth();
   }
 
-  handleFBLogin() {
-    facebookLogin().then(r => {
-      if (r === 200) {
-        authentication
-          .onSignIn('fb-key')
-          .then(
-            this.props.navigation.reset({index: 0, routes: [{name: 'User'}]}),
-          );
-      } else {
-        alert('Authentication failed.');
-      }
-    });
-  }
-
-  validatePhoneNumber = () => {
-    const regexp = /^\+[0-9]?()[0-9](\s|\S)(\d[0-9]{8,16})$/;
-    return regexp.test(this.state.phone);
-  };
-
-  handleSendCode = () => {
-    // Request to send OTP
-    if (this.validatePhoneNumber()) {
-      auth()
-        .signInWithPhoneNumber(this.state.phone)
-        .then(confirmResult => {
-          this.setState({confirmResult});
-        })
-        .catch(error => {
-          alert(error.message);
-        });
-    } else {
-      alert('Invalid Phone Number');
-    }
-  };
-
-  handleVerifyCode = () => {
-    // Request for OTP verification
-    const {confirmResult, verificationCode} = this.state;
-    if (verificationCode.length === 6) {
-      confirmResult
-        .confirm(verificationCode)
-        .then(user => {
-          this.setState({userId: user.uid});
-          db.checkUserExists(user).then(r => {
-            if (r) {
-              this.props.navigation.navigate('EnterPassword');
-            } else {
-              this.props.navigation.navigate('UserName');
-            }
-          });
-        })
-        .catch(error => {
-          alert(error.message);
-        });
-    } else {
-      alert('Please enter a 6 digit OTP code.');
-    }
-  };
-
-  renderPhoneInputView = () => {
+  renderPhoneInputView = titling => {
+    const {onBoarding, actions} = this.props;
     return (
       <View style={styles.authContainer}>
         <View style={{width: R.constants.screenWidth * 0.8}}>
-          <CustomText
-            style={{fontSize: 16}}
-            label={this.state.titling.prompt}
-          />
+          <CustomText style={{fontSize: 16}} label={titling.prompt} />
         </View>
         <TextForm
+          maxLength={15}
           placeholder="+1"
           keyboardType="phone-pad"
-          value={this.state.phone}
-          onChangeText={phone => {
-            this.setState({phone});
-          }}
-          maxLength={15}
+          value={onBoarding.phoneAuth.phoneNumber}
+          onChangeText={phone => actions.setValue(SET_PHONE_NUMBER, phone)}
         />
-        <Button dark title="Send Code" onPress={this.handleSendCode} />
+        <Button title="Send Code" onPress={() => actions.handleSendCode()} />
         <View style={{width: R.constants.screenWidth * 0.8}}>
           <LinkButton
             underline
             title="Or Connect with Facebook"
-            onPress={() => this.handleFBLogin()}
+            onPress={() =>
+              this.props.actions.connectFbAccount().then(() => {
+                this.props.navigation.navigate('User');
+              })
+            }
           />
         </View>
       </View>
@@ -133,6 +62,7 @@ class PhoneAuthScreen extends Component {
   };
 
   renderConfirmationCodeView = () => {
+    const {onBoarding, actions} = this.props;
     return (
       <View style={styles.authContainer}>
         <View style={{width: R.constants.screenWidth * 0.8}}>
@@ -142,34 +72,42 @@ class PhoneAuthScreen extends Component {
           />
         </View>
         <TextForm
-          placeholder="Verification code"
-          value={this.state.verificationCode}
-          keyboardType={Platform.OS === 'ios' ? 'number-pad' : 'numeric'}
-          onChangeText={verificationCode => {
-            this.setState({verificationCode});
-          }}
           maxLength={6}
+          placeholder="Verification code"
+          value={onBoarding.phoneAuth.verificationCode}
+          keyboardType={Platform.OS === 'ios' ? 'number-pad' : 'numeric'}
+          onChangeText={code => actions.setValue(SET_VERIFICATION_CODE, code)}
         />
-        <Button dark title="Verify Code" onPress={this.handleVerifyCode} />
+        <Button
+          title="Verify Code"
+          onPress={() =>
+            actions.handleVerifyCode().then(() => {
+              if (this.props.onBoarding.userDetails.newUser)
+                this.props.navigation.navigate('UserName');
+              else this.props.navigation.navigate('User');
+            })
+          }
+        />
       </View>
     );
   };
 
   render() {
+    const titling = R.strings.onboarding[this.props.onBoarding.mode];
     return (
       <KeyboardAvoidingView
+        behavior="position"
         style={styles.inputContainer}
-        keyboardVerticalOffset={this.state.offset}
-        behavior="position">
+        keyboardVerticalOffset={R.constants.screenHeight * 0.05}>
         <DismissKeyboardView style={{flex: 1}}>
           <View style={styles.mediaContainer}>
-            <Image style={styles.image} source={Register} />
+            <Image style={styles.image} source={R.images.register} />
           </View>
           <View style={styles.title}>
-            <CustomText title label={this.state.titling.title} />
-            {this.state.confirmResult
+            <CustomText title label={titling.title} />
+            {this.props.onBoarding.phoneAuth.confirmResult
               ? this.renderConfirmationCodeView()
-              : this.renderPhoneInputView()}
+              : this.renderPhoneInputView(titling)}
           </View>
         </DismissKeyboardView>
       </KeyboardAvoidingView>
@@ -187,7 +125,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: R.constants.screenWidth,
     alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: R.color.primary,
   },
   authContainer: {
     alignItems: 'center',
@@ -203,4 +141,20 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PhoneAuthScreen;
+const ActionCreators = {
+  setValue,
+  resetAuth,
+  handleSendCode,
+  handleVerifyCode,
+  connectFbAccount,
+};
+
+const mapStateToProps = state => ({
+  onBoarding: state.onBoarding,
+});
+
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(ActionCreators, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PhoneAuthScreen);

@@ -1,13 +1,7 @@
 import React from 'react';
 import {YellowBox} from 'react-native';
+import {TouchableOpacity, StyleSheet, Keyboard, View} from 'react-native';
 
-import {
-  StyleSheet,
-  View,
-  Dimensions,
-  TouchableOpacity,
-  Keyboard,
-} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Modal from 'react-native-modal';
 
@@ -21,8 +15,10 @@ import R from 'res/R';
 YellowBox.ignoreWarnings([
   'Non-serializable values were found in the navigation state',
 ]);
+
 class EventTime extends React.Component {
   state = {
+    eventData: this.props.route.params.data,
     isModalVisible: false,
     time: new Date(),
     textTime: '',
@@ -40,7 +36,7 @@ class EventTime extends React.Component {
   }
 
   handleModal = () => {
-    Keyboard.dismiss;
+    Keyboard.dismiss();
     const visible = this.state.isModalVisible;
     this.setState({isModalVisible: !visible});
   };
@@ -60,14 +56,11 @@ class EventTime extends React.Component {
   };
 
   handleVerifyTime = () => {
-    if (this.state.time > new Date()) {
-      this.props.navigation.navigate('EventLocation', {
-        name: this.props.route.params.name,
-        private: this.props.route.params.private,
-        free: this.props.route.params.free,
-        price: this.props.route.params.price,
-        time: this.state.time,
-      });
+    // format event data
+    const {eventData, time} = this.state;
+    if (time > new Date()) {
+      eventData.startTime = time;
+      this.props.navigation.navigate('EventLocation', {data: eventData});
     } else {
       alert('You must set a valid time for the event');
     }
@@ -107,16 +100,15 @@ class EventTime extends React.Component {
               center
             />
             <DateTimePicker
-              value={this.state.time}
               mode={'datetime'}
+              value={this.state.time}
               minimumDate={new Date()}
               onChange={(event, selectedTime) => this.handleTime(selectedTime)}
             />
             <View style={styles.buttonContainer}>
-              <Button title="Cancel" grey half onPress={this.removeTime} />
+              <Button title="Cancel" swap half onPress={this.removeTime} />
               <Button
                 title="Set"
-                dark
                 half
                 onPress={() => {
                   this.handleTime();
@@ -127,7 +119,7 @@ class EventTime extends React.Component {
           </View>
         </Modal>
 
-        <Button title="Next" dark onPress={this.handleVerifyTime} />
+        <Button title="Next" onPress={this.handleVerifyTime} />
       </View>
     );
   }

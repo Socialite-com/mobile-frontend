@@ -53,6 +53,8 @@ target 'Socialite' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  pod 'RNFS', :path => '../node_modules/react-native-fs'
+
   pod 'tipsi-stripe', :path => '../node_modules/tipsi-stripe'
 
 end

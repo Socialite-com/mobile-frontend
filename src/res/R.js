@@ -1,19 +1,23 @@
+import eventTypes from './defaults/eventData';
 import constants from './constants';
 import strings from './strings';
 import images from './images';
-import colors from './colors';
 import fonts from './fonts';
 import icons from './icons';
 import keys from './keys';
 
+import color from './colors';
+
 const R = {
+  eventTypes,
   constants,
   strings,
   images,
-  colors,
   fonts,
   icons,
   keys,
+
+  color,
 };
 
 export default R;

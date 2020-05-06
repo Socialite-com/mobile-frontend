@@ -1,26 +1,35 @@
 import React from 'react';
 import {StyleSheet, View, Text} from 'react-native';
-import authentication from '../../library/networking/authentication';
 import Button from '../../library/components/General/Button';
+
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import auth from '@react-native-firebase/auth';
+import {logout} from '../../state/actions/users';
 
 class Settings extends React.Component {
   state = {};
-  componentDidMount(): void {}
+  componentDidMount() {
+    console.log(this.props.user);
+  }
   render() {
     return (
       <View style={{flex: 1, justifyContent: 'center'}}>
         <Text>Event Page</Text>
         <Button
-          dark
           title="Log Out"
-          onPress={() =>
-            authentication.onSignOut().then(
-              this.props.navigation.reset({
-                index: 0,
-                routes: [{name: 'Onboarding'}],
-              }),
-            )
-          }
+          onPress={() => {
+            auth()
+              .signOut()
+              .then(() => {
+                this.props.logout();
+                this.props.navigation.reset({
+                  index: 0,
+                  routes: [{name: 'Onboarding'}],
+                });
+              })
+              .catch(error => alert(error));
+          }}
         />
       </View>
     );
@@ -29,4 +38,12 @@ class Settings extends React.Component {
 
 const styles = StyleSheet.create({});
 
-export default Settings;
+const mapStateToProps = state => ({
+  auth: state.authentication,
+  user: state.user,
+});
+const mapDispatchToProps = dispatch => ({
+  logout: bindActionCreators(logout, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Settings);

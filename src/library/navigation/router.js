@@ -13,7 +13,7 @@ function createRootNavigator(signedIn) {
   return (
     <Root.Navigator
       initialRouteName={signedIn ? 'User' : 'Onboarding'}
-      screenOptions={{headerShown: false}}>
+      screenOptions={{headerShown: false, gestureEnabled: false}}>
       <Root.Screen name="Onboarding" component={Onboarding} />
       <Root.Screen name="User" component={User} />
       <Root.Screen name="CreateEvent" component={CreateEvent} />

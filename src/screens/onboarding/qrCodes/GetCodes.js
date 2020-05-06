@@ -93,7 +93,6 @@ class GetCodes extends React.Component {
         </View>
         <View style={styles.buttonContainer}>
           <Button
-            dark
             onPress={() =>
               this.props.navigation.navigate('PhoneAuth', {option: 'SignUp'})
             }
@@ -118,9 +117,9 @@ class GetCodes extends React.Component {
           <CustomText label="Some error animation" />
         </View>
         <View style={styles.buttonContainer}>
-          <Button dark title="Search again" />
+          <Button title="Search again" />
           <Button
-            light
+            swap
             onPress={() => this.props.navigation.navigate('LinkRegister')}
             title="Enter key"
           />

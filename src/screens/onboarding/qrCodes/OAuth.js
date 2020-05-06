@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 
 import {facebookLogin} from 'library/networking/FBauthentication';
-import authentication from '../../../library/networking/authentication';
+import authentication from '../../../library/networking/deprecated/authentication';
 import Button from 'library/components/General/Button';
 import CustomText from 'library/components/General/CustomText';
 
@@ -40,7 +40,6 @@ class OAuth extends React.Component {
         </View>
         <View style={styles.actionContainer}>
           <Button
-            dark
             title="Sign up with phone number"
             onPress={() =>
               this.props.navigation.navigate('PhoneAuth', {
@@ -50,7 +49,7 @@ class OAuth extends React.Component {
           />
           <CustomText subtitle_2 label="Or" />
           <Button
-            light
+            swap
             title="Connect using a social account"
             onPress={() => this.handleFBLogin()}
           />

@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
+
 import Icon from 'react-native-vector-icons/AntDesign';
 
 import R from 'res/R';
@@ -31,7 +32,7 @@ export const CountDown = ({timeLeft}) => {
 export const Details = ({text}) => {
   return (
     <View style={cardStyles.card}>
-      <Text style={{color: 'white'}}>{text}</Text>
+      <Text style={{color: R.color.primary}}>{text}</Text>
     </View>
   );
 };
@@ -39,15 +40,15 @@ export const Details = ({text}) => {
 const cardStyles = StyleSheet.create({
   card: {
     height: 200,
-    backgroundColor: 'white',
+    backgroundColor: R.color.primary,
     width: R.constants.screenWidth,
     borderTopRightRadius: 6,
     borderTopLeftRadius: 6,
   },
   countdown: {
     fontFamily: R.fonts.robotoBold,
+    color: R.color.secondary,
     fontSize: 40,
-    color: R.colors.secondary,
   },
 });
 
@@ -68,20 +69,22 @@ export const Invite = ({children, navigator, onConfirm}) => {
       <View style={styles.card}>
         <View style={styles.toolbar}>
           <View style={styles.row}>
-            <TouchableHighlight style={styles.profileImgContainer}>
-              <Text />
-            </TouchableHighlight>
-            <View>
-              <Text style={styles.organizer}>Marianopolis Student Union</Text>
-              <Text style={styles.status}>Verified</Text>
-            </View>
+            <TouchableOpacity style={styles.row}>
+              <TouchableHighlight style={styles.profileImgContainer}>
+                <Text />
+              </TouchableHighlight>
+              <View>
+                <Text style={styles.organizer}>Marianopolis Student Union</Text>
+                <Text style={styles.status}>Verified</Text>
+              </View>
+            </TouchableOpacity>
             <TouchableOpacity
               onPress={() => navigator.pop()}
               style={{
                 flex: 1,
                 alignItems: 'flex-end',
               }}>
-              <Icon name="close" size={25} />
+              <Icon name="close" color={R.color.secondary} size={25} />
             </TouchableOpacity>
           </View>
         </View>
@@ -107,17 +110,19 @@ const styles = StyleSheet.create({
   card: {
     flex: 4,
     padding: '5%',
-    borderTopRightRadius: 12,
     borderTopLeftRadius: 12,
-    backgroundColor: R.colors.secondary,
+    borderTopRightRadius: 12,
     width: R.constants.screenWidth,
+    backgroundColor: R.color.primary,
   },
   organizer: {
     fontFamily: R.fonts.comfortaaSemiBold,
+    color: R.color.secondary,
     fontSize: 12,
   },
   status: {
     fontFamily: R.fonts.comfortaaLight,
+    color: R.color.secondary,
     fontSize: 12,
   },
   envelope: {
@@ -128,15 +133,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: R.constants.screenWidth,
-    backgroundColor: R.colors.primary,
+    backgroundColor: '#407eb4', // change to custom event color
   },
   profileImgContainer: {
-    height: 30,
     width: 30,
+    height: 30,
+    borderWidth: 1,
     marginRight: 10,
     borderRadius: 40,
-    borderColor: 'black',
-    borderWidth: 1,
+    borderColor: R.color.secondary,
   },
   infoBox: {
     marginTop: '3%',
@@ -145,25 +150,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
   },
-  title: {
-    fontFamily: R.fonts.comfortaaBold,
-    color: R.colors.secondary,
-    fontSize: 20,
-  },
   header: {
     fontFamily: R.fonts.robotoBold,
     textTransform: 'uppercase',
+    color: R.color.secondary,
     fontSize: 13,
   },
   body: {
     fontFamily: R.fonts.comfortaaRegular,
+    color: R.color.secondary,
     fontSize: 13,
+  },
+  title: {
+    fontFamily: R.fonts.comfortaaBold,
+    color: 'white',
+    fontSize: 20,
   },
   eventType: {
     fontFamily: R.fonts.robotoLight,
     textTransform: 'uppercase',
-    fontSize: 14,
     color: 'white',
+    fontSize: 14,
   },
   toolbar: {
     flex: 1,

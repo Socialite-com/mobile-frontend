@@ -11,12 +11,19 @@ export default function BrowseOptions() {
       initialRouteName="Browse"
       screenOptions={{
         headerTitleStyle: {
+          color: R.color.secondary,
           fontFamily: R.fonts.comfortaaRegular,
         },
         headerBackTitleVisible: false,
-        cardStyle: {backgroundColor: '#FFFFFF'},
         headerLeftContainerStyle: {paddingLeft: 20},
         headerRightContainerStyle: {paddingRight: 20},
+        cardStyle: {backgroundColor: R.color.primary},
+        headerStyle: {
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
+          backgroundColor: R.color.primaryDark,
+        },
       }}>
       <Stack.Screen name="Browse" component={screens.user.Browse} />
     </Stack.Navigator>

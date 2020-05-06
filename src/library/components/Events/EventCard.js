@@ -1,23 +1,20 @@
 import React from 'react';
-import {
-  TouchableOpacity,
-  StyleSheet,
-  View,
-  Text,
-  Image,
-  ImageBackground,
-} from 'react-native';
+import {StyleSheet, Image, View, Text} from 'react-native';
 
+import CacheImage from '../General/CacheImage';
+import ProfileCircle from '../User/profileCircle';
 import {invertColor} from '../../networking/qrGen';
 
 import R from 'res/R';
 
-const EventCard = ({item, small, ...children}) => {
-  const organizer = item.userName;
+const EventCard = ({data, small, ...children}) => {
+  const item = data.details;
+  const user = data.creator;
+
   const textColor = invertColor(item.backgroundColor, true);
-  var logoImg = R.images.logo_white;
-  var cardHeight = 250;
-  var cardPadding = 0;
+  let logoImg = R.images.logo_white;
+  let cardHeight = 300;
+  let sizing = 1;
 
   if (textColor === '#000000') {
     logoImg = R.images.logo_dark;
@@ -26,14 +23,14 @@ const EventCard = ({item, small, ...children}) => {
   }
 
   if (small) {
-    cardHeight = 225;
-    cardPadding = 3;
+    cardHeight = 270;
+    sizing = 0.9;
   }
 
   const styles = StyleSheet.create({
     eventContainer: {
       height: cardHeight,
-      padding: cardPadding,
+      padding: 0,
       width: '100%',
       marginTop: 6,
       elevation: 4,
@@ -48,121 +45,93 @@ const EventCard = ({item, small, ...children}) => {
     },
     textContainer: {
       flex: 1,
-      width: '100%',
-      padding: '5%',
       flexDirection: 'row',
-      justifyContent: 'space-between',
+      paddingVertical: '2.5%',
+      paddingHorizontal: '3%',
     },
     eventTitle: {
-      color: textColor,
       fontFamily: R.fonts.comfortaaBold,
-      flexWrap: 'wrap',
+      color: textColor,
       marginBottom: '1%',
-      fontSize: 15,
+      flexWrap: 'wrap',
+      fontSize: 15 * sizing,
     },
     organizer: {
       color: textColor,
       fontFamily: R.fonts.comfortaaMedium,
-      fontSize: 12,
+      fontSize: 12 * sizing,
     },
     rsvp: {
       color: textColor,
       fontFamily: R.fonts.robotoBlack,
-      fontSize: 14,
-    },
-    cardBody: {
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    cardFooter: {
-      flex: 1,
-      alignItems: 'flex-end',
-      flexDirection: 'row',
-      padding: '4%',
-    },
-    profileImgContainer: {
-      height: 25,
-      width: 25,
-      marginRight: 10,
-      borderRadius: 40,
-      borderColor: textColor,
-      borderWidth: 1,
+      fontSize: 14 * sizing,
     },
     backgroundImage: {
-      borderRadius: 6,
-      opacity: 0.7,
+      width: '100%',
+      height: '100%',
+      borderTopRightRadius: 6,
+      borderTopLeftRadius: 6,
     },
     logoImage: {
-      height: 25,
-      width: 25,
-      marginRight: 10,
+      height: 20,
+      width: 20,
       resizeMode: 'contain',
     },
     logoText: {
-      fontFamily: R.fonts.comfortaaRegular,
+      fontFamily: R.fonts.comfortaaSemiBold,
       color: textColor,
-      fontSize: 24,
+      fontSize: 24 * sizing,
     },
     cardImage: {
       flex: 1,
       width: '100%',
       resizeMode: 'cover',
     },
-    qrContainer: {
-      height: 75,
-      width: 75,
-      backgroundColor: 'black',
-      justifyContent: 'center',
-      alignItems: 'center',
-      borderRadius: 6,
-    },
-    qrCode: {
-      height: 70,
-      width: 70,
-      borderRadius: 6,
-    },
     row: {
-      flex: 1,
-      alignItems: 'center',
       flexDirection: 'row',
     },
   });
 
   return (
     <View style={styles.eventContainer}>
-      <ImageBackground
-        source={{uri: item.backgroundImage}}
-        imageStyle={styles.backgroundImage}
-        style={{width: '100%', height: '100%'}}>
-        <View style={styles.textContainer}>
-          <View style={{flex: 1, flexShrink: 1}}>
-            <Text style={styles.eventTitle}>{item.title}</Text>
-            <Text style={styles.organizer}>{item.type}</Text>
+      <View style={{flex: 4}}>
+        <CacheImage
+          background={true}
+          uri={item.backgroundImage}
+          style={{width: '100%', height: '100%'}}
+          imageStyle={styles.backgroundImage}>
+          <View
+            style={{
+              padding: '3%',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}>
+            <ProfileCircle textStyle={styles.organizer} card profile={user} />
+            <Image source={logoImg} style={styles.logoImage} />
           </View>
-          <View style={{flex: 1, alignItems: 'flex-end'}}>
-            <Text style={styles.rsvp}>RSVP</Text>
-          </View>
+        </CacheImage>
+      </View>
+      <View style={styles.textContainer}>
+        <View
+          style={{flex: 3, flexWrap: 'wrap', justifyContent: 'space-around'}}>
+          <Text style={styles.organizer}>
+            {item.startTime.toDate().toDateString()}
+          </Text>
+          <Text style={styles.logoText}>{item.title}</Text>
         </View>
-        <View style={styles.cardBody}>
-          <Image style={styles.logoImage} source={logoImg} />
-          <Text style={styles.logoText}>Socialite</Text>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'space-around',
+            alignItems: 'flex-end',
+          }}>
+          <Text style={styles.organizer}>
+            {item.private ? 'private' : 'public'}
+            {item.paid ? ' • paid' : null}
+          </Text>
+          <Text style={styles.logoText}>18</Text>
         </View>
-        <View style={styles.cardFooter}>
-          <TouchableOpacity style={styles.row}>
-            <View style={styles.profileImgContainer}>
-              <Text />
-            </View>
-            <Text style={styles.organizer}>{organizer}</Text>
-          </TouchableOpacity>
-          <View style={{flex: 1, alignItems: 'flex-end'}}>
-            {/*<TouchableHighlight style={styles.qrContainer}>*/}
-            <Image style={styles.qrCode} source={{uri: item.qrCode}} />
-            {/*</TouchableHighlight>*/}
-          </View>
-        </View>
-      </ImageBackground>
+      </View>
     </View>
   );
 };

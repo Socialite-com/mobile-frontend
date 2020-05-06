@@ -1,12 +1,12 @@
 import React from 'react';
 import {StyleSheet, View, Keyboard} from 'react-native';
-import DraggableFlatList from 'react-native-draggable-flatlist'; //update in progress
+// import DraggableFlatList from 'react-native-draggable-flatlist';
 
 import Button from 'library/components/General/Button';
 import CustomText from 'library/components/General/CustomText';
 import TextInput from 'library/components/General/TextInput';
-
 import Todo from 'library/components/Events/Todo';
+
 import R from 'res/R';
 
 class ManageEvent extends React.Component {
@@ -77,7 +77,7 @@ class ManageEvent extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={styles.mainView}>
         <View>
           <CustomText subtitle label="Announcements" />
         </View>
@@ -93,7 +93,7 @@ class ManageEvent extends React.Component {
               }}
               onSubmitEditing={this.onAdd}
             />
-            <Button dark title="Add" onPress={this.onAdd} />
+            <Button title="Add" onPress={this.onAdd} />
           </View>
 
           {/* <View style={{height: 500}}>
@@ -123,11 +123,10 @@ class ManageEvent extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  mainView: {
     flex: 1,
-    padding: '5%',
-    paddingTop: 150,
-    backgroundColor: '#fff',
+    justifyContent: 'center',
+    backgroundColor: '#1a1a1a',
   },
 });
 

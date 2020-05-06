@@ -65,20 +65,22 @@ class LinkRegister extends React.Component {
 
   renderCamera = () => {
     return (
-      <RNCamera
-        ref={cam => {
-          this.camera = cam;
-        }}
-        style={{
-          height: R.constants.screenHeight,
-          width: R.constants.screenWidth,
-        }}
-        onGoogleVisionBarcodesDetected={this._onBarcodeRecognized}
-        googleVisionBarcodeType={
-          RNCamera.Constants.GoogleVisionBarcodeDetection.BarcodeType.QR_CODE
-        }
-        aspect={RNCamera.Constants.Orientation.auto}
-      />
+      <View style={{flex: 1}}>
+        <RNCamera
+          ref={cam => {
+            this.camera = cam;
+          }}
+          style={{
+            height: R.constants.screenHeight,
+            width: R.constants.screenWidth,
+          }}
+          onGoogleVisionBarcodesDetected={this._onBarcodeRecognized}
+          googleVisionBarcodeType={
+            RNCamera.Constants.GoogleVisionBarcodeDetection.BarcodeType.QR_CODE
+          }
+          aspect={RNCamera.Constants.Orientation.auto}
+        />
+      </View>
     );
   };
 
@@ -150,6 +152,39 @@ class LinkRegister extends React.Component {
     });
   };
 
+  _renderModal() {
+    return (
+      <Modal
+        isVisible={this.state.modalVisible}
+        swipeDirection="down"
+        onSwipeComplete={this.handleModal}
+        onBackdropPress={this.handleModal}
+        style={styles.modalContainer}>
+        <View style={styles.modalContentContainer}>
+          <Button
+            half
+            swap
+            onPress={() => this.handleCamera()}
+            customStyle={{height: 130}}
+            title="Take a picture">
+            <Icon name="ios-camera" size={50} />
+          </Button>
+          <Button
+            half
+            swap
+            onPress={() => this._handleReadCode()}
+            customStyle={{
+              height: 130,
+              justifyContent: 'space-around',
+            }}
+            title="Choose from camera roll">
+            <Icon name="ios-image" size={50} />
+          </Button>
+        </View>
+      </Modal>
+    );
+  }
+
   render() {
     if (this.state.cameraVisible) {
       this.props.navigation.setOptions({
@@ -174,68 +209,42 @@ class LinkRegister extends React.Component {
     }
 
     return (
-      <KeyboardAvoidingView
-        keyboardVerticalOffset={100}
-        style={{flex: 1}}
-        behavior="padding">
+      <>
         {this.state.cameraVisible ? (
           this.renderCamera()
         ) : (
           <DismissKeyboardView style={{flex: 1, alignItems: 'center'}}>
-            <View style={styles.mediaArea}>
-              <Image style={styles.image} source={R.images.scan} />
-            </View>
-            <View style={styles.textArea}>
-              <CustomText title label="Access an existing event" />
-              <CustomText label="Enter your Socialite invite key or scan your Socialite code to access your event" />
-            </View>
-            <View style={styles.buttonArea}>
-              <TextForm
-                value={this.state.keyVal}
-                onChangeText={keyVal => {
-                  this.setState({keyVal});
-                }}
-                placeholder="Paste your key..."
-              />
-              <View style={{width: R.constants.screenWidth * 0.8}}>
-                <LinkButton
-                  underline
-                  title="Scan a QR Code"
-                  onPress={() => this.handleModal()}
-                />
-                <Modal
-                  isVisible={this.state.modalVisible}
-                  swipeDirection="down"
-                  onSwipeComplete={this.handleModal}
-                  onBackdropPress={this.handleModal}
-                  style={styles.modalContainer}>
-                  <View style={styles.modalContentContainer}>
-                    <Button
-                      half
-                      light
-                      onPress={() => this.handleCamera()}
-                      customStyle={{height: 130}}
-                      title="Take a picture">
-                      <Icon name="ios-camera" size={50} />
-                    </Button>
-                    <Button
-                      half
-                      light
-                      onPress={() => this._handleReadCode()}
-                      customStyle={{
-                        height: 130,
-                        justifyContent: 'space-around',
-                      }}
-                      title="Choose from camera roll">
-                      <Icon name="ios-image" size={50} />
-                    </Button>
+            <KeyboardAvoidingView style={{flex: 1}} behavior="position">
+              <View style={{flex: 1, alignItems: 'center'}}>
+                <View style={styles.mediaArea}>
+                  <Image style={styles.image} source={R.images.scan} />
+                </View>
+                <View style={styles.textArea}>
+                  <CustomText title label="Access an existing event" />
+                  <CustomText label="Enter your Socialite invite key or scan your Socialite code to access your event" />
+                </View>
+                <View style={styles.buttonArea}>
+                  <TextForm
+                    value={this.state.keyVal}
+                    onChangeText={keyVal => {
+                      this.setState({keyVal});
+                    }}
+                    placeholder="Paste your key..."
+                  />
+                  <View style={{width: R.constants.screenWidth * 0.8}}>
+                    <LinkButton
+                      underline
+                      title="Scan a QR Code"
+                      onPress={() => this.handleModal()}
+                    />
+                    {this._renderModal()}
                   </View>
-                </Modal>
+                </View>
               </View>
-            </View>
+            </KeyboardAvoidingView>
           </DismissKeyboardView>
         )}
-      </KeyboardAvoidingView>
+      </>
     );
   }
 }
@@ -243,8 +252,8 @@ class LinkRegister extends React.Component {
 const styles = StyleSheet.create({
   mediaArea: {
     flex: 6,
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
     width: R.constants.screenWidth * 0.5,
   },
   textArea: {
@@ -253,8 +262,8 @@ const styles = StyleSheet.create({
     width: R.constants.screenWidth * 0.8,
   },
   buttonArea: {
-    marginTop: '5%',
     flex: 2,
+    marginTop: '5%',
     alignItems: 'center',
   },
   modalContentContainer: {

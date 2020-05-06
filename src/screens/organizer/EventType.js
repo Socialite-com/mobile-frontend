@@ -1,121 +1,95 @@
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-  KeyboardAvoidingView,
-  Dimensions,
-  Platform,
-} from 'react-native';
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
 
-import Button from 'library/components/General/Button';
 import CustomText from 'library/components/General/CustomText';
-import TextForm from 'library/components/General/TextInput';
+import Button from 'library/components/General/Button';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 import R from 'res/R';
-
-const keyboardOffset = R.constants.screenHeight * 0.2;
 
 class EventType extends React.Component {
   state = {
     private: true,
-    free: true,
-    price: '',
+    selected: null,
+    userName: this.props.route.params.user,
   };
 
-  handleType(value) {
-    this.setState({private: value});
-  }
-
-  handlePrice(value) {
-    this.setState({free: value});
-  }
-
   handleVerifyType = () => {
-    if (
-      (!this.state.free && parseInt(this.state.price, 0) > 0) ||
-      this.state.free
-    ) {
-      this.props.navigation.navigate('EventTime', {
-        name: this.props.route.params.name,
-        private: this.state.private,
-        free: this.state.free,
-        price: this.state.price,
-      });
-    } else {
-      alert('Your event must have a valid price');
-    }
+    // format event data
+    let eventData = R.eventTypes[this.state.selected];
+    eventData.private = this.state.private;
+    eventData.title = this.state.userName + "'s" + ' Party';
+    this.props.navigation.navigate('EventTime', {data: eventData});
+  };
+
+  _renderPrivacy = () => {
+    return (
+      <View style={{flex: 2}}>
+        <View style={styles.buttonContainer}>
+          <Button
+            half
+            title="Private"
+            swap={!this.state.private}
+            onPress={() => this.setState({private: true})}
+          />
+          <Button
+            half
+            title="Public"
+            swap={this.state.private}
+            onPress={() => this.setState({private: false})}
+          />
+        </View>
+        <Button title="Next" onPress={this.handleVerifyType} />
+      </View>
+    );
   };
 
   render() {
+    this.props.navigation.setOptions({
+      headerLeft: () => (
+        <TouchableOpacity onPress={() => this.props.navigation.pop()}>
+          <Icon name="close" size={25} />
+        </TouchableOpacity>
+      ),
+    });
+
     return (
       <View style={styles.container}>
         <View style={[styles.textContainer, styles.titleContainer]}>
-          <CustomText label="What type of event are you organizing?" subtitle />
+          <CustomText label="What type of party are you organizing?" subtitle />
         </View>
-
-        {this.state.private ? (
-          <View style={styles.buttonContainer}>
-            <Button title="Private" dark half />
-            <Button
-              title="Public"
-              light
-              half
-              onPress={() => this.handleType(false)}
-            />
-          </View>
-        ) : (
-          <View style={styles.buttonContainer}>
-            <Button
-              title="Private"
-              light
-              half
-              onPress={() => this.handleType(true)}
-            />
-            <Button title="Public" dark half />
-          </View>
-        )}
-
-        {this.state.free ? (
-          <View style={styles.buttonContainer}>
-            <Button title="Free" dark half />
-            <Button
-              title="Paid"
-              light
-              half
-              onPress={() => this.handlePrice(false)}
-            />
-          </View>
-        ) : (
-          <View>
-            <View style={styles.buttonContainer}>
-              <Button
-                title="Free"
-                light
-                half
-                onPress={() => this.handlePrice(true)}
-              />
-              <Button title="Paid" dark half />
-            </View>
-
-            <KeyboardAvoidingView
-              styles={{flexDirection: 'row', alignItems: 'center'}}
-              keyboardVerticalOffset={keyboardOffset}
-              behavior="padding">
-              <TextForm
-                placeholder="Set your price (in CAD)"
-                keyboardType={Platform.OS === 'ios' ? 'number-pad' : 'numeric'}
-                returnKeyType={'next'}
-                value={this.state.price.toString()}
-                onChangeText={price => {
-                  this.setState({price});
-                }}
-                onSubmitEditing={this.handleVerifyPrice}
-              />
-            </KeyboardAvoidingView>
-          </View>
-        )}
-
-        <Button title="Next" dark onPress={this.handleVerifyType} />
+        <View style={styles.selectContainer}>
+          {R.eventTypes.map((item, index) => {
+            let borderWidth;
+            if (index === this.state.selected) {
+              borderWidth = 2;
+            } else {
+              borderWidth = 0;
+            }
+            return (
+              <TouchableOpacity
+                onPress={() =>
+                  this.setState({selected: index, private: item.private})
+                }
+                style={[styles.selectView, {borderWidth: borderWidth}]}>
+                <View style={{flex: 2, justifyContent: 'center'}}>
+                  {/*TODO Anton add designs specifying party size*/}
+                  <CustomText subtitle_2 label="Add design" />
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                  }}>
+                  <CustomText label={item.size} />
+                  <CustomText title label={item.attendance} />
+                </View>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+        {this._renderPrivacy()}
       </View>
     );
   }
@@ -128,11 +102,26 @@ const styles = StyleSheet.create({
     marginTop: '10%',
   },
   titleContainer: {
-    paddingBottom: '10%',
+    paddingBottom: '5%',
   },
   textContainer: {
-    width: R.constants.screenWidth * 0.8,
     overflow: 'scroll',
+    width: R.constants.screenWidth * 0.8,
+  },
+  selectContainer: {
+    flex: 5,
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: R.constants.screenWidth * 0.85,
+  },
+  selectView: {
+    height: '47%',
+    width: '50%',
+    padding: '2%',
+    borderRadius: 6,
+    alignItems: 'center',
   },
   buttonContainer: {
     flexDirection: 'row',

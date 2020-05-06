@@ -33,14 +33,6 @@ class EventName extends React.Component {
   };
 
   render() {
-    this.props.navigation.setOptions({
-      headerLeft: () => (
-        <TouchableOpacity onPress={() => this.props.navigation.pop()}>
-          <Icon name="close" size={25} />
-        </TouchableOpacity>
-      ),
-    });
-
     return (
       <DismissKeyboardView style={styles.container}>
         <View style={[styles.textContainer, styles.titleContainer]}>
@@ -56,7 +48,7 @@ class EventName extends React.Component {
               this.setState({name});
             }}
           />
-          <Button title="Next" dark onPress={this.handleVerifyName} />
+          <Button title="Next" onPress={this.handleVerifyName} />
         </KeyboardAvoidingView>
         <View style={styles.textContainer}>
           <CustomText

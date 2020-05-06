@@ -3,8 +3,6 @@ import LinkRegister from './onboarding/LinkRegister';
 import Landing from './onboarding/Landing';
 import PhoneAuthScreen from './onboarding/PhoneAuthScreen';
 import UserName from './onboarding/UserName';
-import CreatePassword from './onboarding/CreatePassword';
-import EnterPassword from './onboarding/EnterPassword';
 import SplashScreen from './onboarding/SplashScreen';
 import GetCode from './onboarding/GetCode';
 
@@ -12,7 +10,6 @@ import GetCode from './onboarding/GetCode';
 //import OAuth from './onboarding/qrCodes/OAuth';
 //import SignUp from './onboarding/qrCodes/SignUp';
 
-import Event from './user/Event';
 import Home from './user/Home';
 import Browse from './user/Browse';
 import Activity from './user/Activity';
@@ -44,12 +41,9 @@ const screens = {
     GetCode: GetCode,
     PhoneAuthScreen: PhoneAuthScreen,
     UserName: UserName,
-    CreatePassword: CreatePassword,
-    EnterPassword: EnterPassword,
     SplashScreen: SplashScreen,
   },
   user: {
-    Event: Event,
     Home: Home,
     Browse: Browse,
     Activity: Activity,

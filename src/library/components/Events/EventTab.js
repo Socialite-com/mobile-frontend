@@ -3,7 +3,7 @@ import {TouchableHighlight, StyleSheet, View, Text, Image} from 'react-native';
 
 import R from 'res/R';
 
-export function createEventTab(item, index) {
+export function EventTab(item, index) {
   return (
     <View style={styles.eventContainer} key={index}>
       <TouchableHighlight style={styles.imageContainer}>
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     width: R.constants.screenWidth * 0.8,
     flexDirection: 'row',
     borderBottomWidth: 1,
-    borderBottomColor: R.colors.tertiary,
+    borderBottomColor: R.color.tertiary,
   },
   eventInfo: {
     width: 'auto',
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     height: 80,
     width: 80,
     borderRadius: 6,
-    backgroundColor: 'black',
+    backgroundColor: R.color.secondary,
     justifyContent: 'center',
     alignItems: 'center',
   },

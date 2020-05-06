@@ -8,6 +8,8 @@ import com.gettipsi.stripe.StripeReactPackage;
 import com.gettipsi.stripe.StripeReactPackage;
 import com.gettipsi.stripe.StripeReactPackage;
 import com.gettipsi.stripe.StripeReactPackage;
+import com.rnfs.RNFSPackage;
+import com.rnfs.RNFSPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
