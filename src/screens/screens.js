@@ -16,11 +16,11 @@ import Activity from './user/Activity';
 
 import Settings from './userOptions/Settings';
 
-import EventName from './organizer/EventName';
+import EventName from './organizer/deprecated/EventName';
 import EventType from './organizer/EventType';
 import EventTime from './organizer/EventTime';
 import EventLocation from './organizer/EventLocation';
-import EventPrice from './organizer/EventPrice';
+import EventPrice from './organizer/deprecated/EventPrice';
 
 import EventPage from './events/view/EventPage';
 import GuestList from './events/view/GuestList';

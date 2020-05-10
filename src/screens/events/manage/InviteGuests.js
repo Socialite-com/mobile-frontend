@@ -37,7 +37,7 @@ class InviteGuests extends React.Component {
         <View style={styles.guestList}>
           <ScrollView>
             {this.state.guests.map((item, index) => {
-              return <UserTab item={item} index={index} />;
+              return <UserTab item={item} key={index} />;
             })}
           </ScrollView>
         </View>

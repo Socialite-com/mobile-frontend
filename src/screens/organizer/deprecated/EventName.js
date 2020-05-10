@@ -6,11 +6,11 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import Button from '../../library/components/General/Button';
-import TextForm from '../../library/components/General/TextInput';
-import CustomText from '../../library/components/General/CustomText';
-import DismissKeyboardView from '../../library/components/General/DismissKeyboardView';
-import Loading from '../../library/components/General/Loading';
+import Button from '../../../library/components/General/Button';
+import TextForm from '../../../library/components/General/TextInput';
+import CustomText from '../../../library/components/General/CustomText';
+import DismissKeyboardView from '../../../library/components/General/DismissKeyboardView';
+import Loading from '../../../library/components/General/Loading';
 
 import R from 'res/R';
 import Icon from 'react-native-vector-icons/AntDesign';

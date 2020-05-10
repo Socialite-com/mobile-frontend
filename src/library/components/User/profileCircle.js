@@ -19,7 +19,7 @@ const alignItems = 'center';
 const justifyContent = 'center';
 const backgroundColor = R.color.secondary;
 
-const ProfileCircle = ({profile, main, card, guestList, textStyle}) => {
+const ProfileCircle = ({profile, main, card, invite, guestList, textStyle}) => {
   let displayName = false;
   let profileContainer = [];
   let nameStyle = [];
@@ -33,6 +33,9 @@ const ProfileCircle = ({profile, main, card, guestList, textStyle}) => {
     nameSize = 16;
     displayName = true;
     profileContainer = profileContainer.concat(styles.cardProfile);
+  } else if (invite) {
+    nameSize = 20;
+    profileContainer = profileContainer.concat(styles.inviteProfile);
   }
 
   if (textStyle) {
@@ -61,6 +64,15 @@ const ProfileCircle = ({profile, main, card, guestList, textStyle}) => {
     </TouchableHighlight>
   );
 
+  const textView = (
+    <View style={{justifyContent: 'center'}}>
+      <Text style={nameStyle}>{profile.userName}</Text>
+      <Text style={styles.status}>
+        {profile.verified ? 'Verified' : 'Unverified'}
+      </Text>
+    </View>
+  );
+
   if (main) return mainHighlight;
   else {
     return (
@@ -70,9 +82,9 @@ const ProfileCircle = ({profile, main, card, guestList, textStyle}) => {
           <View style={{justifyContent: 'center'}}>
             <Text style={nameStyle}>{profile.userName}</Text>
           </View>
-        ) : (
-          <></>
-        )}
+        ) : invite ? (
+          textView
+        ) : null}
       </TouchableOpacity>
     );
   }
@@ -97,6 +109,18 @@ const styles = StyleSheet.create({
     width: 25,
     height: 25,
     marginRight: 10,
+  },
+  inviteProfile: {
+    width: 35,
+    height: 35,
+    borderWidth: 1,
+    marginRight: 10,
+    borderColor: R.color.secondary,
+  },
+  status: {
+    fontFamily: R.fonts.comfortaaLight,
+    color: R.color.secondary,
+    fontSize: 12,
   },
 });
 

@@ -1,54 +1,21 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, Image, View} from 'react-native';
 
 import CustomText from 'library/components/General/CustomText';
 import Button from 'library/components/General/Button';
 import EventCard from 'library/components/Events/EventCard';
 
-import AsyncStorage from '@react-native-community/async-storage';
-import db from '../../state/database';
+import Animation from 'lottie-react-native';
+import anim from '../../res/data/loading/data.json';
 
 import R from 'res/R';
 
+import {connect} from 'react-redux';
+
 class GetCode extends React.Component {
-  state = {
-    invite: {},
-    eventKey: '',
-    checkedCodes: false,
-    foundCodes: false,
-  };
-
   componentDidMount() {
-    this._handleVerifyCode();
+    if (this.props.findEvent.searching) this.animation.play();
   }
-
-  _handleVerifyCode = () => {
-    const {eventKey} = this.props.route.params;
-    db.getEventData(eventKey)
-      .then(invite => db.parseEventData([invite]))
-      .then(inviteData => {
-        console.log(inviteData);
-        this.setState({
-          eventKey: eventKey,
-          invite: inviteData[0],
-          checkedCodes: true,
-          foundCodes: true,
-        });
-      })
-      .catch(() => {
-        this.setState({
-          checkedCodes: true,
-          foundCodes: false,
-        });
-      });
-  };
-
-  _handleOnCodeFound = () => {
-    const eid = this.state.eventKey;
-    AsyncStorage.setItem('newInvite', eid).then(() =>
-      this.props.navigation.navigate('PhoneAuth', {option: 'signUp'}),
-    );
-  };
 
   _renderSearchingView = () => {
     return (
@@ -58,13 +25,18 @@ class GetCode extends React.Component {
           <CustomText label="This may take a few seconds" />
         </View>
         <View style={styles.mediaContainer}>
-          <CustomText label="Some searching animation" />
+          <Animation
+            loop={true}
+            source={anim}
+            style={styles.image}
+            ref={animation => (this.animation = animation)}
+          />
         </View>
       </>
     );
   };
 
-  _renderFoundCodeView = () => {
+  _renderFoundCodeView = data => {
     return (
       <>
         <View style={styles.textContainer}>
@@ -72,17 +44,19 @@ class GetCode extends React.Component {
           <CustomText label="Let's edit your profile so people can identify you on Socialite" />
         </View>
         <View style={styles.mediaContainer}>
-          <EventCard item={this.state.invite} small />
+          <EventCard data={data} small />
         </View>
         <View style={styles.buttonContainer}>
-          <Button onPress={() => this._handleOnCodeFound()} title="Continue" />
+          <Button
+            onPress={() => this.props.navigation.navigate('PhoneAuth')}
+            title="Continue"
+          />
         </View>
       </>
     );
   };
 
-  _renderNoneFoundView = () => {
-    const {origin} = this.props.route.params;
+  _renderNoneFoundView = error => {
     return (
       <>
         <View style={styles.textContainer}>
@@ -90,10 +64,10 @@ class GetCode extends React.Component {
             title
             label="Sorry, we couldn't find any Socialite event linked to that code"
           />
-          <CustomText label={R.strings.onboarding.getCode[origin]} />
+          <CustomText label={error} />
         </View>
         <View style={styles.mediaContainer}>
-          <CustomText label="Some error animation" />
+          <Image style={styles.image} source={R.images.error} />
         </View>
         <View style={styles.buttonContainer}>
           <Button
@@ -106,14 +80,14 @@ class GetCode extends React.Component {
   };
 
   render() {
-    const {foundCodes, checkedCodes} = this.state;
+    const {queryError, searching, data} = this.props.findEvent;
     return (
       <View style={styles.mainContainer}>
-        {!checkedCodes
+        {searching
           ? this._renderSearchingView()
-          : !foundCodes
-          ? this._renderNoneFoundView()
-          : this._renderFoundCodeView()}
+          : queryError !== null
+          ? this._renderNoneFoundView(queryError)
+          : this._renderFoundCodeView(data)}
       </View>
     );
   }
@@ -131,14 +105,22 @@ const styles = StyleSheet.create({
   },
   mediaContainer: {
     flex: 4,
-    width: R.constants.screenWidth * 0.8,
     alignItems: 'center',
+    width: R.constants.screenWidth * 0.8,
   },
   buttonContainer: {
     flex: 1,
     alignItems: 'center',
     marginBottom: '5%',
   },
+  image: {
+    height: R.constants.screenWidth * 0.8,
+    width: R.constants.screenWidth * 0.8,
+  },
 });
 
-export default GetCode;
+const mapStateToProps = state => ({
+  findEvent: state.findEvent,
+});
+
+export default connect(mapStateToProps)(GetCode);

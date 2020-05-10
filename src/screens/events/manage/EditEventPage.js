@@ -1,6 +1,5 @@
 import React from 'react';
-import Modal from 'react-native-modal';
-import {ImageBackground, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 
 import {
   Invite,
@@ -12,71 +11,37 @@ import {
 
 import R from 'res/R';
 
+import CacheImage from 'library/components/General/CacheImage';
+import Loading from 'library/components/General/Loading';
+
+import {connect} from 'react-redux';
+
 class EditEventPage extends React.Component {
-  constructor() {
-    super();
-    this.panels = {
-      details: <Details text="Test" />,
-      time: <CountDown timeLeft="2:00" />,
-      location: <Map />,
-    };
-    this.state = {
-      activePanel: 'details',
-      isModalVisible: false,
-    };
-  }
-
-  componentDidMount(): void {}
-
-  _openPanel(panel) {
-    this.setState({
-      activePanel: panel,
-      isModalVisible: true,
-    });
-  }
-
-  _closePanel() {
-    this.setState({
-      activePanel: '',
-      isModalVisible: false,
-    });
+  componentDidMount() {
+    console.log(this.props.eventPage);
   }
 
   render() {
+    const {type, data} = this.props.eventPage;
+    const datetime = data.details.startTime.toDate();
     return (
       <>
-        <ImageBackground
-          style={styles.backgroundView}
+        <CacheImage
+          background={true}
           imageStyle={styles.bgImage}
-          source={R.images.party2}>
-          <Modal
-            isVisible={this.state.isModalVisible}
-            swipeDirection="down"
-            animationIn="slideInDown"
-            backdropOpacity={0.2}
-            onSwipeComplete={() => this._closePanel()}
-            onBackdropPress={() => this._closePanel()}
-            style={styles.modalContainer}>
-            {this.panels[this.state.activePanel]}
-          </Modal>
-        </ImageBackground>
-        <Invite navigator={this.props.navigation}>
+          style={styles.backgroundView}
+          uri={data.details.backgroundImage}
+        />
+        <Invite data={data} navigator={this.props.navigation}>
+          <Field header="Where" body="Marianopolis College, Westmount" />
           <Field
-            onPress={() => this._openPanel('location')}
-            header="Where"
-            body="Marianopolis College, Westmount"
-          />
-          <Field
-            onPress={() => this._openPanel('time')}
             header="When"
-            body="May 11th, 2020 at 8:00 pm"
+            body={`${datetime.toDateString()} ${datetime.toTimeString()}`}
           />
-          <Field
-            onPress={() => this._openPanel('details')}
-            header="Details"
-            body="Marianopolis Student Union end of semester party."
-          />
-          <Field header="Entry" body="5$" />
+          {data.details.description ? (
+            <Field header="Details" body={data.details.description} />
+          ) : null}
+          {data.details.paid ? <Field header="Ticket Price" body="5$" /> : null}
         </Invite>
       </>
     );
@@ -98,4 +63,9 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EditEventPage;
+const mapStateToProps = state => ({
+  user: state.user,
+  eventPage: state.eventPage,
+});
+
+export default connect(mapStateToProps)(EditEventPage);

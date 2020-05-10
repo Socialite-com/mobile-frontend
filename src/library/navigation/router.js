@@ -1,5 +1,5 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
+import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
 
 import Onboarding from './navigators/Onboarding';
 import CreateEvent from './navigators/CreateEvent';
@@ -17,8 +17,16 @@ function createRootNavigator(signedIn) {
       <Root.Screen name="Onboarding" component={Onboarding} />
       <Root.Screen name="User" component={User} />
       <Root.Screen name="CreateEvent" component={CreateEvent} />
-      <Root.Screen name="ManageEvent" component={ManageEvent} />
-      <Root.Screen name="ViewEvent" component={ViewEvent} />
+      <Root.Screen
+        name="ManageEvent"
+        component={ManageEvent}
+        options={{...TransitionPresets.ModalTransition}}
+      />
+      <Root.Screen
+        name="ViewEvent"
+        component={ViewEvent}
+        options={{...TransitionPresets.ModalTransition}}
+      />
     </Root.Navigator>
   );
 }

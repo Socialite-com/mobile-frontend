@@ -7,12 +7,16 @@ import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import Button from '../../library/components/General/Button';
 import TextForm from '../../library/components/General/TextInput';
 import CustomText from '../../library/components/General/CustomText';
+import LinkButton from '../../library/components/General/LinkButton';
 import LocationItem from '../../library/components/General/LocationItem';
 import DismissKeyboardView from '../../library/components/General/DismissKeyboardView';
 
 import maps from '../../library/networking/googleMaps';
-import db from 'state/database';
 import _ from 'lodash';
+
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {setCreatePayload, createEvent} from '../../state/actions/events';
 
 const keyboardOffset = R.constants.screenHeight * 0.2;
 const latDelta = 0.001;
@@ -24,7 +28,6 @@ class EventLocation extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      eventData: this.props.route.params.data,
       isModalVisible: false,
       location: {
         latitude: 75.78825,
@@ -70,108 +73,119 @@ class EventLocation extends React.Component {
     this.setState({isModalVisible: !visible});
   };
 
-  removeLocation = () => {
-    this.setState({isModalVisible: false});
-  };
-
-  handleVerifyLocation = async () => {
+  handleVerifyLocation = () => {
     if (this.state.location.latitude && this.state.textLocation) {
-      const {eventData, location} = this.state;
+      const {location} = this.state;
+      const eventData = this.props.newEvent.payload;
       eventData.location = [location.latitude, location.longitude];
 
-      //get user data
-      db.getUser()
-        .then(user => {
-          //create event
-          db.createEvent(user.uid, eventData)
-            .then(success => {
-              console.log(success);
-
-              this.handleModal();
-              this.props.navigation.reset({
-                index: 0,
-                routes: [{name: 'User'}],
-              });
-            })
-            .catch(err => alert(err.message));
+      this.props.actions.setCreatePayload(eventData);
+      this.props.actions
+        .createEvent()
+        .then(res => {
+          this.props.navigation.reset({
+            index: 0,
+            routes: [{name: 'User'}],
+          });
         })
-        .catch(err => alert(err));
-    } else {
-      alert('You must set a valid location for the event');
+        .catch(err => alert(err.message));
     }
   };
 
   render() {
+    this.props.navigation.setOptions({
+      headerRight: () => (
+        <LinkButton
+          onPress={() =>
+            this.props.navigation.reset({
+              index: 0,
+              routes: [{name: 'User'}],
+            })
+          }
+          header
+          title="Skip"
+        />
+      ),
+    });
+
     const {inputValue, locationResults} = this.state;
     return (
-      <DismissKeyboardView style={styles.container}>
-        <View style={[styles.textContainer, styles.titleContainer]}>
-          <CustomText label="Where will your event take place?" subtitle />
-        </View>
-
-        <KeyboardAvoidingView
-          style={{flex: 1, justifyContent: 'center'}}
-          keyboardVerticalOffset={keyboardOffset}
-          behavior="padding">
-          <View
-            style={{
-              width: R.constants.screenWidth,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <TextForm
-              placeholder="Choose Location"
-              value={inputValue}
-              onChangeText={value => {
-                this.setState({inputValue: value});
-                this.onDebounce(value);
-              }}
-            />
+      <>
+        <View style={styles.progressBar} />
+        <DismissKeyboardView style={styles.container}>
+          <View style={[styles.textContainer, styles.titleContainer]}>
+            <CustomText label="Where will your event take place?" subtitle />
           </View>
 
-          <ScrollView
-            contentContainerStyle={styles.scrollView}
-            keyboardShouldPersistTaps="always">
-            {locationResults.map((el, i) => (
-              <LocationItem
-                {...el}
-                onPress={() => this.handleLocationSelect(el.place_id)}
-                key={String(i)}
-              />
-            ))}
-          </ScrollView>
-        </KeyboardAvoidingView>
-
-        <Modal
-          isVisible={this.state.isModalVisible}
-          onBackdropPress={this.handleModal}
-          style={styles.modalContainer}>
-          <View style={styles.modalContentContainer}>
-            <CustomText
-              style={styles.titleContainer}
-              label="Confirm Location"
-              subtitle
-              center
-            />
-
-            <MapView
-              style={styles.map}
-              provider={PROVIDER_GOOGLE}
-              initialRegion={this.state.location}>
-              <Marker coordinate={this.state.location} />
-            </MapView>
-
-            <View style={styles.buttonContainer}>
-              <Button title="Cancel" swap half onPress={this.removeLocation} />
-              <Button
-                half
-                title="Confirm"
-                onPress={() => this.handleVerifyLocation()}
+          <KeyboardAvoidingView
+            style={{flex: 1, justifyContent: 'center'}}
+            keyboardVerticalOffset={keyboardOffset}
+            behavior="padding">
+            <View
+              style={{
+                width: R.constants.screenWidth,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <TextForm
+                placeholder="Choose Location"
+                value={inputValue}
+                onChangeText={value => {
+                  this.setState({inputValue: value});
+                  this.onDebounce(value);
+                }}
               />
             </View>
-          </View>
-        </Modal>
-      </DismissKeyboardView>
+
+            <ScrollView
+              contentContainerStyle={styles.scrollView}
+              keyboardShouldPersistTaps="always">
+              {locationResults.map((el, i) => (
+                <LocationItem
+                  {...el}
+                  onPress={() => this.handleLocationSelect(el.place_id)}
+                  key={String(i)}
+                />
+              ))}
+            </ScrollView>
+          </KeyboardAvoidingView>
+
+          <Modal
+            isVisible={this.state.isModalVisible}
+            onBackdropPress={this.handleModal}
+            style={styles.modalContainer}>
+            <View style={styles.modalContentContainer}>
+              <CustomText
+                style={styles.titleContainer}
+                label="Confirm Location"
+                subtitle
+                center
+              />
+
+              <MapView
+                style={styles.map}
+                provider={PROVIDER_GOOGLE}
+                initialRegion={this.state.location}>
+                <Marker coordinate={this.state.location} />
+              </MapView>
+
+              <View style={styles.buttonContainer}>
+                <Button
+                  title="Cancel"
+                  swap
+                  half
+                  onPress={() => this.setState({isModalVisible: false})}
+                />
+                <Button
+                  half
+                  title="Confirm"
+                  onPress={() => this.handleVerifyLocation()}
+                />
+              </View>
+            </View>
+          </Modal>
+        </DismissKeyboardView>
+      </>
     );
   }
 }
@@ -213,6 +227,25 @@ const styles = StyleSheet.create({
   scrollView: {
     alignItems: 'center',
   },
+  progressBar: {
+    width: R.constants.screenWidth * 0.99,
+    backgroundColor: '#000',
+    position: 'absolute',
+    height: 3,
+  },
 });
 
-export default EventLocation;
+const ActionCreators = {
+  createEvent,
+  setCreatePayload,
+};
+
+const mapStateToProps = state => ({
+  newEvent: state.newEvent,
+});
+
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(ActionCreators, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(EventLocation);

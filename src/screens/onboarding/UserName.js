@@ -9,7 +9,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {login} from '../../state/actions/users';
 import {setValue, createUserAccount} from '../../state/actions/onboarding';
-import {CREATE_USERNAME} from '../../state/constants';
+import {CREATE_USERNAME} from '../../state';
 
 import R from 'res/R';
 

@@ -11,7 +11,7 @@ import {
   SET_PROFILE_PICTURE,
   SET_VERIFICATION_CODE,
   TOGGLE_LANDING_CAROUSEL,
-} from '../constants';
+} from '../index';
 
 const onboarding = {
   mode: 'register',

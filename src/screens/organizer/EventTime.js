@@ -1,39 +1,26 @@
 import React from 'react';
-import {YellowBox} from 'react-native';
-import {TouchableOpacity, StyleSheet, Keyboard, View} from 'react-native';
+import {Keyboard, StyleSheet, TouchableOpacity, View} from 'react-native';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Modal from 'react-native-modal';
 
 import Button from '../../library/components/General/Button';
 import TextForm from '../../library/components/General/TextInput';
+import LinkButton from '../../library/components/General/LinkButton';
 import CustomText from '../../library/components/General/CustomText';
 
 import R from 'res/R';
 
-//To prevent warning from passing time
-YellowBox.ignoreWarnings([
-  'Non-serializable values were found in the navigation state',
-]);
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {setCreatePayload, toggleCreateStage} from '../../state/actions/events';
 
 class EventTime extends React.Component {
   state = {
-    eventData: this.props.route.params.data,
     isModalVisible: false,
     time: new Date(),
     textTime: '',
   };
-
-  formatTime(date) {
-    var hours = date.getHours();
-    var minutes = date.getMinutes();
-    var ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
-    minutes = minutes < 10 ? '0' + minutes : minutes;
-    var strTime = hours + ':' + minutes + ' ' + ampm;
-    return strTime;
-  }
 
   handleModal = () => {
     Keyboard.dismiss();
@@ -41,14 +28,20 @@ class EventTime extends React.Component {
     this.setState({isModalVisible: !visible});
   };
 
+  formatTime(date) {
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 ? hours % 12 : 12;
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    return hours + ':' + minutes + ' ' + ampm;
+  }
+
   handleTime = selectedTime => {
-    if (selectedTime == null) {
-      selectedTime = this.state.time;
-    }
-    this.setState({time: selectedTime});
+    if (selectedTime == null) selectedTime = this.state.time;
     const text =
       selectedTime.toDateString() + ' at ' + this.formatTime(selectedTime);
-    this.setState({textTime: text});
+    this.setState({time: selectedTime, textTime: text});
   };
 
   removeTime = () => {
@@ -57,38 +50,56 @@ class EventTime extends React.Component {
 
   handleVerifyTime = () => {
     // format event data
-    const {eventData, time} = this.state;
+    const time = this.state.time;
+    const eventData = this.props.newEvent.payload;
     if (time > new Date()) {
       eventData.startTime = time;
-      this.props.navigation.navigate('EventLocation', {data: eventData});
+      this.props.actions.setCreatePayload(eventData);
+      this.props.actions.toggleCreateStage('EventLocation');
+      this.props.navigation.navigate('EventLocation');
     } else {
-      alert('You must set a valid time for the event');
+      alert('You must set a valid time for the party');
     }
   };
 
   render() {
-    return (
-      <View style={styles.container}>
-        <View style={[styles.textContainer, styles.titleContainer]}>
-          <CustomText label="When will your event take place?" subtitle />
-        </View>
+    this.props.navigation.setOptions({
+      headerRight: () => (
+        <LinkButton
+          onPress={() => this.props.navigation.navigate('EventLocation')}
+          header
+          title="Skip"
+        />
+      ),
+    });
 
-        <TouchableOpacity onPress={this.handleModal}>
-          <View>
+    return (
+      <>
+        <View style={styles.progressBar} />
+        <View style={styles.container}>
+          <View style={[styles.textContainer, styles.titleContainer]}>
+            <CustomText label="When will your party take place?" subtitle />
+          </View>
+
+          <TouchableOpacity onPress={this.handleModal}>
             <TextForm
+              editable={false}
               placeholder="Choose time"
               value={this.state.textTime}
-              editable={false}
               onFocus={() => Keyboard.dismiss()}
               showSoftInputOnFocus={false}
               pointerEvents="none"
             />
-          </View>
-        </TouchableOpacity>
-
+          </TouchableOpacity>
+          <Button
+            title="Next"
+            grey={this.state.textTime === ''}
+            onPress={this.handleVerifyTime}
+          />
+        </View>
         <Modal
-          isVisible={this.state.isModalVisible}
           swipeDirection="down"
+          isVisible={this.state.isModalVisible}
           onSwipeComplete={this.handleModal}
           onBackdropPress={this.handleModal}
           style={styles.modalContainer}>
@@ -118,9 +129,7 @@ class EventTime extends React.Component {
             </View>
           </View>
         </Modal>
-
-        <Button title="Next" onPress={this.handleVerifyTime} />
-      </View>
+      </>
     );
   }
 }
@@ -153,6 +162,25 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: '2%',
   },
+  progressBar: {
+    width: R.constants.screenWidth * 0.66,
+    backgroundColor: '#000',
+    position: 'absolute',
+    height: 3,
+  },
 });
 
-export default EventTime;
+const ActionCreators = {
+  toggleCreateStage,
+  setCreatePayload,
+};
+
+const mapStateToProps = state => ({
+  newEvent: state.newEvent,
+});
+
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(ActionCreators, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(EventTime);
