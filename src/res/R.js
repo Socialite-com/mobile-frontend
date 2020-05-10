@@ -1,4 +1,3 @@
-import eventTypes from './defaults/eventData';
 import constants from './constants';
 import strings from './strings';
 import images from './images';
@@ -9,7 +8,6 @@ import keys from './keys';
 import color from './colors';
 
 const R = {
-  eventTypes,
   constants,
   strings,
   images,

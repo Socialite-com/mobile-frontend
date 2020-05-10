@@ -3,7 +3,7 @@ import {
   LOGIN_USER,
   FETCH_USER_PROFILE,
   FETCH_USER_SUCCESS,
-} from '../constants';
+} from '../index';
 
 const authState = {
   loggedIn: false,

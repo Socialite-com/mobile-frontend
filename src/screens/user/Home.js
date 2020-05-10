@@ -9,9 +9,6 @@ import {
   View,
 } from 'react-native';
 
-import AsyncStorage from '@react-native-community/async-storage';
-import db from 'state/database';
-
 import ProfileCircle from 'library/components/User/profileCircle';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import CustomText from 'library/components/General/CustomText';
@@ -20,57 +17,34 @@ import Button from 'library/components/General/Button';
 import Icon from 'react-native-vector-icons/Feather';
 import Modal from 'react-native-modal';
 
-// import * as Animatable from 'react-native-animatable';
-
 import R from 'res/R';
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import {selectEvent} from '../../state/actions/eventPage';
 import {fetchUserProfileIfNeeded} from '../../state/actions/users';
 import {
   toggleCarousel,
   changeCarouselHeight,
+  _handlePendingInvites,
   fetchUserEventsIfNeeded,
 } from '../../state/actions/events';
 
-const titles = ['My Invites', 'My Events'];
+const eventTypes = ['invite', 'manage'];
+const titles = ['My Invites', 'My Parties'];
 const eventPaths = ['ViewEvent', 'ManageEvent'];
-
-const slideDown = {
-  0: {
-    top: 0,
-  },
-  1: {
-    top: R.constants.screenHeight,
-  },
-};
-const slideUp = {
-  0: {
-    top: R.constants.screenHeight,
-  },
-  1: {
-    top: 0,
-  },
-};
+const placeholders = [
+  'You currently have no invites.',
+  'You have not organized any parties yet.',
+];
 
 class Home extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      addModalVisible: false,
-    };
-
-    //refs
-    this.card = [];
-  }
+  state = {
+    addModalVisible: false,
+  };
 
   componentDidMount() {
-    const {uid} = this.props.user;
-    this._handlePendingInvites(uid)
-      .then(msg => console.log(msg))
-      .catch(err => alert(err));
-    this._onRefresh();
+    this.props.actions._handlePendingInvites().then(() => this._onRefresh());
   }
 
   _onRefresh = () => {
@@ -97,63 +71,38 @@ class Home extends React.Component {
     });
   };
 
-  handleEvent = index => {
-    this.card[index]
-      .animate(slideDown, 750)
-      .then(() => this.props.navigation.navigate('Settings')) //modal
-      .then(() => this.card[index].animate(slideUp, 500, 250));
-  };
-
-  _handleInviteCardPress() {
-    const route = eventPaths[this.props.userEvents.activeSlide];
-    // add params to route to specify event id
-    this.props.navigation.navigate(route);
+  _handleInviteCardPress(item) {
+    const index = this.props.userEvents.activeSlide;
+    const route = eventPaths[index];
+    this.props.actions.selectEvent(eventTypes[index], item).then(() => {
+      this.props.navigation.navigate(route);
+    });
   }
 
-  _handlePendingInvites = uid =>
-    new Promise(async (resolve, reject) => {
-      const eid = await AsyncStorage.getItem('newInvite');
-      if (eid !== null) {
-        db.getEventData(eid)
-          .then(invite => {
-            if (invite.creator === uid) {
-              resolve('You are hosting this event');
-            } else {
-              db.addEventToProfile(eid, uid, 'eventInvites')
-                .then(msg => resolve(msg))
-                .catch(err => reject(err));
-            }
-          })
-          .then(() => AsyncStorage.removeItem('newInvite'))
-          .catch(err => reject(err.message));
-      } else {
-        resolve('No pending invites.');
-      }
-    });
-
   renderCards = cardArray => {
-    // let indexCategory = 0;
-    return cardArray.item.map((item, index) => {
+    if (cardArray.item.length === 0) {
       return (
-        <TouchableWithoutFeedback
-          key={index}
-          onPress={() => this._handleInviteCardPress(item)}>
-          <View>
-            <EventCard data={item} />
-          </View>
-        </TouchableWithoutFeedback>
+        <View style={styles.emptyView}>
+          <Icon name="slash" size={40} />
+          <CustomText
+            customStyle={{marginTop: '6%', textAlign: 'center'}}
+            label={placeholders[cardArray.index]}
+          />
+        </View>
       );
-      // indexCategory += 1;
-      // return (
-      //   <TouchableWithoutFeedback
-      //     onPress={() => this.handleEvent(index + indexCategory)}>
-      //     <Animatable.View
-      //       ref={ref => (this.card[index + indexCategory] = ref)}>
-      //       <EventCard item={item} key={index} index={index} />
-      //     </Animatable.View>
-      //   </TouchableWithoutFeedback>
-      // );
-    });
+    } else {
+      return cardArray.item.map((item, index) => {
+        return (
+          <TouchableWithoutFeedback
+            key={index}
+            onPress={() => this._handleInviteCardPress(item)}>
+            <View>
+              <EventCard data={item} />
+            </View>
+          </TouchableWithoutFeedback>
+        );
+      });
+    }
   };
 
   pagination(activeSlide, dataLength) {
@@ -182,8 +131,8 @@ class Home extends React.Component {
     const {profile, isFetching} = this.props.user;
     const {
       activeSlide,
-      carouselHeight,
       eventInvites,
+      carouselHeight,
       eventCreations,
     } = this.props.userEvents;
 
@@ -229,6 +178,7 @@ class Home extends React.Component {
                 <View
                   style={{
                     paddingTop: '2%',
+                    paddingLeft: '3%',
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                   }}>
@@ -243,6 +193,7 @@ class Home extends React.Component {
                     sliderWidth={R.constants.screenWidth * 2}
                     itemWidth={R.constants.screenWidth * 0.9}
                     containerCustomStyle={{height: carouselHeight}}
+                    firstItem={this.props.userEvents.activeSlide}
                     onSnapToItem={index =>
                       this.props.actions.toggleCarousel(index)
                     }
@@ -280,7 +231,6 @@ class Home extends React.Component {
                   this._handleModal('addModalVisible');
                   this.props.navigation.navigate('CreateEvent', {
                     screen: 'EventType',
-                    params: {user: profile.userName},
                   });
                 }}
                 title="Create new event"
@@ -295,16 +245,16 @@ class Home extends React.Component {
 
 const styles = StyleSheet.create({
   profileContainer: {
-    flex: 3,
     alignItems: 'center',
     justifyContent: 'center',
+    height: R.constants.screenHeight * 0.2,
   },
   inviteView: {
     flex: 5,
     paddingTop: '2%',
-    paddingLeft: '1%',
     alignSelf: 'center',
     width: R.constants.screenWidth * 0.9,
+    minHeight: R.constants.screenHeight * 0.6,
   },
   cardView: {
     alignItems: 'center',
@@ -325,6 +275,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 15,
   },
+  emptyView: {
+    alignItems: 'center',
+    marginVertical: '10%',
+    marginHorizontal: '25%',
+    justifyContent: 'center',
+  },
   modalContainer: {
     justifyContent: 'flex-end',
     margin: 0,
@@ -340,14 +296,17 @@ const styles = StyleSheet.create({
 });
 
 const ActionCreators = {
+  selectEvent,
   toggleCarousel,
   changeCarouselHeight,
+  _handlePendingInvites,
   fetchUserEventsIfNeeded,
   fetchUserProfileIfNeeded,
 };
 
 const mapStateToProps = state => ({
   user: state.user,
+  newEvent: state.newEvent,
   userEvents: state.userEvents,
 });
 

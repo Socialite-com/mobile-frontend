@@ -4,12 +4,7 @@ import {
   INVALIDATE_MY_EVENTS,
   TOGGLE_EVENT_CAROUSEL,
   CHANGE_CAROUSEL_HEIGHT,
-} from '../constants';
-
-const selectedEventState = {
-  eventFilter: 'EVENT_CARD',
-  event: {},
-};
+} from '../index';
 
 const userEventState = {
   activeSlide: 0,
@@ -38,7 +33,6 @@ export const userEventReducer = (state = userEventState, action) => {
       });
     case REQUEST_MY_EVENTS:
       return Object.assign({}, state, {
-        ...state,
         [action.eventType]: {
           ...state[action.eventType],
           didInvalidate: false,
@@ -47,12 +41,22 @@ export const userEventReducer = (state = userEventState, action) => {
       });
     case RECEIVE_EVENTS:
       return Object.assign({}, state, {
-        ...state,
         [action.payload.type]: {
           isFetching: false,
           didInvalidate: false,
           data: action.payload.data,
           lastUpdated: action.receivedAt,
+        },
+      });
+    case INVALIDATE_MY_EVENTS:
+      return Object.assign({}, state, {
+        eventInvites: {
+          ...state.eventInvites,
+          didInvalidate: true,
+        },
+        eventCreations: {
+          ...state.eventCreations,
+          didInvalidate: true,
         },
       });
     default:

@@ -1,17 +1,15 @@
 import React from 'react';
 import {
-  TouchableHighlight,
+  TouchableOpacity,
   StyleSheet,
   View,
   Text,
-  TouchableOpacity,
 } from 'react-native';
 
+import ProfileCircle from '../User/profileCircle';
 import Icon from 'react-native-vector-icons/AntDesign';
 
 import R from 'res/R';
-
-import Button from '../General/Button';
 
 export const Map = ({map}) => {
   return (
@@ -63,39 +61,25 @@ export const Field = ({header, body, ...restprops}) => {
   );
 };
 
-export const Invite = ({children, navigator, onConfirm}) => {
+export const Invite = ({children, data, navigator}) => {
   return (
     <View style={styles.bottomView}>
       <View style={styles.card}>
         <View style={styles.toolbar}>
           <View style={styles.row}>
-            <TouchableOpacity style={styles.row}>
-              <TouchableHighlight style={styles.profileImgContainer}>
-                <Text />
-              </TouchableHighlight>
-              <View>
-                <Text style={styles.organizer}>Marianopolis Student Union</Text>
-                <Text style={styles.status}>Verified</Text>
-              </View>
-            </TouchableOpacity>
+            <ProfileCircle
+              textStyle={styles.organizer}
+              profile={data.creator}
+              invite={true}
+            />
             <TouchableOpacity
               onPress={() => navigator.pop()}
-              style={{
-                flex: 1,
-                alignItems: 'flex-end',
-              }}>
+              style={{flex: 1, alignItems: 'flex-end'}}>
               <Icon name="close" color={R.color.secondary} size={25} />
             </TouchableOpacity>
           </View>
         </View>
         <View style={styles.formView}>{children}</View>
-      </View>
-      <View style={styles.envelope}>
-        <View>
-          <Text style={styles.title}>MSU Party</Text>
-          <Text style={styles.eventType}>Private • Paid</Text>
-        </View>
-        <Button title="Confirm" light half onPress={onConfirm} />
       </View>
     </View>
   );
@@ -118,12 +102,7 @@ const styles = StyleSheet.create({
   organizer: {
     fontFamily: R.fonts.comfortaaSemiBold,
     color: R.color.secondary,
-    fontSize: 12,
-  },
-  status: {
-    fontFamily: R.fonts.comfortaaLight,
-    color: R.color.secondary,
-    fontSize: 12,
+    fontSize: 13,
   },
   envelope: {
     flex: 1,
@@ -134,14 +113,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: R.constants.screenWidth,
     backgroundColor: '#407eb4', // change to custom event color
-  },
-  profileImgContainer: {
-    width: 30,
-    height: 30,
-    borderWidth: 1,
-    marginRight: 10,
-    borderRadius: 40,
-    borderColor: R.color.secondary,
   },
   infoBox: {
     marginTop: '3%',

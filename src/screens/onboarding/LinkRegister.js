@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Alert,
-  StyleSheet,
-  KeyboardAvoidingView,
-  Image,
-} from 'react-native';
+import {View, StyleSheet, KeyboardAvoidingView, Image} from 'react-native';
 
 import Modal from 'react-native-modal';
 import ImagePicker from 'react-native-image-picker';
@@ -14,6 +8,14 @@ import vision, {
   VisionBarcodeValueType,
 } from '@react-native-firebase/ml-vision';
 import {RNCamera} from 'react-native-camera';
+
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {
+  queryFail,
+  queryEvent,
+  resetEventQuery,
+} from '../../state/actions/events';
 
 import DismissKeyboardView from '../../library/components/General/DismissKeyboardView';
 import LinkButton from 'library/components/General/LinkButton';
@@ -27,31 +29,28 @@ import R from 'res/R';
 class LinkRegister extends React.Component {
   state = {
     keyVal: '',
-    error: '',
-    activeBarcode: '',
     modalVisible: false,
     cameraVisible: false,
   };
 
   componentDidMount() {
-    // eslint-disable-next-line react/no-did-mount-set-state
-    this.setState({
-      error: '',
-    });
+    this.props.actions.resetEventQuery();
   }
 
   _handleKeyInput() {
     const {keyVal} = this.state;
-    if (keyVal.length === 0) {
-      this.setState({error: 'Invalid Key Length'});
-      Alert.alert('Invalid Key Length');
-    } else {
-      this.props.navigation.navigate('GetCode', {
-        eventKey: keyVal,
-        origin: 'key',
-      });
-    }
+    this.props.actions.queryEvent(keyVal);
+    this.props.navigation.navigate('GetCode');
   }
+
+  _onBarcodeRecognized = ({barcodes}) => {
+    barcodes.forEach(barcode => {
+      if (typeof barcode.data === 'string') {
+        this.props.actions.queryEvent(barcode.data);
+        this.props.navigation.navigate('GetCode');
+      }
+    });
+  };
 
   handleModal = () => {
     const visible = this.state.modalVisible;
@@ -67,9 +66,7 @@ class LinkRegister extends React.Component {
     return (
       <View style={{flex: 1}}>
         <RNCamera
-          ref={cam => {
-            this.camera = cam;
-          }}
+          ref={cam => (this.camera = cam)}
           style={{
             height: R.constants.screenHeight,
             width: R.constants.screenWidth,
@@ -84,42 +81,6 @@ class LinkRegister extends React.Component {
     );
   };
 
-  _validateCode = barcode => {
-    function byteCount(s) {
-      return encodeURI(s).split(/%..|./).length - 1;
-    }
-    // add validation steps for a Socialite event Id
-    if (barcode === '.' || barcode === '..') {
-      return 'Invalid QR code';
-    } else if (byteCount(barcode) >= 1500) {
-      return 'QR encoding is over byte limit.';
-    } else if (barcode.includes('/')) {
-      return 'Invalid QR code';
-    } else {
-      return null;
-    }
-  };
-
-  _onBarcodeRecognized = ({barcodes}) => {
-    const {activeBarcode} = this.state;
-    var error = null;
-    barcodes.forEach(barcode => {
-      if (barcode.data === activeBarcode) {
-      } else if (typeof barcode.data === 'string') {
-        error = this._validateCode(barcode.data);
-        if (error === null) {
-          this.props.navigation.navigate('GetCode', {
-            eventKey: barcode.data,
-            origin: 'scanner',
-          });
-        } else {
-          Alert.alert(error);
-          this.setState({activeBarcode: barcode.data});
-        }
-      }
-    });
-  };
-
   _handleReadCode = () => {
     ImagePicker.launchImageLibrary({}, async response => {
       this.handleModal(); // close modal
@@ -129,25 +90,22 @@ class LinkRegister extends React.Component {
         })
         .then(barcodes => {
           if (barcodes.length === 0) {
-            Alert.alert('No barcodes detected in image');
+            this.props.actions.queryFail(
+              'No barcodes were detected in your image.',
+            );
           } else {
             barcodes.map(barcode => {
               if (
                 barcode &&
                 barcode.valueType === VisionBarcodeValueType.TEXT
               ) {
-                const error = this._validateCode(barcode.displayValue);
-                if (error === null) {
-                  this.props.navigation.navigate('GetCode', {
-                    eventKey: barcode.displayValue,
-                    origin: 'scanner',
-                  });
-                } else {
-                  Alert.alert(error);
-                }
+                this.props.actions.queryEvent(barcode.displayValue);
+              } else {
+                this.props.actions.queryFail('An error occurred somewhere');
               }
             });
           }
+          this.props.navigation.navigate('GetCode');
         });
     });
   };
@@ -214,7 +172,10 @@ class LinkRegister extends React.Component {
           this.renderCamera()
         ) : (
           <DismissKeyboardView style={{flex: 1, alignItems: 'center'}}>
-            <KeyboardAvoidingView style={{flex: 1}} behavior="position">
+            <KeyboardAvoidingView
+              style={{flex: 1}}
+              keyboardVerticalOffset={20}
+              behavior="position">
               <View style={{flex: 1, alignItems: 'center'}}>
                 <View style={styles.mediaArea}>
                   <Image style={styles.image} source={R.images.scan} />
@@ -226,9 +187,7 @@ class LinkRegister extends React.Component {
                 <View style={styles.buttonArea}>
                   <TextForm
                     value={this.state.keyVal}
-                    onChangeText={keyVal => {
-                      this.setState({keyVal});
-                    }}
+                    onChangeText={keyVal => this.setState({keyVal})}
                     placeholder="Paste your key..."
                   />
                   <View style={{width: R.constants.screenWidth * 0.8}}>
@@ -283,4 +242,18 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LinkRegister;
+const ActionCreators = {
+  resetEventQuery,
+  queryEvent,
+  queryFail,
+};
+
+const mapStateToProps = state => ({
+  findEvent: state.findEvent,
+});
+
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(ActionCreators, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(LinkRegister);

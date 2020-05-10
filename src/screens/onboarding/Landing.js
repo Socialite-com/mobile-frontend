@@ -9,7 +9,7 @@ import CustomText from 'library/components/General/CustomText';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {setValue} from '../../state/actions/onboarding';
-import {SET_MODE, TOGGLE_LANDING_CAROUSEL} from '../../state/constants';
+import {SET_MODE, TOGGLE_LANDING_CAROUSEL} from '../../state';
 
 import R from 'res/R';
 

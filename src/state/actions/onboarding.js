@@ -15,7 +15,7 @@ import {
   SET_USER_STATE,
   SET_TEMP_UID,
   RESET_AUTH,
-} from '../constants';
+} from '../index';
 
 const paths = {
   SET_MODE: 'mode',

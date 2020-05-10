@@ -5,7 +5,8 @@ import {
   FETCH_USER_PROFILE,
   FETCH_USER_FAILURE,
   FETCH_USER_SUCCESS,
-} from '../constants';
+  INVALIDATE_USER_PROFILE,
+} from '../index';
 
 import db from '../database';
 
@@ -26,6 +27,12 @@ export function saveUid(uid) {
   return {
     type: STORE_UID,
     payload: uid,
+  };
+}
+
+function invalidateUserProfile() {
+  return {
+    type: INVALIDATE_USER_PROFILE,
   };
 }
 

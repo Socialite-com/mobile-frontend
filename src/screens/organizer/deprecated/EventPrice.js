@@ -1,9 +1,9 @@
 import React from 'react';
 import {StyleSheet, View, KeyboardAvoidingView, Platform} from 'react-native';
 
-import Button from '../../library/components/General/Button';
-import TextForm from '../../library/components/General/TextInput';
-import CustomText from '../../library/components/General/CustomText';
+import Button from '../../../library/components/General/Button';
+import TextForm from '../../../library/components/General/TextInput';
+import CustomText from '../../../library/components/General/CustomText';
 
 import R from 'res/R';
 

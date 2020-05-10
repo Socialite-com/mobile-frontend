@@ -4,7 +4,7 @@ import R from 'res/R';
 export default class maps {
   static autocomplete(value) {
     return new Promise((resolve, reject) => {
-      const placesAPI = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${value}&types=geocode&components=country%3ACA%7Ccountry%3AUS&language=en&key=${R.keys.mapSearch}`;
+      const placesAPI = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${value}&components=country:us|country:ca&language=en&key=${R.keys.mapSearch}`;
       fetch(placesAPI)
         .then(res => res.json())
         .then(data => {

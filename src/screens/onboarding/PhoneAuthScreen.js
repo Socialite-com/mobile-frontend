@@ -15,7 +15,7 @@ import DismissKeyboardView from 'library/components/General/DismissKeyboardView'
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {SET_PHONE_NUMBER, SET_VERIFICATION_CODE} from '../../state/constants';
+import {SET_PHONE_NUMBER, SET_VERIFICATION_CODE} from '../../state';
 import {
   setValue,
   resetAuth,

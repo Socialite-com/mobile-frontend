@@ -18,6 +18,7 @@ const images = {
   organize: require('./images/organize.jpg'),
   register: require('./images/register.jpg'),
   scan: require('./images/scan.jpg'),
+  error: require('./images/error.jpg'),
 };
 
 export default images;
