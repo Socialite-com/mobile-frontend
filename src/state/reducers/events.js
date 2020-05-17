@@ -1,4 +1,5 @@
 import {
+  UPDATE_EVENT,
   RECEIVE_EVENTS,
   REQUEST_MY_EVENTS,
   INVALIDATE_MY_EVENTS,
@@ -17,6 +18,7 @@ const userEventState = {
   eventCreations: {
     isFetching: false,
     didInvalidate: false,
+    updatingEvent: false,
     data: [],
   },
 };

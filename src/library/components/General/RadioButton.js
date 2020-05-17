@@ -10,7 +10,7 @@ class RadioButton extends React.Component {
       <TouchableOpacity
         onPress={this.props.onSelect}
         disabled={this.props.disabled}>
-        <View style={styles.container}>
+        <View style={[styles.container, this.props.customStyle]}>
           {this.props.isSelected ? (
             <Icon
               name={this.props.checkbox ? 'check-square' : 'dot-circle'}
@@ -19,12 +19,13 @@ class RadioButton extends React.Component {
           ) : (
             <Icon name={this.props.checkbox ? 'square' : 'circle'} size={20} />
           )}
-
-          <CustomText
-            label={this.props.label}
-            customStyle={styles.textContainer}
-            subtitle_6
-          />
+          {this.props.label ? (
+            <CustomText
+              label={this.props.label}
+              customStyle={styles.textContainer}
+              subtitle_6
+            />
+          ) : null}
         </View>
       </TouchableOpacity>
     );
@@ -34,7 +35,6 @@ class RadioButton extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    margin: 10,
   },
   textContainer: {
     paddingLeft: 15,

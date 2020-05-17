@@ -3,6 +3,19 @@ import {createSelector} from 'reselect';
 const getEventFilter = state => state.selectedEvent.eventFilter;
 const getEvents = state => state.userEvents.eventCreations.data;
 
+export const parseDateTime = datetime => {
+  const date = datetime.toLocaleDateString([], {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+  });
+  const time = datetime.toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+  return `${date} at ${time}`;
+};
+
 const parseEventData = createSelector(
   [getEventFilter, getEvents],
   (eventFilter, events) => {

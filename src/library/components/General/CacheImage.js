@@ -19,15 +19,17 @@ class CacheImage extends React.Component {
 
   componentDidMount() {
     const {uri} = this.props;
-    const name = shorthash.unique(uri);
-    const extension = Platform.OS === 'android' ? 'file://' : '';
-    const path = `${extension}${RNFS.CachesDirectoryPath}/${name}.png`;
-    RNFS.exists(path)
-      .then(exists => {
-        if (exists) this.loadFile(path);
-        else this.downloadFile(uri, path);
-      })
-      .catch(err => console.log(err));
+    if (uri) {
+      const name = shorthash.unique(uri);
+      const extension = Platform.OS === 'android' ? 'file://' : '';
+      const path = `${extension}${RNFS.CachesDirectoryPath}/${name}.png`;
+      RNFS.exists(path)
+        .then(exists => {
+          if (exists) this.loadFile(path);
+          else this.downloadFile(uri, path);
+        })
+        .catch(err => console.log(err));
+    }
   }
 
   render() {

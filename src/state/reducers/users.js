@@ -2,7 +2,7 @@ import {
   STORE_UID,
   LOGIN_USER,
   FETCH_USER_PROFILE,
-  FETCH_USER_SUCCESS,
+  FETCH_USER_SUCCESS, LOGOUT_USER,
 } from '../index';
 
 const authState = {
@@ -29,6 +29,12 @@ export const authReducer = (state = authState, action) => {
       return {
         ...state,
         loggedIn: action.payload,
+        checkedLoggedIn: true,
+      };
+    case LOGOUT_USER:
+      return {
+        ...state,
+        loggedIn: false,
         checkedLoggedIn: true,
       };
     default:

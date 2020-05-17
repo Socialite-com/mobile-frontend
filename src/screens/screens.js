@@ -25,10 +25,13 @@ import EventPrice from './organizer/deprecated/EventPrice';
 import EventPage from './events/view/EventPage';
 import GuestList from './events/view/GuestList';
 import Discover from './events/view/Discover';
+import Payment from './events/actions/Pay';
 
 import ManageEvent from './events/manage/ManageEvent';
 import InviteGuests from './events/manage/InviteGuests';
 import EditEventPage from './events/manage/EditEventPage';
+import ShareEvent from './events/actions/Share';
+import EditEvent from './events/actions/Edit';
 
 const screens = {
   onboarding: {
@@ -64,11 +67,14 @@ const screens = {
       InviteGuests: InviteGuests,
       EditEventPage: EditEventPage,
       ManageEvent: ManageEvent,
+      ShareEvent: ShareEvent,
+      EditEvent: EditEvent,
     },
     view: {
       GuestList: GuestList,
       EventPage: EventPage,
       Discover: Discover,
+      Payment: Payment,
     },
   },
 };
