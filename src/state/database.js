@@ -39,7 +39,6 @@ export default class db {
       firestore()
         .runTransaction(async transaction => {
           const doc = await transaction.get(ref);
-
           // if user does not exist, we create profile
           if (!doc.exists) {
             await transaction.set(ref, profile);
@@ -176,6 +175,34 @@ export default class db {
       }
     });
 
+  static addAnnouncement = (eid, message) =>
+    new Promise((resolve, reject) => {
+      firestore()
+        .collection('events')
+        .doc(eid)
+        .update({
+          announcements: firestore.FieldValue.arrayUnion(message),
+        })
+        .then(() => {
+          resolve('Added Announcement');
+        })
+        .catch(error => reject(error.message));
+    });
+
+  static updateTodos = (eid, todos) =>
+    new Promise((resolve, reject) => {
+      firestore()
+        .collection('events')
+        .doc(eid)
+        .update({
+          'details.todos': todos,
+        })
+        .then(() => {
+          resolve('Updated Todos');
+        })
+        .catch(error => reject(error.message));
+    });
+
   static getEvents = (uid, subType) =>
     new Promise((resolve, reject) => {
       firestore()
@@ -206,20 +233,29 @@ export default class db {
   static createEvent = (uid, data) =>
     new Promise((resolve, reject) => {
       //Add to events
+      var newDoc = firestore()
+        .collection('events')
+        .doc();
+
+      console.log(newDoc);
+      console.log(newDoc.id);
+
       firestore()
         .collection('events')
-        .add({
+        .doc(newDoc.id)
+        .set({
           details: data,
           attendees: [],
           creator: uid,
+          eid: newDoc.id,
         })
-        .then(docRef => {
+        .then(() => {
           //Add to user
           firestore()
             .collection('users')
             .doc(uid)
             .set(
-              {eventCreations: firestore.FieldValue.arrayUnion(docRef.id)},
+              {eventCreations: firestore.FieldValue.arrayUnion(newDoc.id)},
               {merge: true},
             )
             .then(() => {

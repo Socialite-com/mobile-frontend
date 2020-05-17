@@ -16,6 +16,8 @@ import auth from '@react-native-firebase/auth';
 import {login, saveUid} from './state/actions/users';
 import {checkUserExists} from './state/actions/onboarding';
 
+console.disableYellowBox = true; //used for demos
+
 class App extends React.Component {
   constructor(props) {
     super(props);

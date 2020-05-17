@@ -92,7 +92,9 @@ function fetchUserEvents(uid, eventType) {
             raw_data.map(async event => await db.reselectEventCard(event)),
           ),
       )
-      .then(data => dispatch(receiveEventInvites(data, eventType)));
+      .then(data => {
+        dispatch(receiveEventInvites(data, eventType));
+      });
   };
 }
 

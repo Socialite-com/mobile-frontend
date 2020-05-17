@@ -15,7 +15,7 @@ const backgroundColor = 'transparent';
 const width = R.constants.screenWidth * 0.8;
 const fontFamily = R.fonts.comfortaaRegular;
 
-const TextForm = ({icon, searchbar, customStyle, ...restProps}) => {
+const TextForm = ({icon, multiline, searchbar, customStyle, ...restProps}) => {
   let defaultStyle = [];
   defaultStyle = defaultStyle.concat(styles.defaultStyle);
 
@@ -32,6 +32,7 @@ const TextForm = ({icon, searchbar, customStyle, ...restProps}) => {
       placeholderTextColor={R.color.tertiary}
       {...restProps}
       style={defaultStyle}
+      multiline={multiline}
     />
   );
 };
