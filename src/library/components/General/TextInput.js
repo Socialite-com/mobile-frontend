@@ -20,6 +20,7 @@ const TextForm = ({
   empty,
   settings,
   searchbar,
+  multiline,
   customStyle,
   ...restProps
 }) => {
@@ -47,6 +48,7 @@ const TextForm = ({
       placeholderTextColor={R.color.tertiary}
       {...restProps}
       style={defaultStyle}
+      multiline={multiline}
     />
   );
 };
