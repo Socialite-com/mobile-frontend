@@ -38,6 +38,8 @@ const placeholders = [
   'You have not organized any parties yet.',
 ];
 
+import Toast from 'react-native-root-toast';
+
 class Home extends React.Component {
   state = {
     addModalVisible: false,
@@ -53,11 +55,9 @@ class Home extends React.Component {
       this.props.actions
         .fetchUserProfileIfNeeded(uid)
         .then(() => console.log('fetched user profile')),
-
       this.props.actions
         .fetchUserEventsIfNeeded(uid, 'eventCreations')
         .then(() => console.log('fetched event creations')),
-
       this.props.actions
         .fetchUserEventsIfNeeded(uid, 'eventInvites')
         .then(() => console.log('fetched invites')),
@@ -127,6 +127,27 @@ class Home extends React.Component {
     this.setState({[modal]: !visible});
   };
 
+  showToast = () => {
+    Toast.show('This is a message', {
+      duration: 1500,
+      position: -40,
+      shadow: true,
+      animation: true,
+      hideOnPress: true,
+      delay: 0,
+      opacity: 1,
+      backgroundColor: 'white',
+      textColor: 'black',
+      shadowColor: 'grey',
+      containerStyle: {
+        width: R.constants.screenWidth * 0.8,
+      },
+      textStyle: {
+        //text-styles
+      },
+    });
+  };
+
   render() {
     const {profile, isFetching} = this.props.user;
     const {
@@ -170,9 +191,9 @@ class Home extends React.Component {
             <>
               <View style={styles.profileContainer}>
                 <ProfileCircle main profile={profile} />
-                <CustomText subtitle center label={profile.userName} />
-                <CustomText subtitle_2 center label="Montreal, CA" />
-                <Button long title="Edit Profile" />
+                <CustomText subtitle label={profile.userName} />
+                <CustomText subtitle_2 label="Montreal, CA" />
+                <Button long title="Edit Profile" onPress={this.showToast} />
               </View>
               <View style={styles.inviteView}>
                 <View

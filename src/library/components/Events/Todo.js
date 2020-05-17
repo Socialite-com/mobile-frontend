@@ -10,26 +10,16 @@ class Todo extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={this.props.onComplete}>
-          {this.props.isCompleted ? (
-            <Icon name="check-circle" size={20} />
-          ) : (
-            <Icon name="circle" size={20} />
-          )}
-        </TouchableOpacity>
+        {this.props.isCompleted ? (
+          <Icon style={{color: '#fff'}} name="check-circle" size={20} />
+        ) : (
+          <Icon style={{color: '#fff'}} name="circle" size={20} />
+        )}
 
         <CustomText
           label={this.props.label}
           customStyle={styles.textContainer}
         />
-        <View style={styles.iconGroup}>
-          <TouchableOpacity onPress={this.props.onRemove}>
-            <Icon name="trash" size={20} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.props.onDrag}>
-            <Icon name="grip-lines" size={20} />
-          </TouchableOpacity>
-        </View>
       </View>
     );
   }
@@ -38,11 +28,10 @@ class Todo extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    borderWidth: 1,
-    borderColor: '#dbdbdb',
     borderRadius: 6,
     padding: 15,
     margin: 5,
+    backgroundColor: '#333333',
   },
   iconGroup: {
     flexDirection: 'row',
@@ -52,6 +41,7 @@ const styles = StyleSheet.create({
   textContainer: {
     paddingLeft: 10,
     width: '80%',
+    color: '#fff',
   },
 });
 

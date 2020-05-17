@@ -30,6 +30,9 @@ import ManageEvent from './events/manage/ManageEvent';
 import InviteGuests from './events/manage/InviteGuests';
 import EditEventPage from './events/manage/EditEventPage';
 
+import SelectChat from './chats/SelectChat';
+import Chat from './chats/Chat';
+
 const screens = {
   onboarding: {
     // GetCodes: GetCodes,
@@ -70,6 +73,10 @@ const screens = {
       EventPage: EventPage,
       Discover: Discover,
     },
+  },
+  chat: {
+    SelectChat: SelectChat,
+    Chat: Chat,
   },
 };
 
