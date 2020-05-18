@@ -13,7 +13,8 @@ import R from 'res/R';
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {setCreatePayload, toggleCreateStage} from '../../state/actions/events';
+import {parseDateTime} from '../../state/selectors';
+import {setCreatePayload, toggleCreateStage} from '../../state/actions/createEvent';
 
 class EventTime extends React.Component {
   state = {
@@ -28,20 +29,14 @@ class EventTime extends React.Component {
     this.setState({isModalVisible: !visible});
   };
 
-  formatTime(date) {
-    let hours = date.getHours();
-    let minutes = date.getMinutes();
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12 ? hours % 12 : 12;
-    minutes = minutes < 10 ? '0' + minutes : minutes;
-    return hours + ':' + minutes + ' ' + ampm;
-  }
-
   handleTime = selectedTime => {
-    if (selectedTime == null) selectedTime = this.state.time;
-    const text =
-      selectedTime.toDateString() + ' at ' + this.formatTime(selectedTime);
-    this.setState({time: selectedTime, textTime: text});
+    let {textTime, time} = this.state;
+    if (selectedTime == null || selectedTime <= Date.now()) {
+      selectedTime = time;
+    } else {
+      textTime = parseDateTime(selectedTime);
+    }
+    this.setState({time: selectedTime, textTime});
   };
 
   removeTime = () => {
@@ -112,6 +107,7 @@ class EventTime extends React.Component {
             />
             <DateTimePicker
               mode={'datetime'}
+              minuteInterval={5}
               value={this.state.time}
               minimumDate={new Date()}
               onChange={(event, selectedTime) => this.handleTime(selectedTime)}

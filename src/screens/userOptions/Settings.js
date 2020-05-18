@@ -21,8 +21,8 @@ class Settings extends React.Component {
           onPress={() => {
             auth()
               .signOut()
-              .then(() => {
-                this.props.logout();
+              .then(async () => {
+                await this.props.logout();
                 this.props.navigation.reset({
                   index: 0,
                   routes: [{name: 'Onboarding'}],

@@ -19,3 +19,5 @@ const RNRedux = () => (
 );
 
 AppRegistry.registerComponent(appName, () => RNRedux);
+
+export default store;

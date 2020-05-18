@@ -3,23 +3,26 @@ import {StyleSheet, Text} from 'react-native';
 import R from 'res/R';
 
 const CustomText = ({
+  pad,
   label,
+  error,
   title,
+  center,
+  splash,
   subtitle,
   subtitle_2,
   subtitle_3,
   subtitle_4,
   subtitle_5,
   subtitle_6,
-  center,
-  splash,
-  error,
   customStyle,
   ...restProps
 }) => {
   let textStyle = [];
   textStyle = textStyle.concat(styles.defaultStyle);
-
+  if (pad) {
+    textStyle = textStyle.concat({paddingLeft: '3%'});
+  }
   if (title) {
     textStyle = textStyle.concat(styles.title);
   }

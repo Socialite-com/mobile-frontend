@@ -1,157 +1,125 @@
 import React from 'react';
 
 import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign';
-import {PaymentCardTextField} from 'tipsi-stripe';
 
 import Modal from 'react-native-modal';
-import Button from '../General/Button';
+import actions from './actions/envelopeActions';
+import responses from './actions/responseActions';
 import CustomText from '../General/CustomText';
 import RadioButton from '../General/RadioButton';
+import Icon from 'react-native-vector-icons/Feather';
+import Icon5 from 'react-native-vector-icons/FontAwesome5';
 
 import R from 'res/R';
 import {connect} from 'react-redux';
-
-const payload = {
-  invite: [
-    {label: 'Confirm', backgroundColor: '#51a327', action: 'confirm'},
-    {label: 'Decline', backgroundColor: '#db4a4a', action: 'decline'},
-  ],
-  manage: [
-    {label: 'Edit', backgroundColor: '#413aad', action: 'edit'},
-    {label: 'Publish', backgroundColor: '#b1a41c', action: 'publish'},
-  ],
-  public: [
-    {label: 'Confirm', backgroundColor: '#51a327', action: 'confirm'},
-    {label: 'Star', backgroundColor: '#45cd77', action: 'star'},
-  ],
-};
+import {bindActionCreators} from 'redux';
+import {
+  setEventAction,
+  setDefaultAction,
+} from '../../../state/actions/eventPage';
 
 class Envelope extends React.Component {
   state = {
-    saveCard: false,
-    useNewCard: true,
     modalVisible: false,
-    savedCard: {
-      id: 'test_id',
-      end: '0000',
-    },
+    modal: null,
   };
-
-  componentDidMount() {}
 
   toggleModal() {
     const visibility = this.state.modalVisible;
     this.setState({modalVisible: !visibility});
   }
 
-  _pressButton(type) {
-    switch (type) {
-      case 'confirm':
-        return this.toggleModal();
+  async _pressButton(action) {
+    const {type, selected} = this.props.eventPage;
+    const data = this.props.userEvents[type].data[selected];
+    switch (action) {
+      case 'save':
+      case 'cancel':
+        this.props.actions.setDefaultAction(type, data);
+        this.props.navigation.navigate('Event Page');
+        break;
+      case 'edit':
+        this.props.actions.setEventAction('save');
+        this.props.navigation.navigate('Edit Event');
+        break;
+      case 'share':
+        this.props.actions.setEventAction('cancel');
+        this.props.navigation.navigate('Share Event');
+        break;
+      case 'respond':
+        this.setState({modal: action});
+        this.toggleModal();
+        break;
+      case 'Pay':
+        this.toggleModal();
+        this.props.actions.setEventAction('cancel');
+        this.props.navigation.navigate('Payment');
+        break;
       default:
-        return alert(type);
+        return alert(action);
     }
   }
 
-  renderModal() {
-    const {modalVisible, useNewCard, savedCard, saveCard} = this.state;
+  respond = () => {
+    const {type, selected} = this.props.eventPage;
+    const data = this.props.userEvents[type].data[selected];
+    const response = data.details.paid ? responses.paid : responses.free;
+    return (
+      <View>
+        <View style={modalStyles.header}>
+          <CustomText customStyle={modalStyles.bold} label="Your Response" />
+        </View>
+        <View style={{marginVertical: 15}}>
+          {response.map((item, index) => {
+            return (
+              <TouchableOpacity
+                key={index}
+                style={modalStyles.responseView}
+                onPress={() => this._pressButton(item.label)}>
+                <View style={modalStyles.label}>
+                  <Icon name={item.icon} size={25} />
+                  <View>
+                    <CustomText
+                      customStyle={{marginLeft: 15}}
+                      label={item.label}
+                    />
+                  </View>
+                </View>
+                <View>
+                  {item.action === 'go' ? (
+                    <Icon5 name="chevron-right" size={20} />
+                  ) : item.action === 'radio' ? (
+                    <RadioButton disabled />
+                  ) : null}
+                </View>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      </View>
+    );
+  };
 
-    const totalPrice = '16$';
-
-    const prices = [
-      {name: 'Ticket Price', value: '15$'},
-      {name: 'Transaction Fee', value: '1$'},
-    ];
-
+  renderModal(content) {
+    const {modalVisible} = this.state;
     return (
       <Modal
         swipeDirection="down"
         backdropOpacity={0.4}
         isVisible={modalVisible}
         onBackdropPress={() => this.toggleModal()}
-        style={paymentStyles.paymentModalContainer}>
-        <View style={paymentStyles.modalPaymentView}>
-          <View style={paymentStyles.exitView}>
-            <TouchableOpacity onPress={() => this.toggleModal()}>
-              <Icon name="close" size={25} />
-            </TouchableOpacity>
-          </View>
-          <View style={{flex: 6}}>
-            <View style={{flex: 1}}>
-              <CustomText subtitle label="Confirm Payment" />
-            </View>
-            <View style={{flex: 2}}>
-              {prices.map((item, index) => {
-                return (
-                  <View style={paymentStyles.row} key={index}>
-                    <CustomText subtitle_4 label={item.name} />
-                    <CustomText subtitle_4 label={item.value} />
-                  </View>
-                );
-              })}
-              <View style={paymentStyles.priceDataContainer} />
-              <View style={paymentStyles.row}>
-                <CustomText subtitle_5 label="Total" />
-                <CustomText subtitle_5 label={totalPrice} />
-              </View>
-            </View>
-            <View style={paymentStyles.btnView}>
-              <Button title="Pay with  Pay" />
-            </View>
-          </View>
-          <View style={paymentStyles.topBottomBorder}>
-            <CustomText center subtitle_4 label="or pay with card" />
-          </View>
-          <View style={{flex: 7}}>
-            <View style={{flex: 1}}>
-              <RadioButton
-                onSelect={() => this.setState({useNewCard: !useNewCard})}
-                label="Use a new payment method"
-                isSelected={useNewCard}
-                disabled={useNewCard}
-              />
-              {savedCard.id && (
-                <RadioButton
-                  onSelect={() => this.setState({useNewCard: !useNewCard})}
-                  label={`Visa ending in ${savedCard.end}`}
-                  isSelected={!useNewCard}
-                  disabled={!useNewCard}
-                />
-              )}
-            </View>
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}>
-              <PaymentCardTextField
-                disabled={!useNewCard}
-                style={[
-                  paymentStyles.field,
-                  !useNewCard && paymentStyles.disabledField,
-                ]}
-              />
-              <RadioButton
-                checkbox
-                isSelected={saveCard}
-                onSelect={() => this.setState({saveCard: !saveCard})}
-                label="Save payment information to my account for future purchases"
-              />
-            </View>
-            <View style={paymentStyles.btnView}>
-              <Button title="Pay with Card" />
-            </View>
-          </View>
+        style={modalStyles.modalContainer}>
+        <View style={modalStyles.modalView}>
+          {content === 'respond' ? this.respond() : null}
         </View>
       </Modal>
     );
   }
 
   render() {
-    const {type, data} = this.props.eventPage;
-    const preset = payload[type];
+    const {type, action, selected} = this.props.eventPage;
+    const data = this.props.userEvents[type].data[selected];
+    let preset = actions[action];
 
     return (
       <View
@@ -182,50 +150,44 @@ class Envelope extends React.Component {
             );
           })}
         </View>
-        {this.renderModal()}
+        {this.renderModal(this.state.modal)}
       </View>
     );
   }
 }
 
-const paymentStyles = StyleSheet.create({
-  paymentModalContainer: {margin: 0, justifyContent: 'flex-end'},
-  btnView: {flex: 1, alignItems: 'center', justifyContent: 'center'},
-  exitView: {flex: 1, flexDirection: 'row', justifyContent: 'flex-end'},
-  modalPaymentView: {
+const modalStyles = StyleSheet.create({
+  modalContainer: {margin: 0, justifyContent: 'flex-end'},
+  modalView: {
     padding: '5%',
+    height: 'auto',
     borderRadius: 8,
     backgroundColor: '#fff',
-    height: R.constants.screenHeight * 0.9,
   },
-  row: {
+  header: {
+    paddingBottom: 15,
     flexDirection: 'row',
-    marginVertical: '3%',
-    justifyContent: 'space-between',
-  },
-  topBottomBorder: {
-    flex: 1,
-    borderTopWidth: 1,
-    marginVertical: '5%',
     borderBottomWidth: 1,
+    borderColor: '#c6c6c6',
     justifyContent: 'center',
-    borderColor: 'rgba(162,162,162,0.46)',
   },
-  field: {
-    borderWidth: 1,
-    borderRadius: 5,
-    color: '#000e78',
-    borderColor: '#000',
-    width: R.constants.screenWidth * 0.8,
+  label: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  disabledField: {
-    color: '#cfcfcf',
-    borderColor: '#cfcfcf',
-    backgroundColor: '#ebebeb',
+  bold: {
+    fontFamily: R.fonts.comfortaaBold,
   },
-  priceDataContainer: {
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(162,162,162,0.46)',
+  responseView: {
+    height: 50,
+    width: '100%',
+    marginVertical: 5,
+    paddingVertical: 10,
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingHorizontal: 10,
+    justifyContent: 'space-between',
   },
 });
 
@@ -253,9 +215,19 @@ const styles = StyleSheet.create({
   title: {fontSize: 20, color: 'white', fontFamily: R.fonts.comfortaaBold},
 });
 
+const ActionCreators = {
+  setEventAction,
+  setDefaultAction,
+};
+
 const mapStateToProps = state => ({
   user: state.user,
   eventPage: state.eventPage,
+  userEvents: state.userEvents,
 });
 
-export default connect(mapStateToProps)(Envelope);
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(ActionCreators, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Envelope);

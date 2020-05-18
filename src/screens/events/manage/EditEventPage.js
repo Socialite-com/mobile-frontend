@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 
 import {
   Invite,
@@ -11,10 +11,13 @@ import {
 
 import R from 'res/R';
 
-import CacheImage from 'library/components/General/CacheImage';
 import Loading from 'library/components/General/Loading';
+import CacheImage from 'library/components/General/CacheImage';
 
 import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {parseDateTime} from '../../../state/selectors';
+import {setDefaultAction} from '../../../state/actions/eventPage';
 
 class EditEventPage extends React.Component {
   componentDidMount() {
@@ -22,8 +25,9 @@ class EditEventPage extends React.Component {
   }
 
   render() {
-    const {type, data} = this.props.eventPage;
-    const datetime = data.details.startTime.toDate();
+    const {type, selected} = this.props.eventPage;
+    const data = this.props.userEvents[type].data[selected];
+    const datetime = parseDateTime(data.details.startTime.toDate());
     return (
       <>
         <CacheImage
@@ -34,10 +38,7 @@ class EditEventPage extends React.Component {
         />
         <Invite data={data} navigator={this.props.navigation}>
           <Field header="Where" body="Marianopolis College, Westmount" />
-          <Field
-            header="When"
-            body={`${datetime.toDateString()} ${datetime.toTimeString()}`}
-          />
+          <Field header="When" body={datetime} />
           {data.details.description ? (
             <Field header="Details" body={data.details.description} />
           ) : null}
@@ -57,15 +58,20 @@ const styles = StyleSheet.create({
   bgImage: {
     width: R.constants.screenWidth * 1.2,
   },
-  modalContainer: {
-    margin: 0,
-    justifyContent: 'flex-start',
-  },
 });
+
+const ActionCreators = {
+  setDefaultAction,
+};
 
 const mapStateToProps = state => ({
   user: state.user,
   eventPage: state.eventPage,
+  userEvents: state.userEvents,
 });
 
-export default connect(mapStateToProps)(EditEventPage);
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(ActionCreators, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditEventPage);

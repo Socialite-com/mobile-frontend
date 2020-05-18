@@ -29,7 +29,7 @@ class ManageEvent extends React.Component {
   };
 
   componentDidMount() {
-    console.log(this.props.eventPage.data.announcements);
+    console.log(this.props.eventPage);
   }
 
   sendMessage = () => {
@@ -71,6 +71,8 @@ class ManageEvent extends React.Component {
   //show announcements
 
   render() {
+    const {type, selected} = this.props.eventPage;
+    const data = this.props.userEvents[type].data[selected];
     return (
       <View style={styles.mainView}>
         <View>
@@ -122,19 +124,17 @@ class ManageEvent extends React.Component {
                   label="Announcements"
                 />
               </View>
-              {this.props.eventPage.data.announcements ? (
+              {data.announcements ? (
                 <View style={{flex: 16}}>
-                  {this.props.eventPage.data.announcements
-                    .reverse()
-                    .map((post, index) => {
-                      return (
-                        <Announcement
-                          key={index}
-                          text={post.text}
-                          time={post.time}
-                        />
-                      );
-                    })}
+                  {data.announcements.reverse().map((post, index) => {
+                    return (
+                      <Announcement
+                        key={index}
+                        text={post.text}
+                        time={post.time}
+                      />
+                    );
+                  })}
                 </View>
               ) : (
                 <View style={{flex: 16}}>
@@ -160,8 +160,8 @@ class ManageEvent extends React.Component {
         <View>
           <CustomText customStyle={styles.subTitle} label="To-do List" />
 
-          {this.props.eventPage.data.details.todos &&
-            this.props.eventPage.data.details.todos.map((item, index) => {
+          {data.details.todos &&
+            data.details.todos.map((item, index) => {
               return (
                 <Todo
                   key={index}
@@ -245,6 +245,7 @@ const ActionCreators = {
 
 const mapStateToProps = state => ({
   eventPage: state.eventPage,
+  userEvents: state.userEvents,
 });
 
 const mapDispatchToProps = dispatch => ({

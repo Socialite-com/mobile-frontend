@@ -5,8 +5,6 @@ import Onboarding from './navigators/Onboarding';
 import CreateEvent from './navigators/CreateEvent';
 import User from './navigators/User/User';
 import ManageEvent from './navigators/ManageEvent';
-import ViewEvent from './navigators/ViewEvent';
-import Chat from './navigators/Chat';
 
 const Root = createStackNavigator();
 
@@ -18,15 +16,9 @@ function createRootNavigator(signedIn) {
       <Root.Screen name="Onboarding" component={Onboarding} />
       <Root.Screen name="User" component={User} />
       <Root.Screen name="CreateEvent" component={CreateEvent} />
-      <Root.Screen name="Chat" component={Chat} />
       <Root.Screen
         name="ManageEvent"
         component={ManageEvent}
-        options={{...TransitionPresets.ModalTransition}}
-      />
-      <Root.Screen
-        name="ViewEvent"
-        component={ViewEvent}
         options={{...TransitionPresets.ModalTransition}}
       />
     </Root.Navigator>

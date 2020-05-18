@@ -16,7 +16,7 @@ import _ from 'lodash';
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {setCreatePayload, createEvent} from '../../state/actions/events';
+import {setCreatePayload, createEvent} from '../../state/actions/createEvent';
 
 const keyboardOffset = R.constants.screenHeight * 0.2;
 const latDelta = 0.001;

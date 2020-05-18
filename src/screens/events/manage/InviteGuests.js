@@ -5,6 +5,13 @@ import Icon from 'react-native-vector-icons/Feather';
 import UserTab from 'library/components/User/UserTab';
 import TextForm from 'library/components/General/TextInput';
 
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {
+  setEventAction,
+  setDefaultAction,
+} from '../../../state/actions/eventPage';
+
 class InviteGuests extends React.Component {
   state = {
     search: '',
@@ -19,7 +26,7 @@ class InviteGuests extends React.Component {
       {userName: 'MemeLord', status: 'Declined', score: '112'},
     ],
   };
-  componentDidMount(): void {}
+
   render() {
     return (
       <View style={styles.mainView}>
@@ -31,7 +38,6 @@ class InviteGuests extends React.Component {
               placeholder="Search"
               searchbar
             />
-            <Icon name="share" size={25} color={'#fff'} />
           </View>
         </View>
         <View style={styles.guestList}>
@@ -75,4 +81,18 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InviteGuests;
+const ActionCreators = {
+  setEventAction,
+  setDefaultAction,
+};
+
+const mapStateToProps = state => ({
+  user: state.user,
+  eventPage: state.eventPage,
+});
+
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(ActionCreators, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(InviteGuests);

@@ -2,7 +2,7 @@ import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {authReducer, userReducer} from './reducers/users';
 import {createEventReducer} from './reducers/createEvent';
 import {onboardingReducer} from './reducers/onboarding';
-import {eventPageReducer} from './reducers/eventPage';
+import {eventPageReducer} from './reducers/events';
 import {addEventReducer} from './reducers/addEvent';
 import {userEventReducer} from './reducers/events';
 import thunkMiddleware from 'redux-thunk';
@@ -18,9 +18,6 @@ const appReducer = combineReducers({
 });
 
 const rootReducer = (state, action) => {
-  if (action.type === 'LOGOUT_USER') {
-    state = undefined;
-  }
   return appReducer(state, action);
 };
 

@@ -4,15 +4,18 @@ import {StyleSheet, Image, View, Text} from 'react-native';
 import CacheImage from '../General/CacheImage';
 import ProfileCircle from '../User/profileCircle';
 import {invertColor} from '../../networking/qrGen';
+import {parseDateTime} from '../../../state/selectors';
 
 import R from 'res/R';
 
-const EventCard = ({data, small, ...children}) => {
+const EventCard = ({data, small, edit, ...children}) => {
   const item = data.details;
   const user = data.creator;
 
   const textColor = invertColor(item.backgroundColor, true);
   let logoImg = R.images.logo_white;
+  let marginTop = 6;
+  let marginBottom = 10;
   let cardHeight = 300;
   let sizing = 1;
 
@@ -27,18 +30,25 @@ const EventCard = ({data, small, ...children}) => {
     sizing = 0.9;
   }
 
+  if (edit) {
+    marginBottom = 0;
+    cardHeight = 250;
+    marginTop = 0;
+    sizing = 0.9;
+  }
+
   const styles = StyleSheet.create({
     eventContainer: {
       height: cardHeight,
       padding: 0,
       width: '100%',
-      marginTop: 6,
       elevation: 4,
       borderRadius: 6,
       shadowRadius: 2,
       shadowOpacity: 0.4,
-      marginBottom: 10,
       shadowColor: '#000000',
+      marginTop: marginTop,
+      marginBottom: marginBottom,
       backgroundColor: item.backgroundColor,
       shadowOffset: {width: 0, height: -0.25},
       transform: [{rotateX: '-5deg'}, {perspective: 50}],
@@ -49,22 +59,10 @@ const EventCard = ({data, small, ...children}) => {
       paddingVertical: '2.5%',
       paddingHorizontal: '3%',
     },
-    eventTitle: {
-      fontFamily: R.fonts.comfortaaBold,
-      color: textColor,
-      marginBottom: '1%',
-      flexWrap: 'wrap',
-      fontSize: 15 * sizing,
-    },
     organizer: {
       color: textColor,
       fontFamily: R.fonts.comfortaaMedium,
       fontSize: 12 * sizing,
-    },
-    rsvp: {
-      color: textColor,
-      fontFamily: R.fonts.robotoBlack,
-      fontSize: 14 * sizing,
     },
     backgroundImage: {
       width: '100%',
@@ -82,13 +80,17 @@ const EventCard = ({data, small, ...children}) => {
       color: textColor,
       fontSize: 24 * sizing,
     },
-    cardImage: {
-      flex: 1,
-      width: '100%',
-      resizeMode: 'cover',
+    envelope_start: {
+      flex: 3,
+      flexWrap: 'wrap',
+      overflow: 'hidden',
+      justifyContent: 'space-around',
     },
-    row: {
-      flexDirection: 'row',
+    envelope_end: {
+      flex: 1,
+      overflow: 'hidden',
+      alignItems: 'flex-end',
+      justifyContent: 'space-around',
     },
   });
 
@@ -112,19 +114,13 @@ const EventCard = ({data, small, ...children}) => {
         </CacheImage>
       </View>
       <View style={styles.textContainer}>
-        <View
-          style={{flex: 3, flexWrap: 'wrap', justifyContent: 'space-around'}}>
+        <View style={styles.envelope_start}>
           <Text style={styles.organizer}>
-            {item.startTime.toDate().toDateString()}
+            {parseDateTime(item.startTime.toDate())}
           </Text>
           <Text style={styles.logoText}>{item.title}</Text>
         </View>
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'space-around',
-            alignItems: 'flex-end',
-          }}>
+        <View style={styles.envelope_end}>
           <Text style={styles.organizer}>
             {item.private ? 'private' : 'public'}
             {item.paid ? ' • paid' : null}
