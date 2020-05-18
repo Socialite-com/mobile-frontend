@@ -1,8 +1,9 @@
 import {
   STORE_UID,
   LOGIN_USER,
+  LOGOUT_USER,
   FETCH_USER_PROFILE,
-  FETCH_USER_SUCCESS, LOGOUT_USER,
+  FETCH_USER_SUCCESS,
 } from '../index';
 
 const authState = {

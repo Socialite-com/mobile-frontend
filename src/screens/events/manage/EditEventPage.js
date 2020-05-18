@@ -25,7 +25,8 @@ class EditEventPage extends React.Component {
   }
 
   render() {
-    const {type, data} = this.props.eventPage;
+    const {type, selected} = this.props.eventPage;
+    const data = this.props.userEvents[type].data[selected];
     const datetime = parseDateTime(data.details.startTime.toDate());
     return (
       <>
@@ -66,6 +67,7 @@ const ActionCreators = {
 const mapStateToProps = state => ({
   user: state.user,
   eventPage: state.eventPage,
+  userEvents: state.userEvents,
 });
 
 const mapDispatchToProps = dispatch => ({

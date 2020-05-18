@@ -42,12 +42,17 @@ export default function ManageEvent() {
         <Stack.Screen
           name="Edit Event"
           options={{headerLeft: null}}
-          component={screens.events.manage.EditEvent}
+          component={screens.events.EditEvent}
+        />
+        <Stack.Screen
+          name="Payment"
+          options={{headerLeft: null}}
+          component={screens.events.Payment}
         />
         <Stack.Screen
           name="Share Event"
           options={{headerLeft: null}}
-          component={screens.events.manage.ShareEvent}
+          component={screens.events.ShareEvent}
         />
       </Stack.Navigator>
       <Envelope navigation={useNavigation()} />
@@ -56,6 +61,7 @@ export default function ManageEvent() {
 }
 
 function EventPage() {
+  const type = store.getState().eventPage.type;
   return (
     <Tab.Navigator
       initialRouteName="EditEventPage"
@@ -86,6 +92,8 @@ function EventPage() {
             );
           } else if (route.name === 'Manage') {
             iconName = 'th-list';
+          } else if (route.name === 'Discover') {
+            iconName = 'th-list';
           }
 
           // You can return any component that you like here!
@@ -98,7 +106,7 @@ function EventPage() {
       <Tab.Screen
         name="Guests"
         options={{tabBarLabel: 'Guests'}}
-        component={screens.events.manage.InviteGuests}
+        component={screens.events.InviteGuests}
         listeners={{
           focus: e => {
             store.dispatch(setEventAction('share'));
@@ -108,18 +116,22 @@ function EventPage() {
       <Tab.Screen
         name="EditEventPage"
         options={{tabBarLabel: ''}}
-        component={screens.events.manage.EditEventPage}
+        component={screens.events.EditEventPage}
         listeners={{
           focus: e => {
-            const {data, type} = store.getState().eventPage;
+            const {selected, type} = store.getState().eventPage;
+            const data = store.getState().userEvents[type].data[selected];
             store.dispatch(setDefaultAction(type, data));
           },
         }}
       />
       <Tab.Screen
-        name="Manage"
-        options={{tabBarLabel: 'Manage'}}
-        component={screens.events.manage.ManageEvent}
+        name={type === 'eventCreations' ? 'Manage' : 'Discover'}
+        component={
+          type === 'eventCreations'
+            ? screens.events.ManageEvent
+            : screens.events.Discover
+        }
       />
     </Tab.Navigator>
   );

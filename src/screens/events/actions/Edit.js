@@ -18,9 +18,13 @@ import {bindActionCreators} from 'redux';
 import {parseDateTime} from '../../../state/selectors';
 
 class EditEvent extends React.Component {
-  state = {
-    data: this.props.eventPage.data,
-  };
+  constructor(props) {
+    super(props);
+    const {type, selected} = this.props.eventPage;
+    this.state = {
+      data: this.props.userEvents[type].data[selected],
+    };
+  }
 
   changeData(value, type) {
     switch (type) {
@@ -187,6 +191,7 @@ const ActionCreators = {};
 const mapStateToProps = state => ({
   user: state.user,
   eventPage: state.eventPage,
+  userEvents: state.userEvents,
 });
 
 const mapDispatchToProps = dispatch => ({

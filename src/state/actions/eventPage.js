@@ -16,10 +16,10 @@ export function setEventAction(action) {
   };
 }
 
-function setEventData(data) {
+function setEventData(index) {
   return {
     type: SELECT_EVENT_PAGE,
-    payload: data,
+    payload: index,
   };
 }
 
@@ -30,14 +30,14 @@ export function setDefaultAction(type, data) {
     // add variable for response status --> confirmed, declined, unknown
     const status = 'unknown';
     switch (type) {
-      case 'invite':
+      case 'eventInvites':
         if (paid && status === 'confirmed')
           return dispatch(setEventAction('ticket'));
         else return dispatch(setEventAction(status));
-      case 'manage':
+      case 'eventCreations':
         // add logic for publish action
         return dispatch(setEventAction('edit'));
-      case 'displayed':
+      case 'publicEvents':
         // maybe add logic for allowing staring / sharing action
         return dispatch(setEventAction('respond'));
     }
@@ -138,12 +138,14 @@ export function postAnnouncement(message) {
   };
 }
 
-export function selectEvent(type, data) {
-  return async dispatch => {
+export function selectEvent(type, index) {
+  return async (dispatch, getState) => {
     await dispatch(setEventType(type));
-    await dispatch(setEventData(data));
-    await dispatch(setDefaultAction(type, data));
-    await dispatch(checkEventTodos(data));
+    await dispatch(setEventData(index));
+    const eventData = getState().userEvents[type].data[index];
+    await dispatch(setDefaultAction(type, eventData));
+    // do this when receiving the event data & updating
+    // await dispatch(checkEventTodos(eventData));
     return Promise.resolve();
   };
 }

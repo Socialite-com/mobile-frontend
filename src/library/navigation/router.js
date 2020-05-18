@@ -5,7 +5,6 @@ import Onboarding from './navigators/Onboarding';
 import CreateEvent from './navigators/CreateEvent';
 import User from './navigators/User/User';
 import ManageEvent from './navigators/ManageEvent';
-import ViewEvent from './navigators/ViewEvent';
 
 const Root = createStackNavigator();
 
@@ -20,11 +19,6 @@ function createRootNavigator(signedIn) {
       <Root.Screen
         name="ManageEvent"
         component={ManageEvent}
-        options={{...TransitionPresets.ModalTransition}}
-      />
-      <Root.Screen
-        name="ViewEvent"
-        component={ViewEvent}
         options={{...TransitionPresets.ModalTransition}}
       />
     </Root.Navigator>

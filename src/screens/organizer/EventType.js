@@ -10,7 +10,7 @@ import eventTypes from '../../res/defaults/eventData';
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {toggleCreateStage, setCreatePayload} from '../../state/actions/events';
+import {toggleCreateStage, setCreatePayload} from '../../state/actions/createEvent';
 
 class EventType extends React.Component {
   state = {

@@ -14,7 +14,7 @@ import R from 'res/R';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {parseDateTime} from '../../state/selectors';
-import {setCreatePayload, toggleCreateStage} from '../../state/actions/events';
+import {setCreatePayload, toggleCreateStage} from '../../state/actions/createEvent';
 
 class EventTime extends React.Component {
   state = {

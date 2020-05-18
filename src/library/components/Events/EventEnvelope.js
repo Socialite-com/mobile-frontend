@@ -30,7 +30,8 @@ class Envelope extends React.Component {
   }
 
   async _pressButton(action) {
-    const {type, data} = this.props.eventPage;
+    const {type, selected} = this.props.eventPage;
+    const data = this.props.userEvents[type].data[selected];
     switch (action) {
       case 'save':
       case 'cancel':
@@ -60,7 +61,8 @@ class Envelope extends React.Component {
   }
 
   respond = () => {
-    const data = this.props.eventPage.data;
+    const {type, selected} = this.props.eventPage;
+    const data = this.props.userEvents[type].data[selected];
     const response = data.details.paid ? responses.paid : responses.free;
     return (
       <View>
@@ -115,7 +117,8 @@ class Envelope extends React.Component {
   }
 
   render() {
-    const {type, action, data} = this.props.eventPage;
+    const {type, action, selected} = this.props.eventPage;
+    const data = this.props.userEvents[type].data[selected];
     let preset = actions[action];
 
     return (
@@ -220,6 +223,7 @@ const ActionCreators = {
 const mapStateToProps = state => ({
   user: state.user,
   eventPage: state.eventPage,
+  userEvents: state.userEvents,
 });
 
 const mapDispatchToProps = dispatch => ({

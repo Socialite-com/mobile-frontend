@@ -3,11 +3,11 @@ import {StyleSheet, View} from 'react-native';
 
 import R from 'res/R';
 
-class GuestList extends React.Component {
+class SelectChat extends React.Component {
   state = {};
   componentDidMount(): void {}
   render() {
-    return <View style={styles.mainView}></View>;
+    return <View style={styles.mainView} />;
   }
 }
 
@@ -19,4 +19,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GuestList;
+export default SelectChat;

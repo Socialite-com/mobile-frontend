@@ -3,8 +3,9 @@ import {StyleSheet, View} from 'react-native';
 
 import R from 'res/R';
 
-class Discover extends React.Component {
+class Chat extends React.Component {
   state = {};
+  componentDidMount(): void {}
   render() {
     return <View style={styles.mainView} />;
   }
@@ -18,4 +19,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Discover;
+export default Chat;

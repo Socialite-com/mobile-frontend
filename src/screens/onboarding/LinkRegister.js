@@ -15,7 +15,7 @@ import {
   queryFail,
   queryEvent,
   resetEventQuery,
-} from '../../state/actions/events';
+} from '../../state/actions/queryEvent';
 
 import DismissKeyboardView from '../../library/components/General/DismissKeyboardView';
 import LinkButton from 'library/components/General/LinkButton';

@@ -18,7 +18,8 @@ class ShareEvent extends React.Component {
   state = {};
 
   render() {
-    const {data} = this.props.eventPage;
+    const {selected, type} = this.props.eventPage;
+    const data = this.props.userEvents[type].data[selected];
     return (
       <ScrollView>
         <View style={styles.input}>
@@ -93,6 +94,7 @@ const ActionCreators = {};
 const mapStateToProps = state => ({
   user: state.user,
   eventPage: state.eventPage,
+  userEvents: state.userEvents,
 });
 
 const mapDispatchToProps = dispatch => ({
